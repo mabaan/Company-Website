@@ -1,0 +1,24 @@
+---
+import Navbar from '../components/navbar';
+import Footer from '../components/footer';
+import '../styles/global.css'; // Tailwind CSS
+const { title = "GC International" } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  </head>
+  <body class="bg-white text-gray-800 font-sans">
+    <Navbar client:load />
+
+    <main class="min-h-[70vh]">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>
