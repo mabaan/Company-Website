@@ -1,4 +1,3 @@
-// src/components/Navbar.tsx
 import { useState } from "react";
 
 export default function Navbar() {
@@ -13,7 +12,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="bg-white border-b border-gray-200 shadow-sm fixed top-0 left-0 w-full z-50">
+    <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur bg-black/30 text-white transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         <a href="/" className="flex items-center gap-3">
           <img src="/logo.png" alt="GC Logo" className="h-8 w-auto" />
@@ -23,14 +22,14 @@ export default function Navbar() {
         </a>
 
         <button
-          className="sm:hidden text-gray-700 focus:outline-none"
+          className="sm:hidden text-white focus:outline-none"
           onClick={() => setIsOpen(!isOpen)}
         >
           ☰
         </button>
 
         {/* Desktop Nav */}
-        <ul className="hidden sm:flex gap-6 text-gray-700 font-medium">
+        <ul className="hidden sm:flex gap-6 font-medium">
           {links.map((link) => (
             <li key={link.href}>
               <a href={link.href} className="hover:text-gcRed transition">
@@ -43,23 +42,25 @@ export default function Navbar() {
 
       {/* Mobile Full-Screen Overlay Nav */}
       {isOpen && (
-        <div className="sm:hidden fixed inset-0 bg-white flex flex-col items-center justify-center space-y-8 text-xl font-medium z-40">
-          {links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-gcBlue hover:text-gcRed transition"
+        <div className="sm:hidden fixed inset-0 bg-black/90 text-white flex flex-col items-center justify-start pt-1 z-40">
+          <div className="bg-black/80 w-full py-8 px-6 space-y-6 text-center">
+            {links.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="block hover:text-gcRed transition text-xl font-medium"
+                onClick={() => setIsOpen(false)}
+              >
+                {link.label}
+              </a>
+            ))}
+            <button
               onClick={() => setIsOpen(false)}
+              className="mt-4 text-gray-400 text-sm"
             >
-              {link.label}
-            </a>
-          ))}
-          <button
-            onClick={() => setIsOpen(false)}
-            className="mt-8 text-gray-500 text-sm"
-          >
-            Close
-          </button>
+              Close
+            </button>
+          </div>
         </div>
       )}
     </nav>
