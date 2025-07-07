@@ -39,9 +39,9 @@ const ValveViewer = () => {
       scene.add(light, new THREE.AmbientLight(0xffffff, 0.5));
 
       const loader = new GLTFLoader();
-      loader.load("/models/wedge_gate_valve.glb", (gltf) => {
+      loader.load("/models/plug.glb", (gltf) => {
         model = gltf.scene;
-        model.scale.set(0.1, 0.1, 0.1);
+        model.scale.set(0.005, 0.005, 0.005);
         model.position.set(0, -3, 0);
         model.rotation.set(0, 0, 0);
         scene.add(model);
