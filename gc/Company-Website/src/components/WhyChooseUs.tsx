@@ -43,7 +43,7 @@ export default function WhyChooseUs() {
       <div className="grid gap-6 md:gap-8 md:grid-cols-3 max-w-6xl w-full">
         <div className="why-item opacity-0 bg-white rounded shadow p-6">
           <img
-            src="/global.svg"
+            src="/images/global.svg"
             alt="Global"
             className="mb-4 h-10 w-10 mx-auto"
           />

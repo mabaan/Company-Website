@@ -5,45 +5,38 @@ import WhyChooseUs from "../components/WhyChooseUs";
 import CTASection from "../components/CTASection";
 import Footer from "../components/footer";
 import ScrollGauge from "../components/ScrollGauge";
+import ValveViewer from "../components/ValveViewer";
 ---
 
 <Layout title="GC International">
-  <div id="scroll-container" class="h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth">
-    <section class="snap-start snap-always h-screen flex items-center opacity-0 transition-opacity duration-700 fade-section">
+
+	<section id="valve" class="relative h-screen w-full overflow-hidden bg-[#f5f5f5] z-30">
+		<!-- Subtle top light effect -->
+		<div class="absolute inset-0 pointer-events-none z-0 bg-[radial-gradient(ellipse_at_top,_#ffffff_0%,_#f5f5f5_70%)]" />
+	  
+		<!-- Valve 3D model -->
+		<div class="relative z-10">
+		  <ValveViewer client:only="react" />
+		</div>
+	  </section>
+	  
+
+  <!-- Scrollable Snap Sections -->
+  <div id="scroll-container" class=" snap-y snap-mandatory scroll-smooth z-20 relative">
+    
+    <section class="snap-start snap-always h-screen flex items-center justify-center opacity-100 transition-opacity duration-700 fade-section">
       <Hero client:load />
     </section>
 
-    <section class="snap-start h-screen flex items-center opacity-0 transition-opacity duration-700 fade-section">
+    <section class="snap-start h-screen flex items-center justify-center opacity-100 transition-opacity duration-700 fade-section">
       <WhyChooseUs client:load />
     </section>
 
-    <section class="snap-start h-screen flex items-center opacity-0 transition-opacity duration-700 fade-section">
+    <section class="snap-start h-screen flex items-center justify-center opacity-100 transition-opacity duration-700 fade-section">
       <CTASection client:load />
     </section>
 
     <ScrollGauge client:load />
   </div>
 
-  <script type="module">
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('opacity-100');
-        }
-      });
-    }, { threshold: 0.3 });
-
-    document.querySelectorAll('.fade-section').forEach(section => {
-      observer.observe(section);
-    });
-  </script>
-
-  <style>
-    .fade-section {
-      opacity: 0;
-    }
-    .fade-section.opacity-100 {
-      opacity: 1;
-    }
-  </style>
 </Layout>
