@@ -6,3 +6,61 @@ canvas {
   display: block;
   background: transparent !important;
 }
+@layer utilities {
+  .bg-gc-radial {
+    background: radial-gradient(
+      circle at center,
+      #ffffff 0%,
+      #f5f5f5 40%,
+      #0054a4 100%
+    );
+  }
+}
+@keyframes blob {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(30px, -20px) scale(1.05);
+  }
+}
+
+@keyframes moveWaves {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.bg-waves {
+  background: linear-gradient(
+    to top,
+    #ffffff,
+    #f6b1b1,
+    #d0e4f7,
+    #0054a4,
+    #ffffff
+  );
+  background-size: 400% 400%;
+  animation: moveWaves 15s ease infinite;
+}
+@layer utilities {
+  .bg-waves-reverse {
+    background: linear-gradient(
+      to bottom,
+      #ffffff,
+      #f6b1b1,
+      #d0e4f7,
+      #0054a4,
+      #ffffff
+    );
+    background-size: 400% 400%;
+    animation: moveWaves 15s ease infinite;
+  }
+}

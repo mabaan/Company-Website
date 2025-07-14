@@ -26,7 +26,7 @@ const ValveViewer = () => {
         0.1,
         100
       );
-      camera.position.set(0, 6.4, 2);
+      camera.position.set(0, 7, 2);
       camera.lookAt(0, 0, 0);
       camera.up.set(0, 1, 0); // orient Z-axis toward screen (for fixing rotation)
 
@@ -41,8 +41,8 @@ const ValveViewer = () => {
       const loader = new GLTFLoader();
       loader.load("/models/wedge_gate_valve.glb", (gltf) => {
         model = gltf.scene;
-        model.scale.set(0.1, 0.1, 0.1);
-        model.position.set(0, -3, 0);
+        model.scale.set(0.095, 0.095, 0.095);
+        model.position.set(3, -3, 0);
         model.rotation.set(0, 0, 0);
         scene.add(model);
 
