@@ -1,10 +1,10 @@
 export default function Hero() {
   return (
-    <div className="w-full h-full bg-light flex flex-col justify-center items-center text-center px-4 md:px-8 relative">
-      <h1 className="text-4xl md:text-5xl font-extrabold text-gcBlue mb-4 max-w-3xl">
+    <div className="absolute top-1/2 left-12 transform -translate-y-1/2 z-20 max-w-xl text-left">
+      <h1 className="text-4xl md:text-5xl font-extrabold text-gcBlue mb-4 leading-tight">
         Seamless Innovation in Pipeline Solutions
       </h1>
-      <p className="text-base md:text-lg max-w-xl text-darkText mb-8">
+      <p className="text-base md:text-lg text-darkText mb-8">
         GC International connects vision to reality with world-class valve,
         flange, and flow control technology across the Middle East and beyond.
       </p>
