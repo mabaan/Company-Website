@@ -48,35 +48,35 @@ const ValveViewer = () => {
         scene.add(model);
 
         // Section 1 – Company → Rotate Y
-        gsap.to(model.rotation, {
-          scrollTrigger: {
-            trigger: "#company",
-            start: "top center",
-            end: "bottom center",
-            scrub: true,
-          },
-          y: -Math.PI,
-        });
+        // gsap.to(model.rotation, {
+        //   scrollTrigger: {
+        //     trigger: "#company",
+        //     start: "top center",
+        //     end: "bottom center",
+        //     scrub: true,
+        //   },
+        //   y: -Math.PI,
+        // });
 
-        // Section 3 – Testimonials → Zoom in
-        gsap.to(camera.position, {
-          scrollTrigger: {
-            trigger: "#testimonials",
-            start: "top center",
-            end: "bottom center",
-            scrub: true,
-          },
-          z: 5,
-          onUpdate: () => camera.lookAt(0, 0, 0),
-        });
+        // // Section 3 – Testimonials → Zoom in
+        // gsap.to(camera.position, {
+        //   scrollTrigger: {
+        //     trigger: "#testimonials",
+        //     start: "top center",
+        //     end: "bottom center",
+        //     scrub: true,
+        //   },
+        //   z: 5,
+        //   onUpdate: () => camera.lookAt(0, 0, 0),
+        // });
 
-        // Section 4 – Fade out model when footer enters view
-        ScrollTrigger.create({
-          trigger: "footer", // or "#site-footer" if you have a specific ID
-          start: "top bottom", // when top of footer enters bottom of screen
-          end: "top center",
-          scrub: true,
-        });
+        // // Section 4 – Fade out model when footer enters view
+        // ScrollTrigger.create({
+        //   trigger: "footer", // or "#site-footer" if you have a specific ID
+        //   start: "top bottom", // when top of footer enters bottom of screen
+        //   end: "top center",
+        //   scrub: true,
+        // });
       });
 
       const animate = () => {
