@@ -15,7 +15,7 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur bg-black/30 text-white transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         <a href="/" className="flex items-center gap-3">
-          <img src="/logo.png" alt="GC Logo" className="h-8 w-auto" />
+          <img src="/GC Transparent Logo.png" alt="GC Logo" className="h-12 w-auto" />
           <span className="text-gcBlue text-xl font-bold tracking-wide hidden sm:inline">
             GC International
           </span>

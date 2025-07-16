@@ -1,9 +1,37 @@
 ---
 import Layout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const jobs = await getCollection("jobs");
 ---
 
-<Layout title="Page Title">
-  <section class="min-h-screen flex items-center justify-center">
-    <h1 class="text-4xl font-bold">Page Title</h1>
+<Layout title="Careers | GC International">
+  <section class="py-16 px-4 bg-[#f9f9f9] min-h-screen">
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <h1 class="text-4xl md:text-5xl py-10 font-bold text-[#0054a4]">
+        Careers at GC International
+      </h1>
+      <p class="mt-4 text-gray-600 text-lg">
+        Join our team and help shape the future of pipeline solutions.
+      </p>
+    </div>
+
+    <div class="space-y-6 max-w-3xl mx-auto">
+      {jobs.map((job) => (
+        <div class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
+          <h2 class="text-xl font-semibold text-gray-900 mb-2">{job.data.title}</h2>
+          <p class="text-sm text-gray-700 mb-1"><strong>Department:</strong> {job.data.department}</p>
+          <p class="text-sm text-gray-700 mb-4"><strong>Location:</strong> {job.data.location}</p>
+          <a
+  href={"mailto:b00096026@aus.edu?subject=Application for " + job.data.title}
+  class="inline-block bg-[#0054a4] hover:bg-[#004080] text-white px-4 py-2 rounded transition"
+>
+  Apply
+</a>
+
+
+        </div>
+      ))}
+    </div>
   </section>
 </Layout>

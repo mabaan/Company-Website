@@ -1,9 +1,15 @@
 ---
-import Layout from "../layouts/BaseLayout.astro";
+import Layout from '../layouts/BaseLayout.astro';
+import NetworkMap from '../components/NetworkMap.tsx';
+import { fetchLocations } from '../lib/airtable';
+
+const locations = await fetchLocations();
 ---
 
-<Layout title="Page Title">
-  <section class="min-h-screen flex items-center justify-center">
-    <h1 class="text-4xl font-bold">Page Title</h1>
+<Layout title="G&C Network Map">
+  <section class="min-h-screen px-4 py-20">
+    <h1 class="text-3xl font-bold text-center mb-8">Global Network Map</h1>
+    <NetworkMap locations={locations} client:only="react" />
   </section>
+  
 </Layout>

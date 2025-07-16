@@ -26,7 +26,7 @@ const ValveViewer = () => {
         0.1,
         100
       );
-      camera.position.set(0, 6.4, 2);
+      camera.position.set(0, 7, 2);
       camera.lookAt(0, 0, 0);
       camera.up.set(0, 1, 0); // orient Z-axis toward screen (for fixing rotation)
 
@@ -39,35 +39,44 @@ const ValveViewer = () => {
       scene.add(light, new THREE.AmbientLight(0xffffff, 0.5));
 
       const loader = new GLTFLoader();
-      loader.load("/models/wedge_gate_valve.glb", (gltf) => {
+      loader.load("/models/3way_valve.glb", (gltf) => {
         model = gltf.scene;
-        model.scale.set(0.1, 0.1, 0.1);
-        model.position.set(0, -3, 0);
-        model.rotation.set(0, 0, 0);
+        model.scale.set(0.007, 0.007, 0.007);
+        model.position.set(3, -1, 0);
+
+        model.rotation.set(1.15, 1.3, -0.5);
         scene.add(model);
 
         // Section 1 – Company → Rotate Y
-        gsap.to(model.rotation, {
-          scrollTrigger: {
-            trigger: "#company",
-            start: "top center",
-            end: "bottom center",
-            scrub: true,
-          },
-          y: Math.PI,
-        });
+        // gsap.to(model.rotation, {
+        //   scrollTrigger: {
+        //     trigger: "#company",
+        //     start: "top center",
+        //     end: "bottom center",
+        //     scrub: true,
+        //   },
+        //   y: -Math.PI,
+        // });
 
-        // Section 3 – Testimonials → Zoom in
-        gsap.to(camera.position, {
-          scrollTrigger: {
-            trigger: "#testimonials",
-            start: "top center",
-            end: "bottom center",
-            scrub: true,
-          },
-          z: 5,
-          onUpdate: () => camera.lookAt(0, 0, 0),
-        });
+        // // Section 3 – Testimonials → Zoom in
+        // gsap.to(camera.position, {
+        //   scrollTrigger: {
+        //     trigger: "#testimonials",
+        //     start: "top center",
+        //     end: "bottom center",
+        //     scrub: true,
+        //   },
+        //   z: 5,
+        //   onUpdate: () => camera.lookAt(0, 0, 0),
+        // });
+
+        // // Section 4 – Fade out model when footer enters view
+        // ScrollTrigger.create({
+        //   trigger: "footer", // or "#site-footer" if you have a specific ID
+        //   start: "top bottom", // when top of footer enters bottom of screen
+        //   end: "top center",
+        //   scrub: true,
+        // });
       });
 
       const animate = () => {
