@@ -1,0 +1,14 @@
+version: 1
+frontend:
+  framework: custom           # treat as a generic static site
+  phases:
+    preBuild:
+      commands: []            # no dependency install needed
+    build:
+      commands: []            # no build step
+  artifacts:
+    baseDirectory: .          # serve from the repo root
+    files:
+      - "**/*"                # include all files (HTML, CSS, images, etc.)
+  cache:
+    paths: []                 # nothing to cache
