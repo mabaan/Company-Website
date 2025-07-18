@@ -1,0 +1,44 @@
+---
+export const prerender = false;
+
+import Layout from "../../../layouts/BaseLayout.astro";
+
+const slug = Astro.params?.slug;
+if (!slug || typeof slug !== "string") throw new Error("Missing or invalid job slug.");
+
+const jobTitle = decodeURIComponent(slug.replace(/-/g, " "));
+
+// Optional: handle POST data if needed
+const body = await Astro.request.formData();
+const name = body.get("name") ?? "";
+const email = body.get("email") ?? "";
+const phone = body.get("phone") ?? "";
+const coverLetter = body.get("coverLetter") ?? "";
+---
+
+<Layout title={`Application Submitted`}>
+  <section class="py-20 px-6 bg-[#f9f9f9] min-h-screen text-center">
+    <div class="max-w-xl mx-auto">
+      <h1 class="text-4xl font-bold mb-4">Thank You!</h1>
+      <p class="text-lg mb-6">
+        Your application for <strong>{jobTitle}</strong> has been submitted successfully.
+      </p>
+
+      <!-- Optional: echo submitted info back -->
+      <div class="bg-white p-6 rounded shadow text-left mb-6">
+        <p><strong>Name:</strong> {name}</p>
+        <p><strong>Email:</strong> {email}</p>
+        <p><strong>Phone:</strong> {phone}</p>
+        <p><strong>Cover Letter:</strong></p>
+        <p class="whitespace-pre-wrap bg-gray-100 p-4 rounded">{coverLetter}</p>
+      </div>
+
+      <a
+        href="/careers"
+        class="inline-block mt-4 text-blue-700 hover:underline"
+      >
+        ← Back to Careers
+      </a>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,29 @@
+---
+import Layout from "../../layouts/BaseLayout.astro";
+import { getJobs } from "../../lib/jobs";
+
+const jobs = await getJobs();
+---
+
+<Layout title="Careers | GC International">
+  <section class="py-20 px-6 bg-[#f9f9f9] min-h-screen">
+    <div class="max-w-5xl mx-auto">
+      <h1 class="text-4xl font-bold mb-10 text-center">Join Our Team</h1>
+
+      <ul class="space-y-8">
+        {jobs.map(job => (
+          <li class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
+            <h2 class="text-2xl font-semibold mb-2">{job.title}</h2>
+            <p class="text-gray-600 mb-4">{job.location}</p>
+            <a
+              href={`/careers/${job.slug}`}
+              class="inline-block bg-[#0054a4] text-white px-5 py-2 rounded hover:bg-blue-700 transition"
+            >
+              View Details
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Layout>

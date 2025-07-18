@@ -7,112 +7,89 @@ gsap.registerPlugin(ScrollTrigger);
 
 const ValveViewer = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const modelRef = useRef<THREE.Group | null>(null);
+  const frameRef = useRef<number | null>(null);
 
   useEffect(() => {
-    let model: THREE.Group;
-    let renderer: THREE.WebGLRenderer | null = null;
+    if (!containerRef.current) return;
 
-    const init = async () => {
-      const { GLTFLoader } = await import(
-        "three/examples/jsm/loaders/GLTFLoader.js"
-      );
+    const width = containerRef.current.clientWidth;
+    const height = containerRef.current.clientHeight;
 
-      if (!containerRef.current) return;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
+    camera.position.set(2, 0, 6); // Right-shifted camera
+    camera.lookAt(0, 0, 0);
 
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(
-        45,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        100
-      );
-      camera.position.set(0, 7, 2);
-      camera.lookAt(0, 0, 0);
-      camera.up.set(0, 1, 0); // orient Z-axis toward screen (for fixing rotation)
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(width, height);
+    renderer.domElement.style.position = "fixed";
+    renderer.domElement.style.top = "0";
+    renderer.domElement.style.left = "0";
+    renderer.domElement.style.width = "100%";
+    renderer.domElement.style.height = "100%";
+    renderer.domElement.style.pointerEvents = "none";
+    renderer.domElement.style.zIndex = "10";
+    containerRef.current.appendChild(renderer.domElement);
+    rendererRef.current = renderer;
 
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      containerRef.current.appendChild(renderer.domElement);
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(5, 5, 5);
+    scene.add(light);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
 
-      const light = new THREE.DirectionalLight(0xffffff, 1);
-      light.position.set(5, 5, 5);
-      scene.add(light, new THREE.AmbientLight(0xffffff, 0.5));
+    import("three/examples/jsm/loaders/GLTFLoader.js").then(
+      ({ GLTFLoader }) => {
+        const loader = new GLTFLoader();
+        loader.load("/models/3way_valve.glb", (gltf) => {
+          const model = gltf.scene;
+          model.scale.set(0.005, 0.005, 0.005);
+          model.position.set(2.5, 0, 0); // Slightly right and lowered
+          model.rotation.set(2.25, 0.3, 5.5);
+          scene.add(model);
+          modelRef.current = model;
 
-      const loader = new GLTFLoader();
-      loader.load("/models/3way_valve.glb", (gltf) => {
-        model = gltf.scene;
-        model.scale.set(0.007, 0.007, 0.007);
-        model.position.set(3, -1, 0);
+          gsap.to(model.rotation, {
+            y: "+=6.28",
+            ease: "none",
+            scrollTrigger: {
+              trigger: document.body,
+              start: "top top",
+              end: "bottom bottom",
+              scrub: true,
+            },
+          });
+        });
+      }
+    );
 
-        model.rotation.set(1.15, 1.3, -0.5);
-        scene.add(model);
-
-        // Section 1 – Company → Rotate Y
-        // gsap.to(model.rotation, {
-        //   scrollTrigger: {
-        //     trigger: "#company",
-        //     start: "top center",
-        //     end: "bottom center",
-        //     scrub: true,
-        //   },
-        //   y: -Math.PI,
-        // });
-
-        // // Section 3 – Testimonials → Zoom in
-        // gsap.to(camera.position, {
-        //   scrollTrigger: {
-        //     trigger: "#testimonials",
-        //     start: "top center",
-        //     end: "bottom center",
-        //     scrub: true,
-        //   },
-        //   z: 5,
-        //   onUpdate: () => camera.lookAt(0, 0, 0),
-        // });
-
-        // // Section 4 – Fade out model when footer enters view
-        // ScrollTrigger.create({
-        //   trigger: "footer", // or "#site-footer" if you have a specific ID
-        //   start: "top bottom", // when top of footer enters bottom of screen
-        //   end: "top center",
-        //   scrub: true,
-        // });
-      });
-
-      const animate = () => {
-        requestAnimationFrame(animate);
-        renderer?.render(scene, camera);
-      };
-      animate();
-
-      window.addEventListener("resize", () => {
-        if (!renderer) return;
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      });
+    const animate = () => {
+      frameRef.current = requestAnimationFrame(animate);
+      renderer.render(scene, camera);
     };
+    animate();
 
-    init();
+    window.addEventListener("resize", () => {
+      if (!rendererRef.current || !containerRef.current) return;
+      const newWidth = containerRef.current.clientWidth;
+      const newHeight = containerRef.current.clientHeight;
+      renderer.setSize(newWidth, newHeight);
+      camera.aspect = newWidth / newHeight;
+      camera.updateProjectionMatrix();
+    });
 
     return () => {
-      renderer?.dispose();
-      containerRef.current?.replaceChildren();
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
+      if (rendererRef.current) rendererRef.current.dispose();
+      if (containerRef.current) containerRef.current.innerHTML = "";
     };
   }, []);
 
   return (
     <div
       ref={containerRef}
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        zIndex: 20,
-        pointerEvents: "none",
-      }}
+      className="fixed top-0 left-0 w-full h-screen z-10 pointer-events-none md:block hidden"
     />
   );
 };
