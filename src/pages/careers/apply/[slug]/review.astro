@@ -1,7 +1,10 @@
 ---
+export const prerender = false;
+
 import Layout from "../../../../layouts/BaseLayout.astro";
 import { getJobs, type Job } from "../../../../lib/jobs";
 
+// ✅ Required for dynamic `[slug]` routes
 export async function getStaticPaths() {
   const jobs = await getJobs();
   return jobs.map((job) => ({
@@ -10,55 +13,49 @@ export async function getStaticPaths() {
   }));
 }
 
-const { job } = Astro.props as { job: Job };
+// ✅ Access slug from URL
+const { slug } = Astro.params;
 
+// ✅ Get job data
+const jobs: Job[] = await getJobs();
+const job = jobs.find((j) => j.slug === slug);
+if (!job) throw new Error(`Job not found for slug: ${slug}`);
+
+// ✅ Access form data from POST
 let formData: FormData;
 try {
   formData = await Astro.request.formData();
 } catch {
-  formData = new FormData(); // fallback when accessed via GET
+  formData = new FormData(); // avoid crash
 }
-
-const fields = {
-  firstName: formData.get("firstName")?.toString() || "",
-  lastName: formData.get("lastName")?.toString() || "",
-  email: formData.get("email")?.toString() || "",
-  countryCode: formData.get("countryCode")?.toString() || "",
-  phone: formData.get("phone")?.toString() || "",
-  gender: formData.get("gender")?.toString() || "",
-  nationality: formData.get("nationality")?.toString() || "",
-  dob: formData.get("dob")?.toString() || "",
-  visa: formData.get("visa")?.toString() || "",
-  experience: formData.get("experience")?.toString() || "",
-  linkedin: formData.get("linkedin")?.toString() || "",
-  about: formData.get("about")?.toString() || "",
-};
+const get = (field: string) => formData.get(field) ?? "";
 ---
 
-
-<Layout title={`Review Application | ${job.title}`}>
-  <section class="py-12 px-6 max-w-3xl mx-auto">
-    <h1 class="text-3xl font-bold mb-6">Review Your Application for {job.title}</h1>
+<Layout title={`Review | ${job.title} | GC Careers`}>
+  <section class="py-12 px-4 max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">
+      Review Your Application for <span class="text-blue-800">{job.title}</span>
+    </h1>
 
     <ul class="space-y-3 text-lg">
-      <li><strong>Full Name:</strong> {fields.firstName} {fields.lastName}</li>
-      <li><strong>Email:</strong> {fields.email}</li>
-      <li><strong>Phone:</strong> {fields.countryCode} {fields.phone}</li>
-      <li><strong>Gender:</strong> {fields.gender}</li>
-      <li><strong>Nationality:</strong> {fields.nationality}</li>
-      <li><strong>Date of Birth:</strong> {fields.dob}</li>
-      <li><strong>Visa:</strong> {fields.visa}</li>
-      <li><strong>Experience:</strong> {fields.experience} years</li>
-      <li><strong>LinkedIn:</strong> {fields.linkedin}</li>
-      <li><strong>About:</strong> {fields.about}</li>
+      <li><strong>Full Name:</strong> {get("firstName")} {get("lastName")}</li>
+      <li><strong>Email:</strong> {get("email")}</li>
+      <li><strong>Phone:</strong> {get("countryCode")}{get("phone")}</li>
+      <li><strong>Gender:</strong> {get("gender")}</li>
+      <li><strong>Nationality:</strong> {get("nationality")}</li>
+      <li><strong>Date of Birth:</strong> {get("dob")}</li>
+      <li><strong>Visa:</strong> {get("visa")}</li>
+      <li><strong>Experience:</strong> {get("experience")} years</li>
+      <li><strong>LinkedIn:</strong> {get("linkedin")}</li>
+      <li><strong>About:</strong> {get("about")}</li>
     </ul>
 
-    <form method="POST" action={`/careers/apply/${job.slug}/confirmation`} class="mt-8 space-y-4">
-      <!-- You may re-pass form data as hidden inputs -->
-      {Object.entries(fields).map(([key, value]) => (
-        <input type="hidden" name={key} value={value} />
+    <!-- pass data to confirmation -->
+    <form method="POST" action={`/careers/apply/${slug}/confirmation`} class="mt-8">
+      {Array.from(formData.entries()).map(([key, value]) => (
+        <input type="hidden" name={key} value={String(value)} />
       ))}
-      <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">
+      <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded mt-4">
         Submit Application
       </button>
     </form>

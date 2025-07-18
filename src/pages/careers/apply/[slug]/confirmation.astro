@@ -1,21 +1,37 @@
 ---
-export const prerender = false;
-
 import Layout from "../../../../layouts/BaseLayout.astro";
+import { getJobs } from "../../../../lib/jobs";
+
+export async function getStaticPaths() {
+  const jobs = await getJobs();
+  return jobs.map((job) => ({
+    params: { slug: job.slug },
+    props: { job },
+  }));
+}
+
 const { job } = Astro.props;
+
+// Fallback formData parsing
+let formData: FormData;
+try {
+  formData = await Astro.request.formData();
+} catch {
+  formData = new FormData(); // fallback if nothing is posted
+}
 ---
 
 <Layout title="Application Submitted | GC Careers">
   <section class="py-20 px-6 text-center bg-[#f5f5f5] min-h-[60vh]">
     <div class="max-w-xl mx-auto">
-      <h1 class="text-3xl font-bold text-green-600 mb-4">🎉 Application Submitted!</h1>
+      <h1 class="text-3xl font-bold text-green-600 mb-4"> Application Submitted!</h1>
       <p class="text-lg mb-6">
-        Thank you for applying for the <strong>{job?.title}</strong> position at GC International.
+        Thank you for applying for the <strong>{job.title}</strong> position at GC International.
       </p>
-      <p class="text-gray-700 mb-4">
+      <p class="text-gray-700">
         Our HR team will review your submission and reach out if your profile matches our requirements.
       </p>
-      <a href="/careers" class="inline-block mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+      <a href="/careers" class="inline-block mt-6 bg-[#0054a4] text-white px-5 py-2 rounded hover:bg-blue-700 transition">
         Back to Careers
       </a>
     </div>

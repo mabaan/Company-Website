@@ -1,10 +1,11 @@
 ---
+// src/pages/careers/apply/[slug]/index.astro
 import Layout from "../../../../layouts/BaseLayout.astro";
 import { getJobs, type Job } from "../../../../lib/jobs";
 import { getCountryList } from "../../../../lib/getCountryData";
 import type { Country } from "../../../../lib/getCountryData";
 
-// Required for dynamic route
+// Generate static paths for each job
 export async function getStaticPaths() {
   const jobs = await getJobs();
   return jobs.map((job) => ({
@@ -13,12 +14,8 @@ export async function getStaticPaths() {
   }));
 }
 
-// ✅ Type Astro.props
-const { params, job } = Astro.props as {
-  params: { slug: string };
-  job: Job;
-};
-
+// Access job from props
+const { job } = Astro.props as { job: Job };
 const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
   a.name.localeCompare(b.name)
 );
@@ -80,7 +77,7 @@ const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
 
       <div class="pt-6 flex justify-between">
         <a href={`/careers/${job.slug}`} class="text-blue-600 underline text-sm">← Back to job</a>
-        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded">
+        <button type="submit" class="bg-[#0054a4] hover:bg-blue-700 text-white px-6 py-2 rounded">
           Next: Review Application
         </button>
       </div>
