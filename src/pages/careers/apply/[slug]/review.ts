@@ -1,6 +1,5 @@
-// src/pages/careers/apply/[slug]/review.ts
 import type { APIRoute } from "astro";
-import { getJobs } from "../../../lib/jobs";
+import { getJobs } from "../../../../lib/jobs";
 
 export const POST: APIRoute = async ({ request, params }) => {
   const jobs = await getJobs();
@@ -14,7 +13,7 @@ export const POST: APIRoute = async ({ request, params }) => {
   return new Response(null, {
     status: 303,
     headers: {
-      Location: `/careers/${params.slug}/review?data=${encoded}`,
+      Location: `/careers/apply/${params.slug}/review?data=${encoded}`,
     },
   });
 };

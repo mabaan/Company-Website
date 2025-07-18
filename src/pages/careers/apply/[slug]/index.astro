@@ -1,0 +1,89 @@
+---
+import Layout from "../../../../layouts/BaseLayout.astro";
+import { getJobs, type Job } from "../../../../lib/jobs";
+import { getCountryList } from "../../../../lib/getCountryData";
+import type { Country } from "../../../../lib/getCountryData";
+
+// Required for dynamic route
+export async function getStaticPaths() {
+  const jobs = await getJobs();
+  return jobs.map((job) => ({
+    params: { slug: job.slug },
+    props: { job },
+  }));
+}
+
+// ✅ Type Astro.props
+const { params, job } = Astro.props as {
+  params: { slug: string };
+  job: Job;
+};
+
+const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
+  a.name.localeCompare(b.name)
+);
+---
+
+<Layout title={`Apply | ${job.title} | GC International`}>
+  <section class="py-12 px-4 max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-4">Apply for {job.title}</h1>
+
+    <form
+      method="POST"
+      action={`/careers/apply/${job.slug}/review`}
+      enctype="multipart/form-data"
+      class="space-y-6"
+    >
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <input name="firstName" placeholder="First Name" required class="border px-4 py-2 rounded" />
+        <input name="lastName" placeholder="Last Name" required class="border px-4 py-2 rounded" />
+        <input name="email" type="email" placeholder="Email" required class="border px-4 py-2 rounded md:col-span-2" />
+
+        <select name="countryCode" required class="border px-3 py-2 rounded">
+          <option value="" disabled selected>-- Select your country code --</option>
+          {countryCodes.map(country => (
+            <option value={country.dial_code}>
+              {country.name} {country.flag} ({country.code}) {country.dial_code}
+            </option>
+          ))}
+        </select>
+
+        <input name="phone" placeholder="Phone" required class="border px-4 py-2 rounded" />
+
+        <div>
+          <label class="block font-medium mb-1">Gender *</label>
+          <div class="flex gap-4">
+            <label><input type="radio" name="gender" value="Male" required /> Male</label>
+            <label><input type="radio" name="gender" value="Female" required /> Female</label>
+          </div>
+        </div>
+
+        <input name="nationality" placeholder="Nationality" required class="border px-4 py-2 rounded" />
+        <input name="dob" type="date" required class="border px-4 py-2 rounded" />
+
+        <select name="visa" required class="border px-4 py-2 rounded">
+          <option value="">-- Visa Status --</option>
+          <option value="Visit">Visit</option>
+          <option value="Work">Work</option>
+          <option value="Student">Student</option>
+          <option value="Golden">Golden</option>
+          <option value="Resident">Resident</option>
+          <option value="None">None</option>
+        </select>
+
+        <input name="experience" type="number" min="0" placeholder="Years of Experience" required class="border px-4 py-2 rounded" />
+        <input name="linkedin" placeholder="LinkedIn (optional)" class="border px-4 py-2 rounded md:col-span-2" />
+
+        <textarea name="about" rows="4" placeholder="Tell us about yourself..." required class="border px-4 py-2 rounded md:col-span-2"></textarea>
+        <input name="resume" type="file" accept="application/pdf" required class="md:col-span-2" />
+      </div>
+
+      <div class="pt-6 flex justify-between">
+        <a href={`/careers/${job.slug}`} class="text-blue-600 underline text-sm">← Back to job</a>
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded">
+          Next: Review Application
+        </button>
+      </div>
+    </form>
+  </section>
+</Layout>

@@ -1,10 +1,8 @@
 ---
 import Layout from "../../../layouts/BaseLayout.astro";
 import { getJobs } from "../../../lib/jobs";
-import { getCountryList } from "../../../lib/getCountryData";
-import type { Country } from "../../../lib/getCountryData";
 
-// Generate static paths for each job
+// Generate static paths for all job slugs
 export async function getStaticPaths() {
   const jobs = await getJobs();
   return jobs.map((job) => ({
@@ -14,110 +12,46 @@ export async function getStaticPaths() {
 }
 
 const { job } = Astro.props;
-const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
-  a.name.localeCompare(b.name)
-);
 ---
 
-<Layout title={`Apply – ${job.title} | GC International`}>
-  <section class="py-12 px-4 max-w-3xl mx-auto">
-    <h1 class="text-3xl font-bold mb-4">Apply for {job.title}</h1>
+<Layout title={`${job.title} | Careers | GC International`}>
+  <section class="py-16 px-6 bg-[#f9f9f9] min-h-screen">
+    <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-8 border border-gray-200 space-y-6">
+      <div>
+        <h1 class="text-3xl font-bold mb-2">{job.title}</h1>
+        <p class="text-gray-600">{job.department} · {job.location} · {job.employmentType}</p>
+        <p class="text-sm text-gray-400 mt-1">
+            Posted on: {job.posted ? new Date(job.posted as string).toLocaleDateString() : "Date not available"}
+          </p>      </div>
 
-    <form
-      method="POST"
-      enctype="multipart/form-data"
-      action={`/careers/${job.slug}/apply/review`}
-      class="space-y-6"
-    >
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label for="firstName" class="block font-medium">First Name *</label>
-          <input name="firstName" required class="w-full border px-4 py-2 rounded" />
-        </div>
-
-        <div>
-          <label for="lastName" class="block font-medium">Last Name *</label>
-          <input name="lastName" required class="w-full border px-4 py-2 rounded" />
-        </div>
-
-        <div class="md:col-span-2">
-          <label for="email" class="block font-medium">Email *</label>
-          <input name="email" type="email" required class="w-full border px-4 py-2 rounded" />
-        </div>
-
-        <div>
-          <label for="countryCode" class="block font-medium">Country Code *</label>
-          <select name="countryCode" required class="w-full border px-3 py-2 rounded">
-            <option value="" disabled selected>-- Select your country code --</option>
-            {countryCodes.map(country => (
-              <option value={country.dial_code}>
-                {country.name} {country.flag} ({country.code}) {country.dial_code}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label for="phone" class="block font-medium">Phone *</label>
-          <input name="phone" required class="w-full border px-4 py-2 rounded" />
-        </div>
-
-        <div>
-          <label class="block font-medium">Gender *</label>
-          <div class="flex gap-4 mt-2">
-            <label><input type="radio" name="gender" value="Male" required /> Male</label>
-            <label><input type="radio" name="gender" value="Female" required /> Female</label>
-          </div>
-        </div>
-
-        <div>
-          <label for="nationality" class="block font-medium">Nationality *</label>
-          <input name="nationality" required class="w-full border px-4 py-2 rounded" />
-        </div>
-
-        <div>
-          <label for="dob" class="block font-medium">Date of Birth *</label>
-          <input name="dob" type="date" required class="w-full border px-4 py-2 rounded" />
-        </div>
-
-        <div>
-          <label for="visa" class="block font-medium">Visa Status *</label>
-          <select name="visa" required class="w-full border px-4 py-2 rounded">
-            <option value="">-- Select --</option>
-            <option value="Visit">Visit</option>
-            <option value="Work">Work</option>
-            <option value="Student">Student</option>
-            <option value="None">None</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="experience" class="block font-medium">Total Experience (years) *</label>
-          <input name="experience" type="number" min="0" required class="w-full border px-4 py-2 rounded" />
-        </div>
-
-        <div class="md:col-span-2">
-          <label for="linkedin" class="block font-medium">LinkedIn (optional)</label>
-          <input name="linkedin" placeholder="https://linkedin.com/in/..." class="w-full border px-4 py-2 rounded" />
-        </div>
-
-        <div class="md:col-span-2">
-          <label for="about" class="block font-medium">About You *</label>
-          <textarea name="about" rows="5" required class="w-full border px-4 py-2 rounded"></textarea>
-        </div>
-
-        <div class="md:col-span-2">
-          <label for="resume" class="block font-medium">Resume (PDF only) *</label>
-          <input name="resume" type="file" accept="application/pdf" required class="w-full" />
-        </div>
+      <div>
+        <h2 class="text-xl font-semibold mb-2">Job Description</h2>
+        <p class="text-gray-700 whitespace-pre-line">{job.description}</p>
       </div>
 
-      <div class="pt-6 flex justify-between">
-        <a href={`/careers/${job.slug}`} class="text-[#0054a4] underline text-sm">← Back to job</a>
-        <button type="submit" class="bg-[#0054a4] hover:bg-[#004080] text-white px-6 py-2 rounded">
-          Review Application
-        </button>
+      {job.responsibilities.length > 0 && (
+        <div>
+          <h2 class="text-xl font-semibold mb-2">Responsibilities</h2>
+          <ul class="list-disc pl-6 space-y-1 text-gray-700">
+            {job.responsibilities.map((item: string) => <li>{item}</li>)}
+        </ul>
+        </div>
+      )}
+
+      {job.qualifications.length > 0 && (
+        <div>
+          <h2 class="text-xl font-semibold mb-2">Qualifications</h2>
+          <ul class="list-disc pl-6 space-y-1 text-gray-700">
+            {job.qualifications.map((item: string) => <li>{item}</li>)}
+        </ul>
+        </div>
+      )}
+
+      <div class="pt-6">
+        <a href={`/careers/apply/${job.slug}`} class="inline-block bg-[#0054a4] hover:bg-[#003d80] text-white font-semibold px-6 py-3 rounded-lg transition">
+          Apply Now
+        </a>
       </div>
-    </form>
+    </div>
   </section>
 </Layout>

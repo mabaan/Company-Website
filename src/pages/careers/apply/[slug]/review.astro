@@ -1,0 +1,66 @@
+---
+import Layout from "../../../../layouts/BaseLayout.astro";
+import { getJobs, type Job } from "../../../../lib/jobs";
+
+export async function getStaticPaths() {
+  const jobs = await getJobs();
+  return jobs.map((job) => ({
+    params: { slug: job.slug },
+    props: { job },
+  }));
+}
+
+const { job } = Astro.props as { job: Job };
+
+let formData: FormData;
+try {
+  formData = await Astro.request.formData();
+} catch {
+  formData = new FormData(); // fallback when accessed via GET
+}
+
+const fields = {
+  firstName: formData.get("firstName")?.toString() || "",
+  lastName: formData.get("lastName")?.toString() || "",
+  email: formData.get("email")?.toString() || "",
+  countryCode: formData.get("countryCode")?.toString() || "",
+  phone: formData.get("phone")?.toString() || "",
+  gender: formData.get("gender")?.toString() || "",
+  nationality: formData.get("nationality")?.toString() || "",
+  dob: formData.get("dob")?.toString() || "",
+  visa: formData.get("visa")?.toString() || "",
+  experience: formData.get("experience")?.toString() || "",
+  linkedin: formData.get("linkedin")?.toString() || "",
+  about: formData.get("about")?.toString() || "",
+};
+---
+
+
+<Layout title={`Review Application | ${job.title}`}>
+  <section class="py-12 px-6 max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">Review Your Application for {job.title}</h1>
+
+    <ul class="space-y-3 text-lg">
+      <li><strong>Full Name:</strong> {fields.firstName} {fields.lastName}</li>
+      <li><strong>Email:</strong> {fields.email}</li>
+      <li><strong>Phone:</strong> {fields.countryCode} {fields.phone}</li>
+      <li><strong>Gender:</strong> {fields.gender}</li>
+      <li><strong>Nationality:</strong> {fields.nationality}</li>
+      <li><strong>Date of Birth:</strong> {fields.dob}</li>
+      <li><strong>Visa:</strong> {fields.visa}</li>
+      <li><strong>Experience:</strong> {fields.experience} years</li>
+      <li><strong>LinkedIn:</strong> {fields.linkedin}</li>
+      <li><strong>About:</strong> {fields.about}</li>
+    </ul>
+
+    <form method="POST" action={`/careers/apply/${job.slug}/confirmation`} class="mt-8 space-y-4">
+      <!-- You may re-pass form data as hidden inputs -->
+      {Object.entries(fields).map(([key, value]) => (
+        <input type="hidden" name={key} value={value} />
+      ))}
+      <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">
+        Submit Application
+      </button>
+    </form>
+  </section>
+</Layout>
