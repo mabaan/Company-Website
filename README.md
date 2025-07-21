@@ -42,7 +42,7 @@ GC International uses **Cloudflare** for DNS management and SSL/TLS, while the s
    ```
 
 ## Environment Variables
-Create a `.env` file (see `.env.example` if provided) and supply the following values required for Airtable integration:
+Create a `.env` file (there is a `.env.example` template in the repo) and supply the following values required for Airtable integration:
 
 - `AIRTABLE_TOKEN` – API key
 - `AIRTABLE_BASE_ID` – Base ID containing project tables
