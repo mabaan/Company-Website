@@ -59,6 +59,17 @@ The live site is available at **[gcintle.com](https://gcintle.com)**.
 
 To deploy your own version, configure these services and run `npm run build`. The generated `dist/` folder can be uploaded to Amplify.
 
-## Contributing
-Contributions are welcome! Please open issues or submit pull requests to improve the site.
+## Contact
+Mohammed Abaan: <br>
+<a href="mailto:abaan7500@gmail.com">
+  <img src="https://img.shields.io/badge/Gmail-d5d5d5?style=for-the-badge&logo=gmail&logoColor=0A0209" alt="Email Abaan" />
+</a>
+<br><br>
+Haider Raza: <br>
+<a href="mailto:b00096026@gmail.com">
+  <img src="https://img.shields.io/badge/Gmail-d5d5d5?style=for-the-badge&logo=gmail&logoColor=0A0209" alt="Email Haider" />
+</a>
+<br><br>
+Project Link: [https://github.com/mabaan/Anime-Recommendation-Model](https://github.com/mabaan/Company-Website)
 
+## Acknowledgments
