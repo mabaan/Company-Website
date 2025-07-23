@@ -1,25 +1,23 @@
-"use client";
+import { ArrowRight } from "lucide-react";
 
-const JoinUsSection = () => {
+export default function JoinUsSection() {
   return (
-    <section className="bg-[#e6edf5] text-gray-900 py-20 px-6 text-center">
+    <section className="bg-[#f3f6f9] py-20 px-6 text-center text-gray-800">
       <div className="max-w-3xl mx-auto">
-        <h2 className="text-4xl font-bold mb-4 text-[#0054a4]">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
           Be a Part of Our Story
         </h2>
-        <p className="text-lg text-gray-700 mb-8">
+        <p className="text-base md:text-lg mb-8 leading-relaxed text-gray-600">
           We're always looking for talented individuals to help us shape the
-          future of industrial solutions.
+          future of industrial solutions across the globe.
         </p>
         <a
           href="/careers"
-          className="inline-block bg-[#0054a4] text-white font-semibold px-6 py-3 rounded-lg hover:bg-[#003f82] transition"
+          className="inline-flex items-center gap-2 bg-[#ED1C24] hover:bg-[#C70E15] text-white font-medium px-6 py-3 rounded-full shadow-sm hover:shadow transition duration-300"
         >
-          Explore Careers
+          Explore Careers <ArrowRight className="w-5 h-5" />
         </a>
       </div>
     </section>
   );
-};
-
-export default JoinUsSection;
+}
