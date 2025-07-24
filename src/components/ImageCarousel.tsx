@@ -3,14 +3,19 @@
 import { useState, useEffect } from "react";
 
 const images = [
-  "/factory/factory1.jpg",
-  "/factory/factory2.jpg",
+  "/factory/industry.jpg",
+  "/factory/offshore.jpg",
+  "/factory/valve3.jpg",
+  "/factory/DIEZ.jpg",
   "/factory/factory3.jpg",
+  "/factory/valve2.png",
+  
 ];
+
 export default function ImageCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Auto-slide every 6s
+  // Auto-slide every 3s
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
@@ -27,13 +32,12 @@ export default function ImageCarousel() {
   };
 
   return (
-    <section className="relative w-full mt-[6.5rem] overflow-hidden">
-      {/* Images */}
-
+    <section className="relative w-full aspect-[16/6] overflow-hidden bg-[#f5f7fa]">
+      {/* Image */}
       <img
         src={images[currentIndex]}
         alt={`Slide ${currentIndex + 1}`}
-        className="w-full max-h-[600px] object-cover object-center"
+        className="absolute w-full h-full object-contain transition-opacity duration-500"
       />
 
       {/* Arrows */}

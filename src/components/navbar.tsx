@@ -8,9 +8,10 @@ export default function Navbar() {
   const links = [
     { label: "Home", href: "/" },
     { label: "Company", href: "/company" },
-    { label: "G&C Network Map", href: "/network" },
+    { label: "GC Network Map", href: "/network" },
     { label: "Careers", href: "/careers" },
     { label: "Contact", href: "/contact" },
+    { label: "Blog", href: "/blog" },
   ];
 
   const filtered = links.filter((link) =>
@@ -27,9 +28,9 @@ export default function Navbar() {
       >
         <div className="flex justify-between items-center py-4 relative">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-3">
-            <img src="/GC Logo.png" alt="GC Logo" className="h-10 w-auto" />
-            <span className="text-blue-900 text-xl font-bold tracking-wide hidden sm:inline">
+          <a href="/" className="flex items-center gap-8">
+            <img src="/GC Transparent Logo.png" alt="GC Logo" className="h-10 w-auto" />
+            <span className="text-blue-900 text-xl font-bold tracking-wide hidden sm:inline ">
               GC International
             </span>
           </a>

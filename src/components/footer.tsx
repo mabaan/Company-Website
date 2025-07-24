@@ -7,8 +7,8 @@ export default function Footer() {
           <h2 className="text-lg font-semibold text-[#0D47A1] mb-3">
             GC International FZCO
           </h2>
-          <p className="mb-1">5EA, 520, PO Box 293777</p>
-          <p className="mb-1">DAFZA, Dubai, U.A.E</p>
+          <p className="mb-1">Office 5EA, Building 520, PO Box 293777</p>
+          <p className="mb-1">Dubai Airport Freezone, Dubai, U.A.E</p>
           <p className="mt-4 text-slate-500 italic">
             Connecting Vision to Reality.
           </p>
@@ -22,10 +22,10 @@ export default function Footer() {
           <p className="mt-1">
             Email:{" "}
             <a
-              href="mailto:gcintle@gmail.com"
+              href="mailto:contact@gcintle.com"
               className="text-[#ED1C24] hover:underline font-medium"
             >
-              gcintle@gmail.com
+              contact@gcintle.com
             </a>
           </p>
         </div>
