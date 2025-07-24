@@ -15,44 +15,81 @@ export default function WhyChooseUs() {
         </p>
 
         <div className="grid md:grid-cols-3 gap-12">
+          {/* Card 1 */}
           <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200 hover:shadow-md transition">
-            <div className="flex items-center gap-4 mb-5">
-              <img src="/global.svg" alt="Fast Icon" className="w-6 h-6" />
-
+            <div className="flex items-center gap-4 mb-4">
+              <img src="/global.svg" alt="Global Partnerships Icon" className="w-10 h-10" />
               <h3 className="font-semibold text-gray-800 text-lg">
                 Global Partnerships
               </h3>
             </div>
             <p className="text-gray-600 text-sm leading-relaxed">
-              We collaborate with world-class manufacturers and firms across
-              continents.
+              We collaborate with world-class manufacturers and firms across continents.
             </p>
           </div>
 
+          {/* Card 2 */}
           <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200 hover:shadow-md transition">
-            <div className="flex items-center gap-4 mb-5">
-              <img src="/certified.svg" alt="Fast Icon" className="w-6 h-6" />
+            <div className="flex items-center gap-4 mb-4">
+              <img src="/12.svg" alt="12+ Years Icon" className="w-10 h-10" />
               <h3 className="font-semibold text-gray-800 text-lg">
-                Certified & Reliable
+                12+ Years of Expertise
               </h3>
             </div>
             <p className="text-gray-600 text-sm leading-relaxed">
-              ISO-certified and quality-assured — our standards ensure trust.
+              Globally trusted for more than a decade across industrial projects.
             </p>
           </div>
 
+          {/* Card 3 */}
           <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200 hover:shadow-md transition">
-            <div className="flex items-center gap-4 mb-5">
-              <span>
-                <img src="/speed.svg" alt="Fast Icon" className="w-6 h-6" />
-              </span>
+            <div className="flex items-center gap-4 mb-4">
+              <img src="/certified.svg" alt="Certified Icon" className="w-10 h-10" />
               <h3 className="font-semibold text-gray-800 text-lg">
-                Fast & Focused
+                Strong Partnerships
               </h3>
             </div>
             <p className="text-gray-600 text-sm leading-relaxed">
-              We deliver results quickly and precisely without compromising
-              quality.
+              We represent ISO-certified European manufacturers of valves and actuators.
+            </p>
+          </div>
+
+          {/* Card 4 */}
+          <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200 hover:shadow-md transition">
+            <div className="flex items-center gap-4 mb-4">
+              <img src="/engineer.svg" alt="Engineering Icon" className="w-10 h-10" />
+              <h3 className="font-semibold text-gray-800 text-lg">
+                Engineering Know-how
+              </h3>
+            </div>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Our engineers bring deep technical experience and insight to every project.
+            </p>
+          </div>
+
+          {/* Card 5 */}
+          <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200 hover:shadow-md transition">
+            <div className="flex items-center gap-4 mb-4">
+              <img src="/mission.svg" alt="Clear Mission Icon" className="w-10 h-10" />
+              <h3 className="font-semibold text-gray-800 text-lg">
+                Clear Mission
+              </h3>
+            </div>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              We ensure efficient, accurate, and cost-effective dealings at all times.
+            </p>
+          </div>
+
+          {/* Card 6 */}
+          <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200 hover:shadow-md transition">
+            <div className="flex items-center gap-4 mb-4">
+              <img src="/valve.svg" alt="Valve Solutions Icon" className="w-10 h-10" />
+              <h3 className="font-semibold text-gray-800 text-lg">
+                Comprehensive Solutions
+              </h3>
+            </div>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              We deliver complete valve and actuator solutions, including customized packages.
             </p>
           </div>
         </div>
