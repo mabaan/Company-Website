@@ -20,11 +20,10 @@ interface Props {
 
 const getMarkerIcon = (type: string): L.Icon => {
   const colorMap: Record<string, string> = {
-    Headquarter: "green",
-    Agent: "red",
-    Distributor: "blue",
-    QRC: "violet",
-    Stock: "orange",
+    Headquarters: "blue",
+    Headquarter: "blue",
+    Partner: "green",
+    "End User": "orange",
   };
 
   const color = colorMap[type] || "grey";
@@ -78,6 +77,12 @@ const NetworkMap: React.FC<Props> = ({ locations }) => {
           >
             <Popup>
               <strong>{loc.Name}</strong>
+              {loc.Description && (
+                <>
+                  <br />
+                  {loc.Description}
+                </>
+              )}
               <br />
               {loc.Type}
               <br />
@@ -88,9 +93,9 @@ const NetworkMap: React.FC<Props> = ({ locations }) => {
       </MapContainer>
 
       <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-center">
-        <LegendItem color="green" label="Headquarters" />
-        <LegendItem color="red" label="Partner" />
-        <LegendItem color="blue" label="End User" />
+        <LegendItem color="blue" label="Headquarters" />
+        <LegendItem color="green" label="Partner" />
+        <LegendItem color="orange" label="End User" />
       </div>
     </div>
   );

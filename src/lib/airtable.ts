@@ -17,7 +17,9 @@ export interface LocationRecord {
   Name: string;
   Latitude: number;
   Longitude: number;
-  Type: "Headquarter" | "Agent" | "Distributor" | "QRC" | "Stock";
+  // Values come directly from Airtable and may include
+  // "Headquarters", "Partner", or "End User" among others.
+  Type: string;
   Country?: string;
   City?: string;
   Description?: string;
