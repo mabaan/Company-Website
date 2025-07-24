@@ -17,7 +17,7 @@ export interface LocationRecord {
   Name: string;
   Latitude: number;
   Longitude: number;
-  Type: "Headquarter" | "Agent" | "Distributor" | "QRC" | "Stock";
+  Type: "Headquarter" | "Partner" | "End User";
   Country?: string;
   City?: string;
   Description?: string;
