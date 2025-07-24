@@ -9,8 +9,9 @@ import JoinUsSection from "../components/JoinUsSection";
 ---
 
 <Layout title="Company">
-  <!-- Hero / Image Carousel -->
-  <ImageCarousel client:only="react" />
+  <div class="pt-32">
+    <!-- Hero / Image Carousel -->
+    <ImageCarousel client:only="react" />
 
   <!-- Who We Are Section -->
   <WhoWeAre client:only="react" />
@@ -24,6 +25,7 @@ import JoinUsSection from "../components/JoinUsSection";
   <!-- Become a Partner Section -->
   <BecomePartnerSection client:only="react" />
 
-  <!-- Join Us Section -->
-  <JoinUsSection client:only="react" />
+    <!-- Join Us Section -->
+    <JoinUsSection client:only="react" />
+  </div>
 </Layout>
