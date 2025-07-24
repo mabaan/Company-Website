@@ -1,112 +1,21 @@
 ---
 import Layout from "../layouts/BaseLayout.astro";
-import AnimateIn from "../components/AnimateIn";
+import Hero from "../components/Hero";
+import WhyChooseUs from "../components/WhyChooseUs";
 import CTASection from "../components/CTASection";
-import Footer from "../components/footer";
 import ScrollGauge from "../components/ScrollGauge";
-import ValveViewer from "../components/ValveViewer";
+import GearScroll from "../components/GearScroll.tsx";
 ---
 
 <Layout title="GC International">
-  <!-- Hero + Valve Section -->
-  <section
-  id="hero"
-  class="pt-24 md:pt-32 relative h-screen w-full overflow-hidden z-10 bg-waves flex flex-col md:flex-row items-center justify-between px-6 md:px-12"
->
-    <!-- Left: Hero Text -->
-    <div class="w-full md:w-1/2 z-10 text-white text-center md:text-left">
-      <h1 class="text-4xl md:text-5xl font-bold mb-4">
-        Seamless Innovation in Valve Solutions
-      </h1>
-      <p class="text-base md:text-lg mb-6">
-        GC International connects vision to reality with world-class valve, flange, and flow control technology across the Middle East and beyond.
-      </p>
-      <a
-        href="/contact"
-        class="inline-block bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-3 rounded-lg shadow transition"
-      >
-        Explore Our Services
-      </a>
-    </div>
+  <main id="page-content" class="main-content">
+    <Hero client:only="react" />
+    <GearScroll client:only="react" direction="cw" />
 
-    <!-- Right: 3D Valve -->
-    <div class="w-full md:w-1/2 z-10 flex justify-center items-center mt-10 md:mt-0">
-      <div class="hidden md:block w-[500px] h-[500px]">
-        <ValveViewer client:only="react" />
-      </div>      
-    </div>
-  </section>
+    <WhyChooseUs />
+    <GearScroll client:only="react" direction="ccw" />
 
-  <!-- Why Choose Us + Valve Section -->
-  <section id="why" class="relative w-full min-h-screen bg-waves-reverse flex flex-col md:flex-row items-center justify-between px-6 md:px-12 py-16">
-    <!-- Left: Why Choose Us Content -->
-    <div class="w-full md:w-1/2 md:pr-12 mb-10 md:mb-0 text-white">
-      <h2 class="text-3xl md:text-4xl font-bold mb-8">
-        Why Choose GC International
-      </h2>
-
-      <div class="grid gap-6 sm:grid-cols-1">
-        <div class="bg-white/90 rounded-lg shadow p-6">
-          <img src="/images/global.svg" alt="Global" class="mb-4 h-10 w-10" />
-          <h3 class="text-lg md:text-xl font-semibold text-gcBlue mb-2">
-            Global Partnerships
-          </h3>
-          <p class="text-sm md:text-base text-black">
-            We collaborate with top-tier manufacturers and engineering firms worldwide.
-          </p>
-        </div>
-
-        <div class="bg-white/90 rounded-lg shadow p-6">
-          <img src="/certified.svg" alt="Certified" class="mb-4 h-10 w-10" />
-          <h3 class="text-lg md:text-xl font-semibold text-gcBlue mb-2">
-            Certified & Reliable
-          </h3>
-          <p class="text-sm md:text-base text-black">
-            ISO-certified and quality-committed partners, our standards speak for themselves.
-          </p>
-        </div>
-
-        <div class="bg-white/90 rounded-lg shadow p-6">
-          <img src="/speed.svg" alt="Speed" class="mb-4 h-10 w-10" />
-          <h3 class="text-lg md:text-xl font-semibold text-gcBlue mb-2">
-            Fast & Focused
-          </h3>
-          <p class="text-sm md:text-base text-black">
-            We deliver with agility and precision across the Middle East and beyond.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Right: Valve Again (Optional, or keep just once above) -->
-    <div class="w-full md:w-1/2 flex justify-center items-center">
-      <div class="w-[300px] h-[300px] md:w-[500px] md:h-[500px]">
-        <ValveViewer client:only="react" />
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA Section -->
-  <section
-    id="cta"
-    class="w-full min-h-screen bg-waves flex flex-col md:flex-row items-center justify-between px-6 md:px-12 py-16"
-  >
-    <!-- Left: CTA Text -->
-    <div class="w-full md:w-1/2 md:pr-12 text-white text-center md:text-left">
-      <h2 class="text-3xl md:text-4xl font-bold mb-6">
-        Ready to Partner with GC International?
-      </h2>
-      <p class="text-base md:text-lg mb-6">
-        Let’s help you find the perfect industrial solution. Contact us to explore our range of valves, fittings, and custom engineering services.
-      </p>
-      <a
-        href="/contact"
-        class="inline-block bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-3 rounded-lg shadow transition"
-      >
-        Get in Touch
-      </a>
-    </div>
-  </section>
-
-  <ScrollGauge client:load />
+    <CTASection />
+    <ScrollGauge client:load />
+  </main>
 </Layout>

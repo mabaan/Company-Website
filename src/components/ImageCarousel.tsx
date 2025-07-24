@@ -27,12 +27,13 @@ export default function ImageCarousel() {
   };
 
   return (
-    <section className="relative w-full aspect-[16/6] overflow-hidden">
-      {/* Image */}
+    <section className="relative w-full mt-[6.5rem] overflow-hidden">
+      {/* Images */}
+
       <img
         src={images[currentIndex]}
         alt={`Slide ${currentIndex + 1}`}
-        className="absolute w-full h-full object-cover transition-opacity duration-500"
+        className="w-full max-h-[600px] object-cover object-center"
       />
 
       {/* Arrows */}

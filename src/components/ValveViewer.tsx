@@ -44,7 +44,7 @@ const ValveViewer = () => {
         const loader = new GLTFLoader();
         loader.load("/models/3way_valve.glb", (gltf) => {
           const model = gltf.scene;
-          model.scale.set(0.005, 0.005, 0.005);
+          model.scale.set(0.0045, 0.0045, 0.0045);
           model.position.set(2.5, 0, 0); // Slightly right and lowered
           model.rotation.set(2.25, 0.3, 5.5);
           scene.add(model);

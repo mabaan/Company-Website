@@ -1,99 +1,62 @@
-import { useEffect, useRef } from "react";
-import { getAnime } from "../lib/getAnime";
-
 export default function WhyChooseUs() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      async ([entry]) => {
-        if (entry.isIntersecting && sectionRef.current) {
-          const anime = await getAnime();
-
-          anime({
-            targets: sectionRef.current.querySelectorAll(".why-item"),
-            opacity: [0, 1],
-            translateY: [60, 0],
-            delay: anime.stagger(200),
-            duration: 800,
-            easing: "easeOutCubic",
-          });
-
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.5 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <div
-      ref={sectionRef}
-      className="w-full min-h-screen flex flex-col md:flex-row items-center justify-between px-6 md:px-12 py-16 bg-[radial-gradient(circle_at_center,_#ffffff_0%,_#f5f5f5_40%,_#0054a4_100%)] text-black"
+    <section
+      id="why"
+      className="w-full px-6 md:px-12 py-38 lg:py-52 bg-[#f3f6f9] text-gray-800"
     >
-      {/* Left Side: Text and Cards */}
-      <div className="w-full md:w-1/2 mb-12 md:mb-0 md:pr-12">
-        <h2 className="text-3xl md:text-4xl font-bold mb-10 opacity-0 why-item text-left">
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-bold mb-10 text-gray-900">
           Why Choose GC International
         </h2>
+        <p className="text-base md:text-lg mb-20 leading-relaxed text-gray-600 max-w-3xl">
+          We deliver reliability and excellence through global partnerships,
+          certified quality, and fast execution. Our solutions are tailored to
+          meet industrial challenges across the Middle East and beyond.
+        </p>
 
-        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2">
-          <div className="why-item opacity-0 bg-white rounded-xl shadow p-6">
-            <img src="/global.svg" alt="Global" className="mb-4 h-10 w-10" />
-            <h3 className="text-lg md:text-xl font-semibold mb-2">
-              Global Partnerships
-            </h3>
-            <p className="text-sm md:text-base">
-              We collaborate with top-tier manufacturers and engineering firms
-              worldwide.
+        <div className="grid md:grid-cols-3 gap-12">
+          <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200 hover:shadow-md transition">
+            <div className="flex items-center gap-4 mb-5">
+              <img src="/global.svg" alt="Fast Icon" className="w-6 h-6" />
+
+              <h3 className="font-semibold text-gray-800 text-lg">
+                Global Partnerships
+              </h3>
+            </div>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              We collaborate with world-class manufacturers and firms across
+              continents.
             </p>
           </div>
 
-          <div className="why-item opacity-0 bg-white rounded-xl shadow p-6">
-            <img
-              src="/certified.svg"
-              alt="Certified"
-              className="mb-4 h-10 w-10"
-            />
-            <h3 className="text-lg md:text-xl font-semibold mb-2">
-              Certified & Reliable
-            </h3>
-            <p className="text-sm md:text-base">
-              ISO-certified and quality-committed, our standards speak for
-              themselves.
+          <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200 hover:shadow-md transition">
+            <div className="flex items-center gap-4 mb-5">
+              <img src="/certified.svg" alt="Fast Icon" className="w-6 h-6" />
+              <h3 className="font-semibold text-gray-800 text-lg">
+                Certified & Reliable
+              </h3>
+            </div>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              ISO-certified and quality-assured — our standards ensure trust.
             </p>
           </div>
 
-          <div className="why-item opacity-0 bg-white rounded-xl shadow p-6">
-            <img src="/speed.svg" alt="Speed" className="mb-4 h-10 w-10" />
-            <h3 className="text-lg md:text-xl font-semibold mb-2">
-              Fast & Focused
-            </h3>
-            <p className="text-sm md:text-base">
-              We deliver with agility and precision across the Middle East and
-              beyond.
+          <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200 hover:shadow-md transition">
+            <div className="flex items-center gap-4 mb-5">
+              <span>
+                <img src="/speed.svg" alt="Fast Icon" className="w-6 h-6" />
+              </span>
+              <h3 className="font-semibold text-gray-800 text-lg">
+                Fast & Focused
+              </h3>
+            </div>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              We deliver results quickly and precisely without compromising
+              quality.
             </p>
           </div>
         </div>
       </div>
-
-      {/* Right Side: Placeholder or Valve */}
-      <div className="w-full md:w-1/2 flex justify-center items-center">
-        {/* You can optionally pass in <ValveViewer /> here or leave blank */}
-        <div className="w-full max-w-[400px] aspect-square bg-white/20 rounded-xl shadow-inner flex items-center justify-center">
-          <img
-            src="/images/valve-placeholder.svg"
-            alt="Valve"
-            className="w-3/4"
-          />
-        </div>
-      </div>
-    </div>
+    </section>
   );
 }
