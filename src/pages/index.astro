@@ -3,14 +3,18 @@ import Layout from "../layouts/BaseLayout.astro";
 import Hero from "../components/Hero";
 import WhyChooseUs from "../components/WhyChooseUs";
 import CTASection from "../components/CTASection";
-import Footer from "../components/footer";
 import ScrollGauge from "../components/ScrollGauge";
+import GearScroll from "../components/GearScroll.tsx";
 ---
 
 <Layout title="GC International">
   <main id="page-content" class="main-content">
     <Hero client:only="react" />
+    <GearScroll client:only="react" direction="cw" />
+
     <WhyChooseUs />
+    <GearScroll client:only="react" direction="ccw" />
+
     <CTASection />
     <ScrollGauge client:load />
   </main>

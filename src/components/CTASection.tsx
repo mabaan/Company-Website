@@ -4,7 +4,7 @@ export default function CTASection() {
   return (
     <section
       id="cta"
-      className="w-full px-6 md:px-12 py-20 bg-[#E5E7EB] text-darkText"
+      className="w-full px-6 md:px-12 py-40 bg-[#E5E7EB] text-darkText"
     >
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         {/* Left: CTA Content */}

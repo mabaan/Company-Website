@@ -2,8 +2,8 @@ import ValveViewer from "./ValveViewer";
 
 export default function Hero() {
   return (
-    <section className="bg-[#1E293B] text-white py-24 px-6 md:px-12">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+    <section className="bg-[#1E293B] text-white min-h-[90vh] px-6 md:px-12 flex items-center">
+      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center w-full">
         {/* Left: Text Content */}
         <div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight text-white">
@@ -21,18 +21,12 @@ export default function Hero() {
             >
               Get in Touch
             </a>
-            {/* <a
-              href="/solutions"
-              className="border border-white text-white px-6 py-3 rounded-full font-medium hover:bg-white hover:text-[#1E293B] transition"
-            >
-              View Solutions
-            </a> */}
           </div>
         </div>
 
         {/* Right: Valve Model */}
         <div className="hidden md:flex justify-center items-center">
-          <div className="w-[400px] h-[400px]">
+          <div className="w-[180px] h-[180px] sm:w-[200px] sm:h-[200px] md:w-[240px] md:h-[240px] lg:w-[280px] lg:h-[280px] xl:w-[300px] xl:h-[300px] 2xl:w-[320px] 2xl:h-[320px]">
             <ValveViewer />
           </div>
         </div>

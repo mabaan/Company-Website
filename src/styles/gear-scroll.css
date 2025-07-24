@@ -1,0 +1,23 @@
+.gear-container {
+  position: relative;
+  height: 200px;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+.gear {
+  position: absolute;
+  width: 110px;
+  opacity: 0.5;
+}
+
+.gear-top {
+  left: -40px;
+  top: 0;
+}
+
+.gear-bottom {
+  left: -40px;
+  bottom: 0;
+}
