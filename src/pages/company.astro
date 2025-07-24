@@ -3,11 +3,12 @@ import Layout from "../layouts/BaseLayout.astro";
 import ImageCarousel from "../components/ImageCarousel";
 import WhoWeAre from "../components/WhoWeAre";
 import WhatWeDo from "../components/WhatWeDo";
-import JoinUsSection from "../components/JoinUsSection";
 import PartnersSection from "../components/PartnersSection";
+import BecomePartnerSection from "../components/BecomePartnerSection";
+import JoinUsSection from "../components/JoinUsSection";
 ---
 
-<Layout title="Test">
+<Layout title="Company">
   <!-- Hero / Image Carousel -->
   <ImageCarousel client:only="react" />
 
@@ -20,7 +21,9 @@ import PartnersSection from "../components/PartnersSection";
   <!-- Partners Section -->
   <PartnersSection client:only="react" />
 
+  <!-- Become a Partner Section -->
+  <BecomePartnerSection client:only="react" />
+
   <!-- Join Us Section -->
   <JoinUsSection client:only="react" />
-
 </Layout>
