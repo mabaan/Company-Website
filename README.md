@@ -1,47 +1,64 @@
-# Astro Starter Kit: Minimal
+# GC International Website
 
-```sh
-npm create astro@latest -- --template minimal
-```
+This repository contains the source code for the [GC International](https://gcintle.com) website. The site is built with **Astro** and integrates **React** components styled with **Tailwind CSS**. Data such as job openings and network map locations are pulled from **Airtable** via custom TypeScript helpers.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+GC International uses **Cloudflare** for DNS management and SSL/TLS, while the site itself is hosted on **Amazon Amplify** with additional services including **Route 53**, **SES**, and **S3**.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Table of Contents
+- [Built With](#built-with)
+- [Getting Started](#getting-started)
+- [Environment Variables](#environment-variables)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
 
-## 🚀 Project Structure
+## Built With
+- [Astro](https://astro.build/)
+- [React](https://react.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Airtable](https://airtable.com/)
+- [GSAP](https://greensock.com/gsap/), [animejs](https://animejs.com/)
+- [Leaflet](https://leafletjs.com/) and [react-leaflet](https://react-leaflet.js.org/)
+- [Three.js](https://threejs.org/)
 
-Inside of your Astro project, you'll see the following folders and files:
+## Getting Started
+1. Clone the repository
+   ```bash
+   git clone https://github.com/your-org/company-website.git
+   cd company-website
+   ```
+2. Install dependencies
+   ```bash
+   npm install
+   ```
+3. Start the development server
+   ```bash
+   npm run dev
+   ```
+   The site will be available at `http://localhost:4321`.
+4. Build for production
+   ```bash
+   npm run build
+   ```
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Environment Variables
+Create a `.env` file (there is a `.env.example` template in the repo) and supply the following values required for Airtable integration:
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+- `AIRTABLE_TOKEN` – API key
+- `AIRTABLE_BASE_ID` – Base ID containing project tables
+- `AIRTABLE_APPLICATIONS_TABLE` – Table name for job applications
+- `AIRTABLE_JOBS_TABLE` – Table name for job listings
+- `AIRTABLE_NETWORKMAP_NAME` – Table name for location data
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Deployment
+The live site is available at **[gcintle.com](https://gcintle.com)**.
 
-Any static assets, like images, can be placed in the `public/` directory.
+- **Cloudflare** manages the DNS records and provides SSL/TLS.
+- **Amazon Amplify** builds and hosts the application.
+- **Route 53**, **SES**, and **S3** are used alongside Amplify for domain management, email services, and asset storage.
 
-## 🧞 Commands
+To deploy your own version, configure these services and run `npm run build`. The generated `dist/` folder can be uploaded to Amplify.
 
-All commands are run from the root of the project, from a terminal:
+## Contributing
+Contributions are welcome! Please open issues or submit pull requests to improve the site.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

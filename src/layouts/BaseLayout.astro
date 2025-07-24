@@ -2,7 +2,11 @@
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import '../styles/global.css'; // Tailwind CSS
-const { title = "GC International" } = Astro.props;
+// Allow pages to disable the default top padding applied for the fixed navbar
+const {
+  title = "GC International",
+  padTop = true,
+} = Astro.props;
 ---
 
 <html lang="en">
@@ -21,7 +25,9 @@ const { title = "GC International" } = Astro.props;
   <body class="bg-white text-gray-800 font-sans scroll-smooth">
     <Navbar client:load />
 
-    <main class="min-h-[70vh] snap-y snap-mandatory">
+    <main
+      class={"min-h-[70vh] snap-y snap-mandatory" + (padTop ? " pt-20 md:pt-24" : "")}
+    >
       <slot />
     </main>
 
