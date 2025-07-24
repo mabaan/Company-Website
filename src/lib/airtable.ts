@@ -23,6 +23,7 @@ export interface LocationRecord {
   Country?: string;
   City?: string;
   Description?: string;
+  Website?: string;
 }
 
 export async function fetchLocations(): Promise<LocationRecord[]> {

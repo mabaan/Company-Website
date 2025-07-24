@@ -19,14 +19,15 @@ interface Props {
 }
 
 const getMarkerIcon = (type: string): L.Icon => {
+  const normalized = type.trim().toLowerCase();
   const colorMap: Record<string, string> = {
-    Headquarters: "blue",
-    Headquarter: "blue",
-    Partner: "green",
-    "End User": "orange",
+    headquarters: "blue",
+    headquarter: "blue",
+    partner: "green",
+    "end user": "orange",
   };
 
-  const color = colorMap[type] || "grey";
+  const color = colorMap[normalized] || "grey";
 
   return new L.Icon({
     iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
@@ -75,18 +76,29 @@ const NetworkMap: React.FC<Props> = ({ locations }) => {
             position={[loc.Latitude, loc.Longitude]}
             icon={getMarkerIcon(loc.Type)}
           >
-            <Popup>
-              <strong>{loc.Name}</strong>
+            <Popup className="max-w-[260px] text-sm leading-snug">
+              {loc.Website ? (
+                <a
+                  href={loc.Website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-bold text-blue-700 underline"
+                >
+                  {loc.Name}
+                </a>
+              ) : (
+                <strong>{loc.Name}</strong>
+              )}
               {loc.Description && (
                 <>
                   <br />
-                  {loc.Description}
+                  <span className="font-semibold">Description:</span> {loc.Description}
                 </>
               )}
               <br />
-              {loc.Type}
+              <span className="font-semibold">Type:</span> {loc.Type}
               <br />
-              {loc.City}, {loc.Country}
+              <span className="font-semibold">Location:</span> {loc.City}, {loc.Country}
             </Popup>
           </Marker>
         ))}
