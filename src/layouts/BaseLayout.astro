@@ -1,12 +1,18 @@
 ---
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
+
 import '../styles/global.css'; // Tailwind CSS
 // Allow pages to disable the default top padding applied for the fixed navbar
 const {
   title = "GC International",
   padTop = true,
 } = Astro.props;
+
+import '../styles/global.css';
+
+
+
 ---
 
 <html lang="en">
@@ -14,16 +20,18 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
-    <link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-/>
+
+    <!-- ✅ Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">    
 
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   </head>
 
   <body class="bg-white text-gray-800 font-sans scroll-smooth">
     <Navbar client:load />
+
 
     <main
       class={"min-h-[70vh] snap-y snap-mandatory" + (padTop ? " pt-20 md:pt-24" : "")}
@@ -33,7 +41,15 @@ const {
 
     <Footer />
 
-    <!-- ✅ Animation Script + CSS -->
+    <!-- ✅ Wrap content + footer for sticky behavior -->
+    <div class="flex flex-col min-h-screen">
+      <main class="flex-grow">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+
+    <!-- ✅ Animations -->
     <style>
       .fade-in, .slide-in {
         opacity: 0;
