@@ -2,54 +2,61 @@
 
 const partners = [
   {
-    name: "GC International",
-    title: "Parent Company",
+    name: "Galli & Cassina",
+    title: "Lubricated & Sleeved Plug Valve Manufacturing",
     image: "/partners/gc.png",
-    link: "https://www.gallicassina.com",
+    url: "https://www.gallicassina.com/",
   },
   {
-    name: "Rotork",
-    title: "Flow Control Solutions",
-    image: "/partners/rotork.png",
-    link: "https://www.rotork.com",
+    name: "Bernard Controls",
+    title: "Electric Actuators and Control Systems",
+    image: "/partners/bernard.png",
+    url: "https://www.bernardcontrols.com/en",
   },
   {
     name: "Dafram",
     title: "Ball Valve Manufacturing",
     image: "/partners/dafram.png",
-    link: "https://www.dafram.it",
+    url: "https://www.dafram.it/",
   },
   {
     name: "Bonomi Group",
     title: "Industrial Supply Chain",
     image: "/partners/bonomi.png",
-    link: "https://www.bonomi.it/en/home",
+    url: "https://www.bonomiindustries.com/",
   },
   {
     name: "Melesi",
     title: "Forged Fittings & Flanges",
     image: "/partners/melesi.png",
-    link: "https://www.melesi.it/en",
+    url: "https://www.melesi.it/en",
   },
   {
     name: "Bonney Forge",
     title: "Valves & Fittings Manufacturer",
     image: "/partners/bonneyforge.png",
-    link: "https://www.bonneyforge.com",
+    url: "https://bonneyforge.com/",
   },
   {
     name: "Quam",
     title: "Innovative Engineering Partner",
     image: "/partners/quam.png",
-    link: "https://www.iamquam.it/",
+    url: "https://www.iamquam.it/",
   },
   {
     name: "Crane",
     title: "Process Flow Technologies",
     image: "/partners/cranecpe.png",
-    link: "https://www.cranecpe.com",
+    url: "https://cranecpe.com/brand/xomox/",
   },
 ];
+
+const lastPartner = {
+  name: "Jiangsu Huaying Valves",
+  title: "Valve Manufacturing",
+  image: "/partners/HYV.png",
+  url: "http://jshyv.com/en",
+};
 
 export default function PartnersSection() {
   return (
@@ -58,26 +65,50 @@ export default function PartnersSection() {
         <h2 className="text-3xl font-bold text-center mb-12">
           Trusted by Industry Leaders
         </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-10 items-center justify-items-center">
+
+        {/* Main partner grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-y-24 gap-x-24 justify-items-center">
           {partners.map((partner, idx) => (
-            <a
-              key={idx}
-              href={partner.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center text-center hover:opacity-80 transition"
-            >
-              <img
-                src={partner.image}
-                alt={partner.name}
-                className="h-36 md:h-40 mb-3 object-contain"
-              />
-              <h3 className="text-base font-semibold text-gray-800">
-                {partner.name}
-              </h3>
-              <p className="text-sm text-gray-500">{partner.title}</p>
-            </a>
+          <a
+            key={idx}
+            href={partner.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex flex-col items-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 rounded-md"
+            aria-label={`${partner.name} – ${partner.title}`}
+          >
+            <img
+              src={partner.image}
+              alt={partner.name}
+              className="h-32 mb-3 object-contain transition-transform duration-200 group-hover:scale-105"
+            />
+            <h3 className="text-base font-semibold text-gray-800">
+              {partner.name}
+            </h3>
+            <p className="text-sm text-gray-500">{partner.title}</p>
+          </a>
           ))}
+        </div>
+
+        {/* Centered final partner */}
+        <div className="mt-28 flex justify-center">
+          <a
+            href={lastPartner.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex flex-col items-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 rounded-md"
+            aria-label={`${lastPartner.name} – ${lastPartner.title}`}
+          >
+            <img
+              src={lastPartner.image}
+              alt={lastPartner.name}
+              className="h-32 mb-3 object-contain transition-transform duration-200 group-hover:scale-105"
+            />
+            <h3 className="text-base font-semibold text-gray-800">
+              {lastPartner.name}
+            </h3>
+            <p className="text-sm text-gray-500">{lastPartner.title}</p>
+          </a>
         </div>
       </div>
     </section>
