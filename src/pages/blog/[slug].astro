@@ -1,0 +1,47 @@
+---
+import Layout from "../../layouts/BaseLayout.astro";
+import { client } from "../../lib/sanityClient";
+import { PortableText } from "@portabletext/react";
+
+const { slug } = Astro.params;
+
+// Fetch the single post by slug
+const post = await client.fetch(
+  `*[_type == "post" && slug.current == $slug][0]{
+    title,
+    publishedAt,
+    "imageUrl": mainImage.asset->url,
+    "author": author->name,
+    body
+  }`,
+  { slug }
+);
+---
+
+<Layout title={post.title}>
+  <article class="max-w-3xl mx-auto px-6 py-16">
+    <!-- Title & Meta -->
+    <h1 class="text-4xl font-bold mb-2 text-[#0054a4]">{post.title}</h1>
+    <p class="text-sm text-gray-600 mb-6">
+      by {post.author} • {new Date(post.publishedAt).toLocaleDateString()}
+    </p>
+
+    <!-- Vercel-style body preview -->
+    <div class="relative overflow-hidden max-h-[12rem]">
+      <PortableText value={post.body} />
+      <div class="pointer-events-none absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-white"></div>
+    </div>
+
+    <!-- “Read more” to expand full body -->
+    <button
+      class="mt-4 text-[#0054a4] font-medium hover:underline"
+      onclick="
+        const preview = this.previousElementSibling;
+        preview.style.maxHeight = 'none';
+        this.remove();
+      "
+    >
+      Read more →
+    </button>
+  </article>
+</Layout>

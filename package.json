@@ -11,6 +11,8 @@
   "dependencies": {
     "@astrojs/react": "^4.3.0",
     "@astrojs/tailwind": "^6.0.2",
+    "@portabletext/react": "^3.2.1",
+    "@sanity/client": "^7.8.1",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "airtable": "^0.12.2",

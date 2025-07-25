@@ -13,7 +13,9 @@ const images = [
 
 export default function ImageCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [clickedArrow, setClickedArrow] = useState<"prev" | "next" | null>(null);
+  const [clickedArrow, setClickedArrow] = useState<"prev" | "next" | null>(
+    null
+  );
 
   // Auto-slide every 3s
   useEffect(() => {
@@ -61,7 +63,12 @@ export default function ImageCarousel() {
           viewBox="0 0 24 24"
           stroke="currentColor"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 19l-7-7 7-7"
+          />
         </svg>
       </button>
 
@@ -82,7 +89,12 @@ export default function ImageCarousel() {
           viewBox="0 0 24 24"
           stroke="currentColor"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 5l7 7-7 7"
+          />
         </svg>
       </button>
 
