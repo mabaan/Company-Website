@@ -1,0 +1,59 @@
+---
+import Layout from "../layouts/BaseLayout.astro";
+import { client } from "../lib/sanityClient";
+import BlogCard from "../components/BlogCard.tsx";
+import type { PostSummary } from "../components/BlogCard.tsx";
+
+// Fetch posts including the full `body` for preview
+const posts: PostSummary[] = await client.fetch(`*[_type == "post" && defined(publishedAt)] 
+  | order(publishedAt desc){
+    title,
+    slug,
+    publishedAt,
+    "imageUrl": mainImage.asset->url,
+    "author": author->name,
+    categories[]->{ title },
+    body
+  }`);
+---
+
+<Layout title="GC Blog">
+  <!-- Hero / Subscribe Section -->
+  <section class="pt-28 pb-20 bg-[#f1f8ff]">
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+      <!-- Left: Heading & Intro -->
+      <div class="space-y-6">
+        <h1 class="text-6xl font-bold text-[#0054a4]">Latest Updates</h1>
+        <p class="text-xl text-gray-600 max-w-prose">
+          All the latest GC news, insights, and updates straight from the team.
+        </p>
+        <!-- Subscribe Form -->
+        <form class="flex gap-2 max-w-md" onsubmit="return false;">
+          <input
+            type="email"
+            placeholder="Enter your email"
+            aria-label="Email address"
+            class="flex-1 px-4 py-2 rounded-lg border border-gray-300"
+          />
+          <button
+            type="submit"
+            class="bg-[#0054a4] text-white px-5 py-2 rounded-lg hover:bg-[#003d7a] transition"
+          >
+            Subscribe
+          </button>
+        </form>
+      </div>
+      <!-- Right: optional illustration (empty for now) -->
+      <div class="hidden md:block"></div>
+    </div>
+  </section>
+
+  <!-- Blog Cards Grid -->
+  <section class="px-6 py-16 bg-white">
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {posts.map((post) => (
+        <BlogCard client:load post={post} />
+      ))}
+    </div>
+  </section>
+</Layout>
