@@ -76,7 +76,7 @@ const ValveViewer = () => {
 
             // 1) Choose scale by breakpoint (tweak these freely)
             let scale: number;
-            if (screenWidth >= 3000) scale = 0.0028;
+            if (screenWidth >= 3000) scale = 0.0024;
             else if (screenWidth >= 2560) scale = 0.003;
             else if (screenWidth >= 1920) scale = 0.0035;
             else if (screenWidth >= 1440) scale = 0.004;
