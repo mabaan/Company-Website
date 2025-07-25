@@ -1,6 +1,7 @@
 ---
 import Layout from "../../../../layouts/BaseLayout.astro";
 import { getJobs } from "../../../../lib/jobs";
+import { submitToAirtable } from "../../../../lib/submitApplication";
 
 export async function getStaticPaths() {
   const jobs = await getJobs();
@@ -18,6 +19,21 @@ try {
   formData = await Astro.request.formData();
 } catch {
   formData = new FormData(); // fallback if nothing is posted
+}
+
+// Convert form data to a plain object and submit to Airtable when posted
+if (Astro.request.method === "POST" && formData) {
+  const applicant: Record<string, any> = {};
+  for (const [key, value] of formData.entries()) {
+    applicant[key] = value;
+  }
+  applicant.jobTitle = job.title;
+
+  try {
+    await submitToAirtable(applicant);
+  } catch (err) {
+    console.error("Application submission failed:", err);
+  }
 }
 ---
 
