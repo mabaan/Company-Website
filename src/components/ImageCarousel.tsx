@@ -33,7 +33,7 @@ export default function ImageCarousel() {
       <img
         src={images[currentIndex]}
         alt={`Slide ${currentIndex + 1}`}
-        className="w-full max-h-[600px] object-cover object-center"
+        className="w-full h-[600px] object-cover object-center"
       />
 
       {/* Arrows */}
