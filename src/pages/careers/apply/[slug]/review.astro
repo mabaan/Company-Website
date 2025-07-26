@@ -31,7 +31,13 @@ try {
 const get = (field: string) => formData.get(field) ?? "";
 ---
 
-<Layout title={`Review | ${job.title} | GC Careers`}>
+<Layout
+  title={`Review | ${job.title} | GC Careers`}
+  description={`Review your application for ${job.title}.`}
+  ogTitle={`Review | ${job.title}`}
+  ogDescription={`Review your application for ${job.title}.`}
+  ogUrl={Astro.url.href}
+>
   <section class="pt-32 pb-12 px-4 max-w-3xl mx-auto">
     <h1 class="text-3xl font-bold mb-6">
       Review Your Application for <span class="text-blue-800">{job.title}</span>

@@ -5,7 +5,13 @@ import { getJobs } from "../../lib/jobs";
 const jobs = await getJobs();
 ---
 
-<Layout title="Careers | GC International">
+<Layout
+  title="Careers | GC International"
+  description="Explore open positions at GC International."
+  ogTitle="Careers"
+  ogDescription="Explore open positions at GC International."
+  ogUrl={Astro.url.href}
+>
   <section class="pt-32 pb-20 px-6 bg-[#f9f9f9] min-h-screen">
     <div class="max-w-5xl mx-auto">
       <h1 class="text-4xl font-bold mb-10 text-center">Join Our Team</h1>
