@@ -1,14 +1,17 @@
 // src/lib/airtable.ts
+import type { Attachment } from "airtable";
 
-import Airtable, { type Table, type Record as AirtableRecord } from "airtable";
-import type { FieldSet } from "airtable";
+import Airtable, {
+  type FieldSet,
+  type Table,
+  type Record as AirtableRecord,
+} from "airtable";
 
 // Airtable setup
 const base = new Airtable({ apiKey: import.meta.env.AIRTABLE_TOKEN }).base(
   import.meta.env.AIRTABLE_BASE_ID as string
 );
 
-// Table names from environment
 export const APPLICATIONS_TABLE = import.meta.env
   .AIRTABLE_APPLICATIONS_TABLE as string;
 export const JOBS_TABLE = import.meta.env.AIRTABLE_JOBS_TABLE as string;
@@ -18,7 +21,7 @@ export const NETWORKMAP_TABLE = import.meta.env
 export { base };
 
 // ----------------------
-// Location Records
+// ✅ Location Record Type
 // ----------------------
 
 export interface LocationRecord {
@@ -26,7 +29,7 @@ export interface LocationRecord {
   Name: string;
   Latitude: number;
   Longitude: number;
-  Type: string; // e.g., "Headquarters", "Partner", "End User"
+  Type: string;
   Country?: string;
   City?: string;
   Description?: string;
@@ -67,19 +70,28 @@ export async function fetchLocations(): Promise<LocationRecord[]> {
 }
 
 // ----------------------
-// Application Records
+// ✅ Application Record Type
 // ----------------------
 
 export interface ApplicationFields extends FieldSet {
-  Name: string;
+  // Name: string;
+  "First Name": string;
+  "Last Name": string;
   Email: string;
-  Country: string;
-  JobSlug: string;
-  ResumeUrl?: string;
-  [key: string]: any;
+  "Country Code": string;
+  "Phone Number": string;
+  Nationality: string;
+  Gender: string;
+  DOB: string;
+  "Visa Status": string;
+  Experience: number;
+  LinkedIn?: string;
+  About?: string;
+  Resume?: readonly Attachment[];
+  "Job Applied For": string[];
+  "Submitted at"?: string; // ✅ now it's not required
 }
 
-// Strongly-typed accessor for applications table
 function applicationsTable(): Table<ApplicationFields> {
   return base<ApplicationFields>(APPLICATIONS_TABLE);
 }

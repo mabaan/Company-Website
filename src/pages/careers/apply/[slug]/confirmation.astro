@@ -1,7 +1,10 @@
 ---
 import Layout from "../../../../layouts/BaseLayout.astro";
 import { getJobs } from "../../../../lib/jobs";
+import { createApplication } from "../../../../lib/airtable";
+import { uploadResumeToFileIO } from "../../../../lib/uploadResumeToFileIO";
 
+// Fetch job info
 export async function getStaticPaths() {
   const jobs = await getJobs();
   return jobs.map((job) => ({
@@ -11,27 +14,83 @@ export async function getStaticPaths() {
 }
 
 const { job } = Astro.props;
+if (!job) throw new Error("Job not found");
 
-// Fallback formData parsing
+// Parse formData
 let formData: FormData;
 try {
   formData = await Astro.request.formData();
 } catch {
-  formData = new FormData(); // fallback if nothing is posted
+  formData = new FormData(); // fallback
 }
+
+const get = (field: string) => formData.get(field)?.toString() ?? "";
+
+// Extract + validate values
+const dob = get("dob");
+const experience = parseFloat(get("experience"));
+const gender = get("gender");
+
+if (!dob || isNaN(Date.parse(dob))) {
+  throw new Error("Invalid or missing date of birth.");
+}
+
+if (!["Male", "Female"].includes(gender)) {
+  throw new Error("Invalid gender value.");
+}
+
+if (isNaN(experience)) {
+  throw new Error("Invalid experience value.");
+}
+
+// Upload resume (if needed)
+const resumeFile = formData.get("resume") as File | null;
+let resumeUrl = get("resumeUrl"); // fallback from review step (optional)
+
+if (resumeFile && resumeFile.size > 0) {
+  resumeUrl = await uploadResumeToFileIO(resumeFile);
+}
+
+// Submit to Airtable
+await createApplication({
+  "First Name": get("firstName"),
+  "Last Name": get("lastName"),
+  Email: get("email"),
+  "Country Code": get("countryCode"),
+  "Phone Number": get("phone"),
+  Nationality: get("nationality"),
+  Gender: gender,
+  DOB: dob,
+  "Visa Status": get("visa"),
+  Experience: experience,
+  LinkedIn: get("linkedin"),
+  About: get("about"),
+  Resume: resumeUrl
+    ? [
+        {
+          url: resumeUrl,
+          filename: "resume.pdf",
+        },
+      ]
+    : [],
+  "Job Applied For": [job.id],
+});
 ---
 
 <Layout title="Application Submitted | GC Careers">
   <section class="pt-32 pb-20 px-6 text-center bg-[#f5f5f5] min-h-[60vh]">
     <div class="max-w-xl mx-auto">
-      <h1 class="text-3xl font-bold text-green-600 mb-4"> Application Submitted!</h1>
+      <h1 class="text-3xl font-bold text-green-600 mb-4">Application Submitted!</h1>
       <p class="text-lg mb-6">
         Thank you for applying for the <strong>{job.title}</strong> position at GC International.
       </p>
       <p class="text-gray-700">
         Our HR team will review your submission and reach out if your profile matches our requirements.
       </p>
-      <a href="/careers" class="inline-block mt-6 bg-[#0054a4] text-white px-5 py-2 rounded hover:bg-blue-700 transition">
+      <a
+        href="/careers"
+        class="inline-block mt-6 bg-[#0054a4] text-white px-5 py-2 rounded hover:bg-blue-700 transition"
+      >
         Back to Careers
       </a>
     </div>

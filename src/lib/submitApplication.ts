@@ -2,7 +2,7 @@
 
 import { base, APPLICATIONS_TABLE } from "./airtable";
 import { uploadResumeToFileIO } from "./uploadResumeToFileIO";
-import type { Attachment, FieldSet } from "airtable";
+import type { Attachment } from "airtable";
 
 export async function submitToAirtable(data: Record<string, any>) {
   try {
@@ -21,9 +21,12 @@ export async function submitToAirtable(data: Record<string, any>) {
       Nationality: data.nationality,
       "Date of Birth": data.dob,
       "Visa Status": data.visa,
-      Experience: data.experience,
+      Experience:
+        typeof data.experience === "number"
+          ? data.experience
+          : parseFloat(data.experience),
       LinkedIn: data.linkedin || "N/A",
-      About: data.about,
+      About: data.about || "",
       "Job Title": data.jobTitle,
       Resume: resumeUrl
         ? [

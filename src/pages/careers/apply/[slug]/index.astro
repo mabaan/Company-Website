@@ -1,11 +1,14 @@
 ---
+export const prerender = false;
+
 import Layout from "../../../../layouts/BaseLayout.astro";
 import { getJobs, type Job } from "../../../../lib/jobs";
 import { getCountryList } from "../../../../lib/getCountryData";
 import type { Country } from "../../../../lib/getCountryData";
+import { uploadResumeToFileIO } from "../../../../lib/uploadResumeToFileIO";
 import { createApplication } from "../../../../lib/airtable";
-import { uploadResumeToFileIO } from "../../../../lib/uploadResumeToFileIO"; // assumes this exists
 
+// Static paths
 export async function getStaticPaths() {
   const jobs = await getJobs();
   return jobs.map((job) => ({
@@ -14,19 +17,33 @@ export async function getStaticPaths() {
   }));
 }
 
-const { job } = Astro.props as { job: Job };
+// Grab job from props
+const { slug } = Astro.params;
+const jobs = await getJobs();
+const job = jobs.find((j) => j.slug === slug);
+if (!job) throw new Error("Job not found");
+if (!job) throw new Error("Job not found");
+
 const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
   a.name.localeCompare(b.name)
 );
 
-// SERVER: Handle form POST
+
+
+// Handle POST
 if (Astro.request.method === "POST") {
+  const allJobs = await getJobs();
+  const job = allJobs.find((j) => j.slug === Astro.params.slug);
+
+  if (!job) {
+    return new Response("Job not found", { status: 404 });
+  }
+
   try {
     const formData = await Astro.request.formData();
 
     const firstName = formData.get("firstName")?.toString() || "";
     const lastName = formData.get("lastName")?.toString() || "";
-    const name = `${firstName} ${lastName}`.trim();
     const email = formData.get("email")?.toString() || "";
     const phone = formData.get("phone")?.toString() || "";
     const countryCode = formData.get("countryCode")?.toString() || "";
@@ -34,11 +51,15 @@ if (Astro.request.method === "POST") {
     const nationality = formData.get("nationality")?.toString() || "";
     const dob = formData.get("dob")?.toString() || "";
     const visa = formData.get("visa")?.toString() || "";
-    const experience = formData.get("experience")?.toString() || "";
     const linkedin = formData.get("linkedin")?.toString() || "";
     const about = formData.get("about")?.toString() || "";
-    const jobSlug = Astro.params.slug;
     const resumeFile = formData.get("resume") as File;
+
+    const experienceRaw = formData.get("experience")?.toString() || "";
+    const experience = parseFloat(experienceRaw);
+    if (isNaN(experience)) {
+      throw new Error("Invalid experience value submitted.");
+    }
 
     let resumeUrl = "";
     if (resumeFile && resumeFile.size > 0) {
@@ -46,24 +67,34 @@ if (Astro.request.method === "POST") {
     }
 
     await createApplication({
-      Name: name,
+      "First Name": firstName,
+      "Last Name": lastName,
       Email: email,
-      Country: `${countryCode} ${phone}`,
-      JobSlug: jobSlug,
-      ResumeUrl: resumeUrl,
-      Gender: gender,
+      "Country Code": countryCode,
+      "Phone Number": phone,
       Nationality: nationality,
+      Gender: gender,
       DOB: dob,
-      VisaStatus: visa,
-      Experience: experience,
+      "Visa Status": visa,
+      Experience: experience, // ✅ Sent as number
       LinkedIn: linkedin,
       About: about,
+      Resume: resumeUrl
+  ? [{
+      url: resumeUrl,
+      filename: "resume.pdf"
+    }]
+  : [],
+      "Job Applied For": [job.id],
+      // "Submitted at": new Date().toISOString(),
     });
 
-    return Astro.redirect(`/careers/apply/${jobSlug}/confirmation`);
-  } catch (err) {
-    console.error("Submission failed:", err);
-    return new Response("Submission failed", { status: 500 });
+    return Astro.redirect(`/careers/apply/${job.slug}/confirmation`);
+  } catch (err: any) {
+    console.error("Submission failed:", JSON.stringify(err, null, 2));
+    return new Response(`Submission failed: ${err?.message || "Unknown error"}`, {
+      status: 500,
+    });
   }
 }
 ---
@@ -72,18 +103,14 @@ if (Astro.request.method === "POST") {
   <section class="pt-32 pb-12 px-4 max-w-3xl mx-auto">
     <h1 class="text-3xl font-bold mb-4">Apply for {job.title}</h1>
 
-    <form
-      method="POST"
-      enctype="multipart/form-data"
-      class="space-y-6"
-    >
+    <form method="POST" enctype="multipart/form-data" class="space-y-6">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <input name="firstName" placeholder="First Name" required class="border px-4 py-2 rounded" />
         <input name="lastName" placeholder="Last Name" required class="border px-4 py-2 rounded" />
         <input name="email" type="email" placeholder="Email" required class="border px-4 py-2 rounded md:col-span-2" />
 
         <select name="countryCode" required class="border px-3 py-2 rounded">
-          <option value="" disabled selected>-- Select your country code --</option>
+          <option value="" disabled hidden selected>-- Select your country code --</option>
           {countryCodes.map((country: Country) => (
             <option value={country.dial_code}>
               {country.name} {country.flag} ({country.code}) {country.dial_code}
@@ -102,7 +129,12 @@ if (Astro.request.method === "POST") {
         </div>
 
         <input name="nationality" placeholder="Nationality" required class="border px-4 py-2 rounded" />
-        <input name="dob" type="date" required class="border px-4 py-2 rounded" />
+        <input
+  type="date"
+  name="dob"
+  id="dob"
+  required
+  class="border px-4 py-2 rounded" />
 
         <select name="visa" required class="border px-4 py-2 rounded">
           <option value="">-- Visa Status --</option>
@@ -119,14 +151,7 @@ if (Astro.request.method === "POST") {
 
         <div class="md:col-span-2">
           <label for="about" class="block font-medium mb-1">Tell us about yourself (optional)</label>
-          <textarea
-            id="about"
-            name="about"
-            rows="4"
-            maxlength="500"
-            placeholder="Max 500 characters..."
-            class="border px-4 py-2 rounded w-full"
-          ></textarea>
+          <textarea id="about" name="about" rows="4" maxlength="500" placeholder="Max 500 characters..." class="border px-4 py-2 rounded w-full"></textarea>
           <div class="text-sm text-gray-500 text-right mt-1">
             <span id="charCount">0</span>/500
           </div>
@@ -134,47 +159,32 @@ if (Astro.request.method === "POST") {
 
         <div class="md:col-span-2">
           <label class="block font-medium mb-2">Resume (under 1 MB only) *</label>
-          <input
-            id="resumeInput"
-            name="resume"
-            type="file"
-            accept="application/pdf"
-            required
-            class="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-[#dfdfdf] file:text-black hover:file:bg-red-600"
-          />
+          <input id="resumeInput" name="resume" type="file" accept="application/pdf" required class="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-[#dfdfdf] file:text-black hover:file:bg-red-600" />
         </div>
       </div>
 
       <div class="pt-6 flex justify-between">
-        <a href={`/careers/${job.slug}`} class="bg-[#ed1c24] hover:bg-red-600 text-white px-6 py-2 rounded text-sm font-medium">
-          Back to Job
-        </a>
-        <button type="submit" class="bg-[#0054a4] hover:bg-blue-700 text-white px-6 py-2 rounded text-sm font-medium">
-          Submit Application
-        </button>
+        <a href={`/careers/${job.slug}`} class="bg-[#ed1c24] hover:bg-red-600 text-white px-6 py-2 rounded text-sm font-medium">Back to Job</a>
+        <button type="submit" class="bg-[#0054a4] hover:bg-blue-700 text-white px-6 py-2 rounded text-sm font-medium">Submit Application</button>
       </div>
     </form>
   </section>
 
-  <script>
+  <script is:inline>
     document.addEventListener("DOMContentLoaded", function () {
       const aboutTextarea = document.getElementById("about");
       const charCountDisplay = document.getElementById("charCount");
 
       if (aboutTextarea && charCountDisplay) {
-        charCountDisplay.textContent = String((aboutTextarea as HTMLTextAreaElement).value.length);
+        charCountDisplay.textContent = aboutTextarea.value.length.toString();
         aboutTextarea.addEventListener("input", function () {
-          charCountDisplay.textContent = String((aboutTextarea as HTMLTextAreaElement).value.length);
+          charCountDisplay.textContent = aboutTextarea.value.length.toString();
         });
       }
 
-      document.addEventListener("submit", function (e) {
-        const form = e.target;
-        if (!(form instanceof HTMLFormElement)) return;
-
-        const fileInput = form.querySelector("#resumeInput");
+      document.querySelector("form")?.addEventListener("submit", (e) => {
+        const fileInput = document.getElementById("resumeInput");
         if (!(fileInput instanceof HTMLInputElement)) return;
-
         const file = fileInput.files?.[0];
         if (file && file.size > 1048576) {
           e.preventDefault();

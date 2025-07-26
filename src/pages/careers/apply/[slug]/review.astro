@@ -4,7 +4,7 @@ export const prerender = false;
 import Layout from "../../../../layouts/BaseLayout.astro";
 import { getJobs, type Job } from "../../../../lib/jobs";
 
-// ✅ Required for dynamic `[slug]` routes
+// Static paths
 export async function getStaticPaths() {
   const jobs = await getJobs();
   return jobs.map((job) => ({
@@ -13,24 +13,23 @@ export async function getStaticPaths() {
   }));
 }
 
-// ✅ Access slug from URL
+// Load job details
 const { slug } = Astro.params;
-
-// ✅ Get job data
 const jobs: Job[] = await getJobs();
 const job = jobs.find((j) => j.slug === slug);
 if (!job) throw new Error(`Job not found for slug: ${slug}`);
 
-// ✅ Access form data from POST
+// Handle incoming form data
 let formData: FormData;
 try {
   formData = await Astro.request.formData();
 } catch {
-  formData = new FormData(); // avoid crash
+  formData = new FormData();
 }
-const get = (field: string) => formData.get(field) ?? "";
----
 
+const get = (field: string) => formData.get(field)?.toString() ?? "";
+
+---
 <Layout title={`Review | ${job.title} | GC Careers`}>
   <section class="pt-32 pb-12 px-4 max-w-3xl mx-auto">
     <h1 class="text-3xl font-bold mb-6">
@@ -38,26 +37,52 @@ const get = (field: string) => formData.get(field) ?? "";
     </h1>
 
     <ul class="space-y-3 text-lg">
-      <li><strong>Full Name:</strong> {get("firstName")} {get("lastName")}</li>
+      <li><strong>First Name:</strong> {get("firstName")}</li>
+      <li><strong>Last Name:</strong> {get("lastName")}</li>
       <li><strong>Email:</strong> {get("email")}</li>
-      <li><strong>Phone:</strong> {get("countryCode")}{get("phone")}</li>
+      <li><strong>Phone:</strong> {get("countryCode")} {get("phone")}</li>
       <li><strong>Gender:</strong> {get("gender")}</li>
       <li><strong>Nationality:</strong> {get("nationality")}</li>
       <li><strong>Date of Birth:</strong> {get("dob")}</li>
-      <li><strong>Visa:</strong> {get("visa")}</li>
-      <li><strong>Experience:</strong> {get("experience")} years</li>
+      <li><strong>Visa Status:</strong> {get("visa")}</li>
+      <li><strong>Experience:</strong> {get("experience")} </li>
       <li><strong>LinkedIn:</strong> {get("linkedin")}</li>
       <li><strong>About:</strong> {get("about")}</li>
     </ul>
 
-    <!-- pass data to confirmation -->
-    <form method="POST" action={`/careers/apply/${slug}/confirmation`} class="mt-8">
-      {Array.from(formData.entries()).map(([key, value]) => (
-        <input type="hidden" name={key} value={String(value)} />
-      ))}
-      <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded mt-4">
+    <form method="POST" action={`/careers/apply/${slug}/confirmation`} enctype="multipart/form-data" class="mt-8 space-y-4">
+
+      {console.log("FORM DEBUG", Array.from(formData.entries()))}
+      {Array.from(formData.entries()).map(([key, value]) => {
+        <input type="hidden" name="dob" value="2000-01-01" />
+
+        if (key === "Name") return null;
+      
+        if (key === "experience") {
+          const num = parseFloat(value.toString().trim());
+          if (!isNaN(num)) {
+            return <input type="hidden" name={key} value={num.toString()} />;
+          }
+          return null;
+        }
+      
+        if (value instanceof File) {
+          return <input type="file" name={key} hidden />;
+        }
+      
+        return <input type="hidden" name={key} value={String(value)} />;
+      })}
+      <!-- Add debug output -->
+<p class="text-red-500 text-sm">DOB being submitted: {get("dob")}</p>
+
+      <!-- Add job title explicitly for Airtable -->
+      <input type="hidden" name="jobTitle" value={job.title} />
+    
+      <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">
         Submit Application
       </button>
     </form>
+    
+    
   </section>
 </Layout>
