@@ -80,6 +80,7 @@ export default function PartnersSection() {
             <img
               src={partner.image}
               alt={partner.name}
+              loading="lazy"
               className="h-32 mb-3 object-contain transition-transform duration-200 group-hover:scale-105"
             />
             <h3 className="text-base font-semibold text-gray-800">
@@ -102,6 +103,7 @@ export default function PartnersSection() {
             <img
               src={lastPartner.image}
               alt={lastPartner.name}
+              loading="lazy"
               className="h-32 mb-3 object-contain transition-transform duration-200 group-hover:scale-105"
             />
             <h3 className="text-base font-semibold text-gray-800">
