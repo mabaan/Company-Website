@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BlogCard, { PostSummary } from "./BlogCard";
 
+
 type Props = { posts: PostSummary[] };
 const categories = [
   "All Posts",
@@ -14,10 +15,12 @@ const BlogList: React.FC<Props> = ({ posts }) => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>("All Posts");
 
+
   useEffect(() => {
     const t = setTimeout(() => setLoading(false), 500);
     return () => clearTimeout(t);
   }, []);
+
 
   const filtered =
     filter === "All Posts"
@@ -56,6 +59,7 @@ const BlogList: React.FC<Props> = ({ posts }) => {
           ))}
         </div>
       )}
+
     </div>
   );
 };
