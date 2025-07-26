@@ -3,7 +3,14 @@ import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import '../styles/global.css';
 
-const { title = "GC International" } = Astro.props;
+const {
+  title = "GC International",
+  description = "",
+  ogTitle = title,
+  ogDescription = description,
+  ogImage = "/logo.png",
+  ogUrl = Astro.url?.href || "",
+} = Astro.props;
 ---
 
 <html lang="en">
@@ -23,6 +30,11 @@ const { title = "GC International" } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <meta property="og:title" content={ogTitle} />
+    {ogDescription && <meta property="og:description" content={ogDescription} />}
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={ogUrl} />
 
     <!-- ✅ Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

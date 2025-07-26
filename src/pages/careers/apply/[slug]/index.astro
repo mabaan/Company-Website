@@ -68,7 +68,13 @@ if (Astro.request.method === "POST") {
 }
 ---
 
-<Layout title={`Apply | ${job.title} | GC International`}>
+<Layout
+  title={`Apply | ${job.title} | GC International`}
+  description={`Apply for ${job.title} at GC International.`}
+  ogTitle={`Apply | ${job.title}`}
+  ogDescription={`Apply for ${job.title} at GC International.`}
+  ogUrl={Astro.url.href}
+>
   <section class="pt-32 pb-12 px-4 max-w-3xl mx-auto">
     <h1 class="text-3xl font-bold mb-4">Apply for {job.title}</h1>
 
@@ -78,11 +84,22 @@ if (Astro.request.method === "POST") {
       class="space-y-6"
     >
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <input name="firstName" placeholder="First Name" required class="border px-4 py-2 rounded" />
-        <input name="lastName" placeholder="Last Name" required class="border px-4 py-2 rounded" />
-        <input name="email" type="email" placeholder="Email" required class="border px-4 py-2 rounded md:col-span-2" />
+        <div class="grid gap-1">
+          <label for="firstName">First Name *</label>
+          <input id="firstName" name="firstName" placeholder="First Name" required class="border px-4 py-2 rounded" />
+        </div>
+        <div class="grid gap-1">
+          <label for="lastName">Last Name *</label>
+          <input id="lastName" name="lastName" placeholder="Last Name" required class="border px-4 py-2 rounded" />
+        </div>
+        <div class="grid gap-1 md:col-span-2">
+          <label for="email">Email *</label>
+          <input id="email" name="email" type="email" placeholder="Email" required class="border px-4 py-2 rounded" />
+        </div>
 
-        <select name="countryCode" required class="border px-3 py-2 rounded">
+        <div class="grid gap-1">
+          <label for="countryCode">Country Code *</label>
+        <select id="countryCode" name="countryCode" required class="border px-3 py-2 rounded">
           <option value="" disabled selected>-- Select your country code --</option>
           {countryCodes.map((country: Country) => (
             <option value={country.dial_code}>
@@ -90,21 +107,33 @@ if (Astro.request.method === "POST") {
             </option>
           ))}
         </select>
+        </div>
 
-        <input name="phone" placeholder="Phone" required class="border px-4 py-2 rounded" />
+        <div class="grid gap-1">
+          <label for="phone">Phone *</label>
+        <input id="phone" name="phone" placeholder="Phone" required class="border px-4 py-2 rounded" />
+        </div>
 
         <div>
-          <label class="block font-medium mb-1">Gender *</label>
+          <label class="block font-medium mb-1" for="gender-male">Gender *</label>
           <div class="flex gap-4">
-            <label><input type="radio" name="gender" value="Male" required /> Male</label>
-            <label><input type="radio" name="gender" value="Female" required /> Female</label>
+            <label><input id="gender-male" type="radio" name="gender" value="Male" required /> Male</label>
+            <label><input id="gender-female" type="radio" name="gender" value="Female" required /> Female</label>
           </div>
         </div>
 
-        <input name="nationality" placeholder="Nationality" required class="border px-4 py-2 rounded" />
-        <input name="dob" type="date" required class="border px-4 py-2 rounded" />
+        <div class="grid gap-1">
+          <label for="nationality">Nationality *</label>
+        <input id="nationality" name="nationality" placeholder="Nationality" required class="border px-4 py-2 rounded" />
+        </div>
+        <div class="grid gap-1">
+          <label for="dob">Date of Birth *</label>
+        <input id="dob" name="dob" type="date" required class="border px-4 py-2 rounded" />
+        </div>
 
-        <select name="visa" required class="border px-4 py-2 rounded">
+        <div class="grid gap-1">
+          <label for="visa">Visa Status *</label>
+        <select id="visa" name="visa" required class="border px-4 py-2 rounded">
           <option value="">-- Visa Status --</option>
           <option value="Visit">Visit</option>
           <option value="Work">Work</option>
@@ -113,9 +142,16 @@ if (Astro.request.method === "POST") {
           <option value="Resident">Resident</option>
           <option value="None">None</option>
         </select>
+        </div>
 
-        <input name="experience" type="number" min="0" placeholder="Years of Experience" required class="border px-4 py-2 rounded" />
-        <input name="linkedin" placeholder="LinkedIn (optional)" class="border px-4 py-2 rounded md:col-span-2" />
+        <div class="grid gap-1">
+          <label for="experience">Years of Experience *</label>
+        <input id="experience" name="experience" type="number" min="0" placeholder="Years of Experience" required class="border px-4 py-2 rounded" />
+        </div>
+        <div class="grid gap-1 md:col-span-2">
+          <label for="linkedin">LinkedIn (optional)</label>
+        <input id="linkedin" name="linkedin" placeholder="LinkedIn (optional)" class="border px-4 py-2 rounded" />
+        </div>
 
         <div class="md:col-span-2">
           <label for="about" class="block font-medium mb-1">Tell us about yourself (optional)</label>
@@ -133,7 +169,7 @@ if (Astro.request.method === "POST") {
         </div>
 
         <div class="md:col-span-2">
-          <label class="block font-medium mb-2">Resume (under 1 MB only) *</label>
+          <label for="resumeInput" class="block font-medium mb-2">Resume (under 1 MB only) *</label>
           <input
             id="resumeInput"
             name="resume"

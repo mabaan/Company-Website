@@ -7,7 +7,13 @@ import ScrollGauge from "../components/ScrollGauge";
 import GearScroll from "../components/GearScroll.tsx";
 ---
 
-<Layout title="GC International">
+<Layout
+  title="GC International"
+  description="GC International provides world-class valve and actuator solutions."
+  ogTitle="GC International"
+  ogDescription="GC International provides world-class valve and actuator solutions."
+  ogUrl={Astro.url.href}
+>
   <main id="page-content" class="main-content">
     <Hero client:only="react" />
     <!-- <GearScroll client:only="react" direction="cw" /> -->

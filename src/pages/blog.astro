@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/BaseLayout.astro";
 import { client } from "../lib/sanityClient";
-import BlogCard from "../components/BlogCard.tsx";
+import BlogList from "../components/BlogList";
 import type { PostSummary } from "../components/BlogCard.tsx";
 
 // Fetch posts including the full `body` for preview
@@ -17,7 +17,13 @@ const posts: PostSummary[] = await client.fetch(`*[_type == "post" && defined(pu
   }`);
 ---
 
-<Layout title="GC Blog">
+<Layout
+  title="GC Blog"
+  description="News and insights from the GC International team."
+  ogTitle="GC Blog"
+  ogDescription="News and insights from the GC International team."
+  ogUrl={Astro.url.href}
+>
   <!-- Hero / Subscribe Section -->
   <section class="pt-28 pb-20 bg-[#f1f8ff]">
     <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
@@ -50,10 +56,6 @@ const posts: PostSummary[] = await client.fetch(`*[_type == "post" && defined(pu
 
   <!-- Blog Cards Grid -->
   <section class="px-6 py-16 bg-white">
-    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-      {posts.map((post) => (
-        <BlogCard client:load post={post} />
-      ))}
-    </div>
+    <BlogList client:load posts={posts} />
   </section>
 </Layout>
