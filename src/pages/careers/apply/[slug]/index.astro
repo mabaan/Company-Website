@@ -5,8 +5,7 @@ import Layout from "../../../../layouts/BaseLayout.astro";
 import { getJobs, type Job } from "../../../../lib/jobs";
 import { getCountryList } from "../../../../lib/getCountryData";
 import type { Country } from "../../../../lib/getCountryData";
-import { uploadResumeToFileIO } from "../../../../lib/uploadResumeToFileIO";
-import { createApplication } from "../../../../lib/airtable";
+import { submitToAirtable } from "../../../../lib/submitApplication";
 
 // Static paths
 export async function getStaticPaths() {
@@ -57,62 +56,53 @@ if (Astro.request.method === "POST") {
 
     const experienceRaw = formData.get("experience")?.toString() || "";
     const experience = parseFloat(experienceRaw);
-    if (isNaN(experience)) {
-      throw new Error("Invalid experience value submitted.");
-    }
+    if (isNaN(experience)) throw new Error("Invalid experience value.");
 
-    let resumeUrl = "";
-    if (resumeFile && resumeFile.size > 0) {
-      resumeUrl = await uploadResumeToFileIO(resumeFile);
-    }
+    console.log("📋 Form parsed. Submitting to Airtable...");
 
-    await createApplication({
-      "First Name": firstName,
-      "Last Name": lastName,
-      Email: email,
-      "Country Code": countryCode,
-      "Phone Number": phone,
-      Nationality: nationality,
-      Gender: gender,
-      DOB: dob,
-      "Visa Status": visa,
-      Experience: experience, // ✅ Sent as number
-      LinkedIn: linkedin,
-      About: about,
-      Resume: resumeUrl
-  ? [{
-      url: resumeUrl,
-      filename: "resume.pdf"
-    }]
-  : [],
-      "Job Applied For": [job.id],
-      // "Submitted at": new Date().toISOString(),
+    const applicationId = await submitToAirtable({
+      firstName,
+      lastName,
+      email,
+      phone,
+      countryCode,
+      gender,
+      nationality,
+      dob,
+      visa,
+      linkedin,
+      about,
+      experience,
+      resume: resumeFile,
+      jobRecordId: job.id,
     });
 
-    const query = new URLSearchParams({
-  firstName,
-  lastName,
-  email,
-  phone,
-  countryCode,
-  gender,
-  nationality,
-  dob,
-  visa,
-  experience: experienceRaw,
-  linkedin,
-  about,
-  resumeUrl,
-}).toString();
+    console.log("✅ Submission successful. Airtable ID:", applicationId);
 
-return Astro.redirect(`/careers/apply/${job.slug}/review?${query}`);
+    const query = new URLSearchParams({
+      firstName,
+      lastName,
+      email,
+      phone,
+      countryCode,
+      gender,
+      nationality,
+      dob,
+      visa,
+      experience: experienceRaw,
+      linkedin,
+      about,
+    }).toString();
+
+    return Astro.redirect(`/careers/apply/${job.slug}/review?${query}`);
   } catch (err: any) {
-    console.error("Submission failed:", JSON.stringify(err, null, 2));
+    console.error("❌ Submission failed:", JSON.stringify(err, null, 2));
     return new Response(`Submission failed: ${err?.message || "Unknown error"}`, {
       status: 500,
     });
   }
 }
+
 ---
 
 <Layout

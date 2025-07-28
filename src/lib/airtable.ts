@@ -72,11 +72,11 @@ export async function fetchLocations(): Promise<LocationRecord[]> {
 // ----------------------
 // ✅ Application Record Type
 // ----------------------
-
 export interface ApplicationFields extends FieldSet {
-  // Name: string;
+  "Application ID"?: number; // Read-only, auto number
   "First Name": string;
   "Last Name": string;
+  Name?: string; // Formula
   Email: string;
   "Country Code": string;
   "Phone Number": string;
@@ -87,9 +87,10 @@ export interface ApplicationFields extends FieldSet {
   Experience: number;
   LinkedIn?: string;
   About?: string;
-  Resume?: readonly Attachment[];
-  "Job Applied For": string[];
-  "Submitted at"?: string; // ✅ now it's not required
+  "Job Applied For": string[]; // Airtable record IDs
+  "Job ID"?: number; // Lookup field
+  "Resume URL"?: string; // Formula field
+  "Submitted at"?: string;
 }
 
 function applicationsTable(): Table<ApplicationFields> {

@@ -1,5 +1,6 @@
 export interface Job {
-  id: string;
+  id: string; // Airtable record ID (recXXXXXX)
+  jobId: number; // Auto number from Airtable field "Job ID"
   title: string;
   slug: string;
   department: string;
@@ -37,7 +38,8 @@ export async function getJobs(): Promise<Job[]> {
 
   return (data.records || []).map(
     (record: any): Job => ({
-      id: record.id,
+      id: record.id, // ✅ record ID from Airtable
+      jobId: record.fields["Job ID"],
       title: record.fields["Title"],
       slug: record.fields["Slug"],
       department: record.fields["Department"],
