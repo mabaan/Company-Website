@@ -1,7 +1,14 @@
 import React from "react";
 
-// Import all images from public/Ticker
-const modules = import.meta.glob("/public/Ticker/*", { eager: true, as: "url" });
+interface Props {
+  className?: string;
+}
+
+// Load all images from /public/Ticker at build time
+const modules = import.meta.glob("/Ticker/*", {
+  eager: true,
+  as: "url",
+});
 const logos = Object.entries(modules).map(([path, url]) => {
   const parts = path.split("/");
   const filename = parts[parts.length - 1];
@@ -11,9 +18,9 @@ const logos = Object.entries(modules).map(([path, url]) => {
 
 const duplicated = [...logos, ...logos];
 
-export default function LogoTicker() {
+export default function LogoTicker({ className = "" }: Props) {
   return (
-    <div className="overflow-hidden py-6 bg-white">
+    <div className={"overflow-hidden py-6 bg-white " + className}>
       <div
         className="flex items-center gap-8 animate-scroll whitespace-nowrap hover:[animation-play-state:paused]"
       >
