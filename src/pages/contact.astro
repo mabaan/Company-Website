@@ -4,9 +4,12 @@ export const prerender = false;
 
 import Layout from "../layouts/BaseLayout.astro";
 import { createContact } from "../lib/airtable";
+import { contactAcknowledgement, contactNotification } from "../lib/emailTemplates";
+import { sendMail } from "../lib/mailgunClient";
 
 if (Astro.request.method === "POST") {
   try {
+    console.log("--- Handling contact form submission ---");
     const formData = await Astro.request.formData();
     const get = (field: string) => formData.get(field)?.toString() || "";
     const data = {
@@ -17,7 +20,49 @@ if (Astro.request.method === "POST") {
       Message: get("message"),
     };
 
+    console.log("📨 Contact form received", data);
+
     await createContact(data);
+    console.log("✅ Contact record stored");
+
+    const contactData = {
+      name: get("name"),
+      company: get("company"),
+      email: get("email"),
+      phone: get("phone"),
+      message: get("message"),
+      submittedAt: new Date().toISOString(),
+    };
+
+    const contactAck = contactAcknowledgement({ name: contactData.name });
+    const contactNotif = contactNotification(contactData);
+
+    // Send acknowledgement back to the user
+    try {
+      console.log("📧 Sending acknowledgement to", contactData.email);
+      await sendMail({
+        to: contactData.email,
+        subject: contactAck.subject,
+        html: contactAck.html,
+      });
+      console.log("✅ Acknowledgement email sent");
+    } catch (err) {
+      console.error("Failed to send contact acknowledgement:", err);
+    }
+
+    // Notify the internal contact address
+    try {
+      console.log("📧 Notifying internal contact", process.env.MAIL_CONTACT);
+      await sendMail({
+        to: process.env.MAIL_CONTACT!,
+        subject: contactNotif.subject,
+        html: contactNotif.html,
+      });
+      console.log("✅ Internal notification sent");
+    } catch (err) {
+      console.error("Failed to send contact notification:", err);
+    }
+
     return new Response(null, { status: 200 });
   } catch (err) {
     console.error("Failed to submit contact form:", err);
