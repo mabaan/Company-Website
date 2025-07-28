@@ -14,6 +14,7 @@ export const APPLICATIONS_TABLE = import.meta.env
 export const JOBS_TABLE = import.meta.env.AIRTABLE_JOBS_TABLE as string;
 export const NETWORKMAP_TABLE = import.meta.env
   .AIRTABLE_NETWORKMAP_NAME as string;
+export const CONTACT_TABLE = import.meta.env.AIRTABLE_CONTACT_TABLE as string;
 
 export { base };
 
@@ -93,6 +94,36 @@ export async function createApplication(
     return created[0];
   } catch (error) {
     console.error("Error creating application record:", error);
+    throw error;
+  }
+}
+
+// ----------------------
+// Contact Records
+// ----------------------
+
+export interface ContactFields extends FieldSet {
+  Name: string;
+  Company: string;
+  Email: string;
+  Phone: string;
+  Message: string;
+  'Submitted at': string;
+}
+
+function contactTable(): Table<ContactFields> {
+  return base<ContactFields>(CONTACT_TABLE);
+}
+
+export async function createContact(
+  fields: ContactFields
+): Promise<AirtableRecord<ContactFields>> {
+  try {
+    const table = contactTable();
+    const created = await table.create([{ fields }]);
+    return created[0];
+  } catch (error) {
+    console.error('Error creating contact record:', error);
     throw error;
   }
 }
