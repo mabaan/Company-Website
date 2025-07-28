@@ -21,7 +21,74 @@ import GearScroll from "../components/GearScroll.tsx";
     <WhyChooseUs />
     <!-- <GearScroll client:only="react" direction="ccw" /> -->
 
+    <!-- Stats Section -->
+    <section class="bg-[#0f4f7c] py-16 px-4 text-white">
+      <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="p-6 rounded-lg bg-white/10 text-center">
+          <span class="counter text-4xl sm:text-5xl font-bold" data-end="12">0</span>
+          <p class="mt-2 text-xl font-semibold">Years of Expertise</p>
+          <p class="text-sm opacity-80 mt-1">Over 12 Years Serving the Middle East</p>
+        </div>
+
+        <div class="p-6 rounded-lg bg-white/10 text-center">
+          <span class="counter text-4xl sm:text-5xl font-bold" data-end="9">0</span>
+          <p class="mt-2 text-xl font-semibold">Global Reach</p>
+          <p class="text-sm opacity-80 mt-1">Representing 9 International Manufacturers</p>
+          <p class="text-sm opacity-80">Deliveries to more than 6 Countries Worldwide</p>
+        </div>
+
+        <div class="p-6 rounded-lg bg-white/10 text-center">
+          <span class="counter text-4xl sm:text-5xl font-bold" data-end="90">0</span>
+          <p class="mt-2 text-xl font-semibold">Speed &amp; Reliability</p>
+          <p class="text-sm opacity-80 mt-1">90% On-Time Delivery Rate</p>
+        </div>
+
+        <div class="p-6 rounded-lg bg-white/10 text-center">
+          <span class="counter text-4xl sm:text-5xl font-bold" data-end="100">0</span>
+          <p class="mt-2 text-xl font-semibold">Quality &amp; Compliance</p>
+          <p class="text-sm opacity-80 mt-1">100% of Our Partners Are ISO 9001 Certified</p>
+        </div>
+
+        <div class="p-6 rounded-lg bg-white/10 text-center">
+          <span class="counter text-4xl sm:text-5xl font-bold" data-end="4">0</span>
+          <p class="mt-2 text-xl font-semibold">Customer Satisfaction</p>
+          <p class="text-sm opacity-80 mt-1">4/5 Average Rating from Client Surveys</p>
+          <p class="text-sm opacity-80">92% Repeat-Business Rate</p>
+        </div>
+      </div>
+    </section>
+
     <CTASection />
     <ScrollGauge client:load />
   </main>
+
+  <script type="module">
+    import { gsap } from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.utils.toArray('.counter').forEach((el) => {
+      const end = parseFloat(el.getAttribute('data-end') || '0');
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top 80%',
+        once: true,
+        onEnter: () => {
+          gsap.fromTo(
+            el,
+            { innerText: 0 },
+            {
+              innerText: end,
+              duration: 2,
+              ease: 'power1.out',
+              snap: { innerText: 1 },
+              onUpdate: function () {
+                el.textContent = Math.floor(+el.innerText).toString();
+              },
+            }
+          );
+        },
+      });
+    });
+  </script>
 </Layout>
