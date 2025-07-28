@@ -123,6 +123,7 @@ const hrPayload = hrNotification({
   role: job.title,
 });
 
+// Email the applicant a confirmation
 try {
   await sendMail({
     to: formData.get("email") as string,
@@ -133,6 +134,7 @@ try {
   console.error("Failed to send applicant email:", err);
 }
 
+// Notify HR and BCC the contact address
 try {
   await sendMail({
     to: process.env.MAIL_HR!,

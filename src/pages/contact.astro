@@ -33,6 +33,7 @@ if (Astro.request.method === "POST") {
     const contactAck = contactAcknowledgement({ name: contactData.name });
     const contactNotif = contactNotification(contactData);
 
+    // Send acknowledgement back to the user
     try {
       await sendMail({
         to: contactData.email,
@@ -43,6 +44,7 @@ if (Astro.request.method === "POST") {
       console.error("Failed to send contact acknowledgement:", err);
     }
 
+    // Notify the internal contact address
     try {
       await sendMail({
         to: process.env.MAIL_CONTACT!,
