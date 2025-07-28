@@ -34,8 +34,16 @@ if (!dob || isNaN(Date.parse(dob))) throw new Error("❌ Invalid DOB");
 if (!["Male", "Female"].includes(gender)) throw new Error("❌ Invalid gender");
 if (isNaN(experience)) throw new Error("❌ Invalid experience");
 
-const resumeFile = formData.get("resume") as File | null;
+let resumeFile = formData.get("resume") as File | null;
 let resumeUrl = get("resumeUrl");
+const resumeBase64 = get("resumeBase64");
+const resumeMime = get("resumeMime");
+const resumeName = get("resumeName") || "resume.pdf";
+
+if (!resumeFile && resumeBase64) {
+  const buf = Buffer.from(resumeBase64, "base64");
+  resumeFile = new File([buf], resumeName, { type: resumeMime || "application/pdf" });
+}
 
 console.log("📥 Form parsed. Resume file present:", !!resumeFile);
 
