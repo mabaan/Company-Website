@@ -10,23 +10,18 @@ export interface PostSummary {
   excerpt?: string;
   publishedAt: string;
   imageUrl?: string;
-  author?: string;
+  author?: string; // make sure this comes through your GROQ query
   categories?: { title: string }[];
-  body?: any; // for PortableText preview
+  body?: any;
   featured?: boolean;
 }
 
 interface Props {
   post: PostSummary;
-  maxChars?: number;
   className?: string;
 }
 
-const BlogCard: React.FC<Props> = ({
-  post,
-  maxChars = 180,
-  className = "",
-}) => {
+const BlogCard: React.FC<Props> = ({ post, className = "" }) => {
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleDateString(undefined, {
       year: "numeric",
@@ -43,17 +38,7 @@ const BlogCard: React.FC<Props> = ({
           <img
             src={post.imageUrl}
             alt={post.title}
-            className="
-    w-full 
-    object-cover 
-    rounded 
-    mb-4
-
-    h-32        /* small screens: 8rem tall */
-    md:h-48     /* medium (≥768px): 12rem tall */
-    lg:h-56     /* large (≥1024px): 14rem tall */
-    xl:h-64     /* extra-large (≥1280px): 16rem tall */
-  "
+            className="w-full object-cover rounded h-32 md:h-48 lg:h-56 xl:h-64"
             loading="lazy"
           />
         </a>
@@ -76,18 +61,18 @@ const BlogCard: React.FC<Props> = ({
       </div>
 
       <a href={`/blog/${post.slug.current}`}>
-        <h2 className="text-xl font-semibold mb-2 text-[#0054a4]">
+        <h2 className="text-xl font-semibold mb-1 text-[#0054a4]">
           {post.title}
         </h2>
       </a>
 
       {post.author && (
-        <p className="text-sm text-gray-600 mb-2">by {post.author}</p>
+        <p className="text-sm text-gray-600 mb-3">by {post.author}</p>
       )}
 
-      {/* Clipped Portable Text preview */}
+      {/* Clipped PortableText preview */}
       {post.body && (
-        <div className="relative overflow-hidden max-h-24 mb-4">
+        <div className="relative overflow-hidden max-h-20 mb-4">
           <PortableText value={post.body} />
           <div className="pointer-events-none absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-[#f9fbfc]" />
         </div>

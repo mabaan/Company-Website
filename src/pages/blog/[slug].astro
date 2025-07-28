@@ -2,6 +2,7 @@
 import Layout from "../../layouts/BaseLayout.astro";
 import { client } from "../../lib/sanityClient";
 import { PortableText } from "@portabletext/react";
+import { getPostDescription } from "../../lib/getDescription";
 
 const { slug } = Astro.params;
 
@@ -15,32 +16,45 @@ const post = await client.fetch(
     body
   }`,
   { slug }
-const description = post.body && post.body[0] && post.body[0].children ? post.body[0].children.map((c: any) => c.text).join(" ").slice(0, 150) : "";
 );
+
+// Optional: fallback if post not found
+if (!post) throw new Error("Post not found");
+
+const description = getPostDescription(post.body);
 ---
 
 <Layout
-  title={post.title}
+  title={`${post.title} | GC Blog`}
   description={description}
-  ogTitle={post.title}
-  ogDescription={description}
-  ogImage={post.imageUrl || "/logo.png"}
-  ogUrl={Astro.url.href}
+  ogImage={post.imageUrl}
 >
+  <!-- Spacer for fixed navbar -->
+  <div class="h-24 md:h-28" aria-hidden="true"></div>
+
   <article class="max-w-3xl mx-auto px-6 py-16">
     <!-- Title & Meta -->
     <h1 class="text-4xl font-bold mb-2 text-[#0054a4]">{post.title}</h1>
     <p class="text-sm text-gray-600 mb-6">
-      by {post.author} • {new Date(post.publishedAt).toLocaleDateString()}
+      by {post.author}
     </p>
 
-    <!-- Vercel-style body preview -->
+    <!-- Optional Cover Image -->
+    {post.imageUrl && (
+      <img
+        src={post.imageUrl}
+        alt={post.title}
+        class="w-full rounded-lg mb-8 object-cover"
+      />
+    )}
+
+    <!-- Vercel-style clipped body preview -->
     <div class="relative overflow-hidden max-h-[12rem]">
       <PortableText value={post.body} />
       <div class="pointer-events-none absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-white"></div>
     </div>
 
-    <!-- “Read more” to expand full body -->
+    <!-- “Read more” toggle to expand full body -->
     <button
       class="mt-4 text-[#0054a4] font-medium hover:underline"
       onclick="

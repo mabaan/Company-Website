@@ -1,0 +1,47 @@
+---
+export const prerender = false;
+
+import Layout from "../../../layouts/BaseLayout.astro";
+import BlogCard from "src/components/BlogCard.tsx"; 
+import BlogNavbar from "src/components/BlogNavbar.tsx";
+import { client } from "../../../lib/sanityClient";
+import { getPostDescription } from "../../../lib/getDescription";
+
+const { slug } = Astro.params;
+
+// Fetch posts in this category
+const posts = await client.fetch(
+  `*[_type == "post" && $slug in categories[]->slug.current] | order(publishedAt desc) {
+    title,
+    slug,
+    publishedAt,
+    "imageUrl": mainImage.asset->url,
+    "author": author->name,
+    categories[]->{ title, slug },
+    body
+  }`,
+  { slug }
+);
+
+// Fetch all categories for nav
+const categories = await client.fetch(`*[_type == "category"]{ title, slug }`);
+
+const pageTitle = categories.find((c: { slug: { current: string }; title: string }) => c.slug.current === slug)?.title ?? "Blog";
+const description = posts.length > 0 ? getPostDescription(posts[0].body) : "";
+---
+
+<Layout title={`${pageTitle} | GC Blog`} description={description}>
+  <BlogNavbar client:load categories={categories} activeSlug={slug} />
+
+  <section class="w-full max-w-6xl mx-auto px-4 py-12">
+    {posts.length > 0 ? (
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map((post: any) => (
+          <BlogCard post={post} />
+        ))}
+      </div>
+    ) : (
+      <p class="text-center text-gray-500">No posts found for this category.</p>
+    )}
+  </section>
+</Layout>

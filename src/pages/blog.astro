@@ -1,42 +1,42 @@
 ---
-import Layout from "../layouts/BaseLayout.astro";
-import { client } from "../lib/sanityClient";
-import BlogList from "../components/BlogList";
-import type { PostSummary } from "../components/BlogCard.tsx";
+import Layout from "src/layouts/BaseLayout.astro";
+import BlogCard from "src/components/BlogCard.tsx"; 
+import BlogNavbar from "src/components/BlogNavbar.tsx";
+import { client } from "src/lib/sanityClient.ts";
+import { getPostDescription } from "src/lib/getDescription.ts";
 
-// Fetch posts including the full `body` for preview
-const posts: PostSummary[] = await client.fetch(`*[_type == "post" && defined(publishedAt)] 
-  | order(publishedAt desc){
+// Fetch all posts
+const posts = await client.fetch(`
+  *[_type == "post" && defined(publishedAt)] | order(publishedAt desc) {
     title,
     slug,
     publishedAt,
     "imageUrl": mainImage.asset->url,
     "author": author->name,
-    categories[]->{ title },
+    categories[]->{ title, slug },
     body
-  }`);
+  }
+`);
+
+// Fetch all categories for nav
+const categories = await client.fetch(`*[_type == "category"]{ title, slug }`);
+
+// SEO description using first post body
+const description = posts.length > 0 ? getPostDescription(posts[0].body) : "";
 ---
 
-<Layout
-  title="GC Blog"
-  description="News and insights from the GC International team."
-  ogTitle="GC Blog"
-  ogDescription="News and insights from the GC International team."
-  ogUrl={Astro.url.href}
->
+<Layout title="Blog | GC International" description={description}>
+  <BlogNavbar client:load categories={categories} />
 
-  <section class="pt-24 text-center">
-    <h1 class="max-w-2xl mx-auto mb-8 text-4xl font-bold">Latest Updates</h1>
-
+  <section class="w-full max-w-6xl mx-auto px-4 py-12">
+    {posts.length > 0 ? (
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map((post: any) => (
+          <BlogCard post={post} />
+        ))}
+      </div>
+    ) : (
+      <p class="text-center text-gray-500">No blog posts found.</p>
+    )}
   </section>
-
-  <section class="px-6 py-16 bg-white">
-    <BlogList client:load posts={posts} />
-  </section>
-
-  <div class="mt-16 text-center">
-    <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded">
-      Subscribe to our newsletter
-    </button>
-  </div>
 </Layout>

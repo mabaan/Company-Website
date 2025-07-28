@@ -3,10 +3,11 @@ import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import '../styles/global.css';
 
+// SEO props with formatting fallback
 const {
   title = "GC International",
   description = "",
-  ogTitle = title,
+  ogTitle = `${title} | GC International`,
   ogDescription = description,
   ogImage = "/logo.png",
   ogUrl = Astro.url?.href || "",
@@ -15,31 +16,32 @@ const {
 
 <html lang="en">
   <head>
-  
     <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WL2XB7DZCZ"></script>
-  <script is:inline>
-    // @ts-ignore
-    window.dataLayer = window.dataLayer || [];
-    // @ts-ignore
-    function gtag(){ dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-WL2XB7DZCZ');
-  </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WL2XB7DZCZ"></script>
+    <script is:inline>
+      // @ts-ignore
+      window.dataLayer = window.dataLayer || [];
+      // @ts-ignore
+      function gtag(){ dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-WL2XB7DZCZ');
+    </script>
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title}</title>
+
+    <title>{ogTitle}</title>
     {description && <meta name="description" content={description} />}
     <meta property="og:title" content={ogTitle} />
     {ogDescription && <meta property="og:description" content={ogDescription} />}
     <meta property="og:image" content={ogImage} />
     <meta property="og:url" content={ogUrl} />
+    <meta name="theme-color" content="#ffffff" />
 
     <!-- ✅ Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
 
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   </head>
@@ -47,7 +49,6 @@ const {
   <body class="bg-white text-gray-800 font-sans scroll-smooth">
     <Navbar client:load />
 
-    <!-- ✅ Wrap content + footer for sticky behavior -->
     <div class="flex flex-col min-h-screen">
       <main class="flex-grow">
         <slot />
@@ -62,11 +63,9 @@ const {
         transform: translateY(20px);
         transition: all 0.8s ease-out;
       }
-
       .slide-in {
         transform: translateX(40px);
       }
-
       .visible {
         opacity: 1;
         transform: translateX(0) translateY(0);
