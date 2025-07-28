@@ -1,31 +1,32 @@
 import React from "react";
 
-// Import all images from public/Ticker
-const modules = import.meta.glob("/public/Ticker/*", { eager: true, as: "url" });
+// import all images under public/Ticker (or Alt)
+const modules = import.meta.glob("/public/Alt/*", { eager: true, as: "url" });
 const logos = Object.entries(modules).map(([path, url]) => {
-  const parts = path.split("/");
-  const filename = parts[parts.length - 1];
+  const filename = path.split("/").pop()!;
   const alt = filename.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
   return { src: url as string, alt };
 });
-
 const duplicated = [...logos, ...logos];
 
-export default function LogoTicker() {
+export default function LogoTicker({ className = "" }: { className?: string }) {
   return (
-    <div className="overflow-hidden py-6 bg-white">
-      <div
-        className="flex items-center gap-8 animate-scroll whitespace-nowrap hover:[animation-play-state:paused]"
-      >
+    <div className={`pt-16 pb-8 bg-white overflow-hidden ${className}`}>
+      <div className="flex items-center gap-12 sm:gap-16 md:gap-20 lg:gap-24 animate-scroll whitespace-nowrap hover:pause-on-hover">
         {duplicated.map((logo, idx) => (
           <img
             key={idx}
             src={logo.src}
             alt={logo.alt}
             loading="lazy"
-            width={80}
-            height={80}
-            className="w-16 h-16 sm:w-20 sm:h-20 object-contain"
+            className="
+              w-16 h-16
+              sm:w-20 sm:h-20
+              md:w-24 md:h-24
+              lg:w-28 lg:h-28
+              xl:w-32 xl:h-32
+              object-contain
+            "
           />
         ))}
       </div>
@@ -35,7 +36,10 @@ export default function LogoTicker() {
           100% { transform: translateX(-50%); }
         }
         .animate-scroll {
-          animation: scroll 30s linear infinite;
+          animation: scroll 40s linear infinite;
+        }
+        .pause-on-hover:hover {
+          animation-play-state: paused !important;
         }
       `}</style>
     </div>
