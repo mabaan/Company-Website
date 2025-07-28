@@ -1,19 +1,16 @@
 ---
+export const prerender = false;
+export const server = true;
+
 import Layout from "../../../../layouts/BaseLayout.astro";
 import { getJobs } from "../../../../lib/jobs";
 import { createApplication } from "../../../../lib/airtable";
 import { uploadResumeToFileIO } from "../../../../lib/uploadResumeToFileIO";
 
-// Fetch job info
-export async function getStaticPaths() {
-  const jobs = await getJobs();
-  return jobs.map((job) => ({
-    params: { slug: job.slug },
-    props: { job },
-  }));
-}
-
-const { job } = Astro.props;
+// Load job by slug
+const jobs = await getJobs();
+const { slug } = Astro.params;
+const job = jobs.find((j) => j.slug === slug);
 if (!job) throw new Error("Job not found");
 
 // Parse formData
@@ -21,15 +18,21 @@ let formData: FormData;
 try {
   formData = await Astro.request.formData();
 } catch {
-  formData = new FormData(); // fallback
+  console.warn("FormData fetch failed");
+  formData = new FormData();
 }
 
-const get = (field: string) => formData.get(field)?.toString() ?? "";
+const get = (field: string) => formData.get(field)?.toString().trim() ?? "";
+
+// Comment / uncomment to see all fields
+// for (const pair of formData.entries()) {
+//   console.log("FIELD:", pair[0], "VALUE:", pair[1]);
+// }
 
 // Extract + validate values
 const dob = get("dob");
-const experience = parseFloat(get("experience"));
 const gender = get("gender");
+const experience = parseFloat(get("experience"));
 
 if (!dob || isNaN(Date.parse(dob))) {
   throw new Error("Invalid or missing date of birth.");
@@ -45,9 +48,9 @@ if (isNaN(experience)) {
 
 // Upload resume (if needed)
 const resumeFile = formData.get("resume") as File | null;
-let resumeUrl = get("resumeUrl"); // fallback from review step (optional)
+let resumeUrl = get("resumeUrl"); // fallback from review step
 
-if (resumeFile && resumeFile.size > 0) {
+if (!resumeUrl && resumeFile && resumeFile.size > 0) {
   resumeUrl = await uploadResumeToFileIO(resumeFile);
 }
 
@@ -76,8 +79,13 @@ await createApplication({
   "Job Applied For": [job.id],
 });
 ---
-
-<Layout title="Application Submitted | GC Careers">
+<Layout
+  title="Application Submitted | GC Careers"
+  description="Your application has been submitted to GC International."
+  ogTitle="Application Submitted"
+  ogDescription="Your application has been submitted to GC International."
+  ogUrl={Astro.url.href}
+>
   <section class="pt-32 pb-20 px-6 text-center bg-[#f5f5f5] min-h-[60vh]">
     <div class="max-w-xl mx-auto">
       <h1 class="text-3xl font-bold text-green-600 mb-4">Application Submitted!</h1>

@@ -1,9 +1,10 @@
 // src/components/NetworkMap.tsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { LocationRecord } from "../lib/airtable";
+import Spinner from "./Spinner";
 
 // Fix default Leaflet icon issue in React
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -56,9 +57,19 @@ const LegendItem: React.FC<LegendItemProps> = ({ color, label }) => (
 
 const NetworkMap: React.FC<Props> = ({ locations }) => {
   const center: [number, number] = [25.2048, 55.2708]; // dubai default center
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   return (
-    <div className="h-[600px] w-full">
+    <div className="relative h-[600px] w-full">
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/70 z-10">
+          <Spinner />
+        </div>
+      )}
       <MapContainer
         center={center}
         zoom={2}

@@ -42,12 +42,14 @@ const GearScroll = ({ direction = "cw" }: GearScrollProps) => {
         ref={topRef}
         src={GearSVG}
         alt="Top Gear"
+        loading="lazy"
         className="gear gear-top"
       />
       <img
         ref={bottomRef}
         src={GearSVG}
         alt="Bottom Gear"
+        loading="lazy"
         className="gear gear-bottom"
       />
     </div>

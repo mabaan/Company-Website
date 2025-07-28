@@ -36,7 +36,7 @@ export async function submitToAirtable(data: Record<string, any>) {
             } as Partial<Attachment>,
           ]
         : [],
-      "Submitted At": new Date().toISOString(),
+      // "Submitted At": new Date().toISOString(),
     };
 
     const created = await base(APPLICATIONS_TABLE).create([

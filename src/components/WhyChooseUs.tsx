@@ -18,7 +18,7 @@ export default function WhyChooseUs() {
           {/* Card 1 */}
           <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200 hover:shadow-md transition">
             <div className="flex items-center gap-4 mb-4">
-              <img src="/global.svg" alt="Global Partnerships Icon" className="w-10 h-10" />
+              <img src="/global.svg" alt="Global Partnerships Icon" className="w-10 h-10" loading="lazy" />
               <h3 className="font-semibold text-gray-800 text-lg">
                 Global Partnerships
               </h3>
@@ -31,7 +31,7 @@ export default function WhyChooseUs() {
           {/* Card 2 */}
           <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200 hover:shadow-md transition">
             <div className="flex items-center gap-4 mb-4">
-              <img src="/12.svg" alt="12+ Years Icon" className="w-10 h-10" />
+              <img src="/12.svg" alt="12+ Years Icon" className="w-10 h-10" loading="lazy" />
               <h3 className="font-semibold text-gray-800 text-lg">
                 12+ Years of Expertise
               </h3>
@@ -44,7 +44,7 @@ export default function WhyChooseUs() {
           {/* Card 3 */}
           <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200 hover:shadow-md transition">
             <div className="flex items-center gap-4 mb-4">
-              <img src="/certified.svg" alt="Certified Icon" className="w-10 h-10" />
+              <img src="/certified.svg" alt="Certified Icon" className="w-10 h-10" loading="lazy" />
               <h3 className="font-semibold text-gray-800 text-lg">
                 Strong Partnerships
               </h3>
@@ -57,7 +57,7 @@ export default function WhyChooseUs() {
           {/* Card 4 */}
           <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200 hover:shadow-md transition">
             <div className="flex items-center gap-4 mb-4">
-              <img src="/engineer.svg" alt="Engineering Icon" className="w-10 h-10" />
+              <img src="/engineer.svg" alt="Engineering Icon" className="w-10 h-10" loading="lazy" />
               <h3 className="font-semibold text-gray-800 text-lg">
                 Engineering Know-how
               </h3>
@@ -70,7 +70,7 @@ export default function WhyChooseUs() {
           {/* Card 5 */}
           <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200 hover:shadow-md transition">
             <div className="flex items-center gap-4 mb-4">
-              <img src="/mission.svg" alt="Clear Mission Icon" className="w-10 h-10" />
+              <img src="/mission.svg" alt="Clear Mission Icon" className="w-10 h-10" loading="lazy" />
               <h3 className="font-semibold text-gray-800 text-lg">
                 Clear Mission
               </h3>
@@ -83,7 +83,7 @@ export default function WhyChooseUs() {
           {/* Card 6 */}
           <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200 hover:shadow-md transition">
             <div className="flex items-center gap-4 mb-4">
-              <img src="/valve.svg" alt="Valve Solutions Icon" className="w-10 h-10" />
+              <img src="/valve.svg" alt="Valve Solutions Icon" className="w-10 h-10" loading="lazy" />
               <h3 className="font-semibold text-gray-800 text-lg">
                 Comprehensive Solutions
               </h3>

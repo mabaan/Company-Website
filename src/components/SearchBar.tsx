@@ -103,7 +103,12 @@ const SearchBar = () => {
           {results.map((res) => (
             <div
               key={res.id}
+              role="button"
+              tabIndex={0}
               onClick={() => scrollTo(res.id)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") scrollTo(res.id);
+              }}
               className="cursor-pointer px-4 py-2 hover:bg-gray-100 text-sm"
               dangerouslySetInnerHTML={{ __html: res.text }}
             />

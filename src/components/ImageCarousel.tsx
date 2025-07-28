@@ -43,6 +43,7 @@ export default function ImageCarousel() {
       <img
         src={images[currentIndex]}
         alt={`Slide ${currentIndex + 1}`}
+        loading="lazy"
         className="absolute w-full h-full object-contain transition-opacity duration-500"
       />
 

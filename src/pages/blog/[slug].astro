@@ -15,10 +15,18 @@ const post = await client.fetch(
     body
   }`,
   { slug }
+const description = post.body && post.body[0] && post.body[0].children ? post.body[0].children.map((c: any) => c.text).join(" ").slice(0, 150) : "";
 );
 ---
 
-<Layout title={post.title}>
+<Layout
+  title={post.title}
+  description={description}
+  ogTitle={post.title}
+  ogDescription={description}
+  ogImage={post.imageUrl || "/logo.png"}
+  ogUrl={Astro.url.href}
+>
   <article class="max-w-3xl mx-auto px-6 py-16">
     <!-- Title & Meta -->
     <h1 class="text-4xl font-bold mb-2 text-[#0054a4]">{post.title}</h1>
