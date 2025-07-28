@@ -8,6 +8,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const token = (req.body as any)?.token;
+  console.log("Verifying reCAPTCHA token", token);
 
   if (typeof token !== "string" || !token) {
     res.status(400).json({ success: false });
@@ -29,6 +30,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     );
 
     const data = await response.json();
+    console.log("reCAPTCHA verification result", data);
     res.status(200).json({ success: !!data.success });
   } catch (err) {
     console.error("reCAPTCHA verify error:", err);
