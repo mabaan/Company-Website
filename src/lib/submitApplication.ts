@@ -1,50 +1,77 @@
-// src/lib/submitApplication.ts
-
-import { base, APPLICATIONS_TABLE } from "./airtable";
-import { uploadResumeToFileIO } from "./uploadResumeToFileIO";
-import type { Attachment, FieldSet } from "airtable";
+import { base, APPLICATIONS_TABLE, JOBS_TABLE } from "./airtable";
+import { uploadResumeToCloudinary } from "./uploadResumeToCloudinary";
 
 export async function submitToAirtable(data: Record<string, any>) {
-  try {
-    let resumeUrl = "";
+  const { resume, jobRecordId } = data;
 
-    if (data.resume instanceof File) {
-      resumeUrl = await uploadResumeToFileIO(data.resume);
-    }
+  console.log("📤 Submitting application to Airtable...");
 
-    const newRecord: Record<string, any> = {
-      "First Name": data.firstName,
-      "Last Name": data.lastName,
-      Email: data.email,
-      Phone: `${data.countryCode} ${data.phone}`,
-      Gender: data.gender,
-      Nationality: data.nationality,
-      "Date of Birth": data.dob,
-      "Visa Status": data.visa,
-      Experience: data.experience,
-      LinkedIn: data.linkedin || "N/A",
-      About: data.about,
-      "Job Title": data.jobTitle,
-      Resume: resumeUrl
-        ? [
-            {
-              url: resumeUrl,
-              filename: "resume.pdf",
-            } as Partial<Attachment>,
-          ]
-        : [],
-      "Submitted At": new Date().toISOString(),
-    };
-
-    const created = await base(APPLICATIONS_TABLE).create([
-      {
-        fields: newRecord,
+  // Step 1: Create application record (no Resume, no Resume URL)
+  const [applicationRecord] = await base(APPLICATIONS_TABLE).create([
+    {
+      fields: {
+        "First Name": data.firstName,
+        "Last Name": data.lastName,
+        Email: data.email,
+        "Country Code": data.countryCode,
+        "Phone Number": data.phone,
+        Gender: data.gender,
+        Nationality: data.nationality,
+        DOB: data.dob,
+        "Visa Status": data.visa,
+        Experience: parseFloat(data.experience),
+        LinkedIn: data.linkedin ?? "",
+        About: data.about ?? "",
+        "Job Applied For": [jobRecordId],
+        // "Submitted at": new Date().toISOString(),
       },
-    ]);
+    },
+  ]);
 
-    return created[0].id;
-  } catch (err) {
-    console.error("Failed to submit to Airtable:", err);
-    throw new Error("Submission failed.");
+  console.log("✅ Airtable record created:", applicationRecord);
+
+  const applicationId = applicationRecord.fields["Application ID"] as
+    | string
+    | number;
+  const applicationAirtableId = applicationRecord.id;
+
+  if (!applicationId) {
+    console.error("❌ Application ID missing in record:", applicationRecord);
+    throw new Error("❌ Application ID is missing from Airtable response.");
   }
+
+  // Step 2: Get Job ID (auto number) from linked Job
+  const job = await base(JOBS_TABLE).find(jobRecordId);
+  const jobId = job.fields["Job ID"] as string | number;
+
+  console.log("🔍 Fetched Job record:", job);
+
+  if (!jobId) {
+    console.error("❌ Job ID missing in record:", job);
+    throw new Error("❌ Job ID is missing from job record.");
+  }
+
+  // Step 3: Upload resume to Cloudinary using IDs (no PATCH to Airtable)
+  if (resume && resume instanceof File) {
+    console.log("📄 Uploading resume to Cloudinary...");
+
+    const resumeUrl = await uploadResumeToCloudinary(
+      resume,
+      jobId,
+      applicationId
+    );
+
+    console.log("✅ Resume uploaded to Cloudinary:", resumeUrl);
+    console.log(
+      "ℹ️ Resume URL is computed automatically in Airtable via formula."
+    );
+  } else {
+    console.warn("⚠️ No resume provided or file is not a valid File object.");
+  }
+
+  console.log(
+    "🎉 Application submission complete. Airtable ID:",
+    applicationAirtableId
+  );
+  return applicationAirtableId;
 }

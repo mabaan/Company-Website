@@ -1,6 +1,6 @@
-// src/lib/jobs.ts
 export interface Job {
-  id: string;
+  id: string; // Airtable record ID (recXXXXXX)
+  jobId: number; // Auto number from Airtable field "Job ID"
   title: string;
   slug: string;
   department: string;
@@ -17,9 +17,10 @@ export async function getJobs(): Promise<Job[]> {
   const baseId = import.meta.env.AIRTABLE_BASE_ID;
   const table = import.meta.env.AIRTABLE_JOBS_TABLE;
 
+  // Correct Airtable formula to check if 'isActive' checkbox is TRUE
   const url = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(
     table
-  )}?filterByFormula=isActive`;
+  )}?filterByFormula=IF({isActive}, TRUE(), FALSE())`;
 
   const response = await fetch(url, {
     headers: {
@@ -37,7 +38,8 @@ export async function getJobs(): Promise<Job[]> {
 
   return (data.records || []).map(
     (record: any): Job => ({
-      id: record.id,
+      id: record.id, // ✅ record ID from Airtable
+      jobId: record.fields["Job ID"],
       title: record.fields["Title"],
       slug: record.fields["Slug"],
       department: record.fields["Department"],

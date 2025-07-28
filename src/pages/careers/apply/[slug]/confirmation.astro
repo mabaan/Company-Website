@@ -1,45 +1,116 @@
 ---
+export const prerender = false;
+export const server = true;
+
 import Layout from "../../../../layouts/BaseLayout.astro";
 import { getJobs } from "../../../../lib/jobs";
+import { uploadResumeToCloudinary } from "../../../../lib/uploadResumeToCloudinary";
+import { base, APPLICATIONS_TABLE } from "../../../../lib/airtable";
 
-export async function getStaticPaths() {
-  const jobs = await getJobs();
-  return jobs.map((job) => ({
-    params: { slug: job.slug },
-    props: { job },
-  }));
-}
+// Load job by slug
+const jobs = await getJobs();
+const { slug } = Astro.params;
+const job = jobs.find((j) => j.slug === slug);
+if (!job) throw new Error("Job not found");
 
-const { job } = Astro.props;
+console.log("✅ Job loaded:", job);
 
-// Fallback formData parsing
+// Parse formData
 let formData: FormData;
 try {
   formData = await Astro.request.formData();
 } catch {
-  formData = new FormData(); // fallback if nothing is posted
+  console.warn("⚠️ FormData fetch failed");
+  formData = new FormData();
 }
+
+const get = (field: string) => formData.get(field)?.toString().trim() ?? "";
+
+const dob = get("dob");
+const gender = get("gender");
+const experience = parseFloat(get("experience"));
+
+if (!dob || isNaN(Date.parse(dob))) throw new Error("❌ Invalid DOB");
+if (!["Male", "Female"].includes(gender)) throw new Error("❌ Invalid gender");
+if (isNaN(experience)) throw new Error("❌ Invalid experience");
+
+const resumeFile = formData.get("resume") as File | null;
+let resumeUrl = get("resumeUrl");
+
+console.log("📥 Form parsed. Resume file present:", !!resumeFile);
+
+// Step 1: Create Airtable record first
+const [newRecord] = await base(APPLICATIONS_TABLE).create([
+  {
+    fields: {
+      "First Name": get("firstName"),
+      "Last Name": get("lastName"),
+      Email: get("email"),
+      "Country Code": get("countryCode"),
+      "Phone Number": get("phone"),
+      Nationality: get("nationality"),
+      Gender: gender,
+      DOB: dob,
+      "Visa Status": get("visa"),
+      Experience: experience,
+      LinkedIn: get("linkedin"),
+      About: get("about"),
+      "Job Applied For": [job.id], // ✅ Correct Airtable record ID
+      // "Submitted at": new Date().toISOString(), // Optional: Computed field
+    },
+  },
+]);
+
+const applicationId = newRecord.fields["Application ID"];
+const applicationRecordId = newRecord.id;
+
+if (!applicationId) {
+  console.error("❌ Missing Application ID from Airtable");
+  throw new Error("Application ID missing");
+}
+
+console.log("✅ Created application record:", {
+  id: applicationRecordId,
+  appId: applicationId,
+});
+
+// Step 2: Upload resume and PATCH Airtable
+if (!resumeUrl && resumeFile && resumeFile.size > 0) {
+  const jobId = job.jobId;
+  if (!jobId) {
+    console.error("❌ Job ID is missing from job record");
+    throw new Error("Job ID required for Cloudinary upload");
+  }
+
+  console.log("📤 Uploading resume to Cloudinary...");
+  resumeUrl = await uploadResumeToCloudinary(resumeFile, jobId, applicationId);
+
+  console.log("✅ Resume uploaded:", resumeUrl);
+}
+
+// You can add a redirect or render confirmation here
 ---
 
 <Layout
-  title="Application Submitted | GC Careers"
-  description="Your application has been submitted to GC International."
-  ogTitle="Application Submitted"
-  ogDescription="Your application has been submitted to GC International."
+  title={`Application Submitted | ${job.title}`}
+  description={`Your application for ${job.title} has been submitted.`}
+  ogTitle={`Application Submitted | ${job.title}`}
+  ogDescription={`Thank you for applying to GC International.`}
   ogUrl={Astro.url.href}
 >
-  <section class="pt-32 pb-20 px-6 text-center bg-[#f5f5f5] min-h-[60vh]">
-    <div class="max-w-xl mx-auto">
-      <h1 class="text-3xl font-bold text-green-600 mb-4"> Application Submitted!</h1>
-      <p class="text-lg mb-6">
-        Thank you for applying for the <strong>{job.title}</strong> position at GC International.
-      </p>
-      <p class="text-gray-700">
-        Our HR team will review your submission and reach out if your profile matches our requirements.
-      </p>
-      <a href="/careers" class="inline-block mt-6 bg-[#0054a4] text-white px-5 py-2 rounded hover:bg-blue-700 transition">
-        Back to Careers
-      </a>
-    </div>
+  <section class="pt-32 pb-12 px-4 max-w-2xl mx-auto text-center">
+    <h1 class="text-3xl font-bold mb-4">Application Submitted</h1>
+    <p class="text-lg mb-4">
+      Thank you for applying to <strong>{job.title}</strong> at GC International.
+    </p>
+    <p class="text-gray-600 mb-6">
+      We’ve received your application and will get back to you shortly.
+    </p>
+    <a
+      href="/careers"
+      class="inline-block bg-[#0054a4] hover:bg-blue-700 text-white px-6 py-2 rounded text-sm font-medium"
+    >
+      View Other Openings
+    </a>
   </section>
 </Layout>

@@ -4,7 +4,7 @@ export const prerender = false;
 import Layout from "../../../../layouts/BaseLayout.astro";
 import { getJobs, type Job } from "../../../../lib/jobs";
 
-// ✅ Required for dynamic `[slug]` routes
+// Static paths
 export async function getStaticPaths() {
   const jobs = await getJobs();
   return jobs.map((job) => ({
@@ -13,22 +13,26 @@ export async function getStaticPaths() {
   }));
 }
 
-// ✅ Access slug from URL
+// Load job
 const { slug } = Astro.params;
-
-// ✅ Get job data
 const jobs: Job[] = await getJobs();
 const job = jobs.find((j) => j.slug === slug);
 if (!job) throw new Error(`Job not found for slug: ${slug}`);
 
-// ✅ Access form data from POST
-let formData: FormData;
-try {
-  formData = await Astro.request.formData();
-} catch {
-  formData = new FormData(); // avoid crash
-}
-const get = (field: string) => formData.get(field) ?? "";
+// Get submitted data from URL
+const url = new URL(Astro.url.href);
+const get = (field: string) => url.searchParams.get(field) ?? "";
+
+const resumeUrl = get("resumeUrl");
+
+console.log("🔍 Previewing application:", {
+  firstName: get("firstName"),
+  lastName: get("lastName"),
+  email: get("email"),
+  resumeUrl,
+});
+
+const isPdf = resumeUrl.endsWith(".pdf");
 ---
 
 <Layout
@@ -44,24 +48,57 @@ const get = (field: string) => formData.get(field) ?? "";
     </h1>
 
     <ul class="space-y-3 text-lg">
-      <li><strong>Full Name:</strong> {get("firstName")} {get("lastName")}</li>
+      <li><strong>First Name:</strong> {get("firstName")}</li>
+      <li><strong>Last Name:</strong> {get("lastName")}</li>
       <li><strong>Email:</strong> {get("email")}</li>
-      <li><strong>Phone:</strong> {get("countryCode")}{get("phone")}</li>
+      <li><strong>Phone:</strong> {get("countryCode")} {get("phone")}</li>
       <li><strong>Gender:</strong> {get("gender")}</li>
       <li><strong>Nationality:</strong> {get("nationality")}</li>
       <li><strong>Date of Birth:</strong> {get("dob")}</li>
-      <li><strong>Visa:</strong> {get("visa")}</li>
-      <li><strong>Experience:</strong> {get("experience")} years</li>
+      <li><strong>Visa Status:</strong> {get("visa")}</li>
+      <li><strong>Experience:</strong> {get("experience")}</li>
       <li><strong>LinkedIn:</strong> {get("linkedin")}</li>
       <li><strong>About:</strong> {get("about")}</li>
     </ul>
 
-    <!-- pass data to confirmation -->
-    <form method="POST" action={`/careers/apply/${slug}/confirmation`} class="mt-8">
-      {Array.from(formData.entries()).map(([key, value]) => (
-        <input type="hidden" name={key} value={String(value)} />
-      ))}
-      <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded mt-4">
+    {isPdf && (
+      <div class="mt-10">
+        <h2 class="text-xl font-semibold mb-3">Resume Preview</h2>
+        <div class="border border-gray-300 rounded shadow-md">
+          <iframe
+            src={resumeUrl}
+            class="w-full h-[600px]"
+            title="Resume Preview"
+          ></iframe>
+        </div>
+      </div>
+    )}
+
+    <!-- Send data to confirmation -->
+    <form
+      method="POST"
+      enctype="multipart/form-data"
+      action={`/careers/apply/${slug}/confirmation`}
+      class="mt-8"
+    >
+      <input type="hidden" name="firstName" value={get("firstName")} />
+      <input type="hidden" name="lastName" value={get("lastName")} />
+      <input type="hidden" name="email" value={get("email")} />
+      <input type="hidden" name="phone" value={get("phone")} />
+      <input type="hidden" name="countryCode" value={get("countryCode")} />
+      <input type="hidden" name="gender" value={get("gender")} />
+      <input type="hidden" name="nationality" value={get("nationality")} />
+      <input type="hidden" name="dob" value={get("dob")} />
+      <input type="hidden" name="visa" value={get("visa")} />
+      <input type="hidden" name="experience" value={get("experience")} />
+      <input type="hidden" name="linkedin" value={get("linkedin")} />
+      <input type="hidden" name="about" value={get("about")} />
+      <input type="hidden" name="resumeUrl" value={resumeUrl} />
+
+      <button
+        type="submit"
+        class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded mt-4"
+      >
         Submit Application
       </button>
     </form>
