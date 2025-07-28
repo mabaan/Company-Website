@@ -71,13 +71,13 @@ export default function StatsSection() {
             >
               <div className="flex items-baseline">
                 <span
-                  className="counter text-4xl sm:text-5xl font-bold text-[#1e3a8a]"
+                  className="counter text-4xl sm:text-5xl font-bold text-[#ed1c24]"
                   data-end={stat.value}
                 >
                   0
                 </span>
                 {stat.suffix && (
-                  <span className="text-xl sm:text-2xl font-bold text-[#1e3a8a] ml-1">
+                  <span className="text-xl sm:text-2xl font-bold text-[#ed1c24] ml-1">
                     {stat.suffix}
                   </span>
                 )}
