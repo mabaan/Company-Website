@@ -5,6 +5,7 @@ import Layout from "../../../../layouts/BaseLayout.astro";
 import { getJobs, type Job } from "../../../../lib/jobs";
 import { getCountryList } from "../../../../lib/getCountryData";
 import type { Country } from "../../../../lib/getCountryData";
+import RecaptchaCheckbox from "../../../../components/RecaptchaCheckbox";
 
 // Static paths
 export async function getStaticPaths() {
@@ -42,6 +43,7 @@ const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
     <h1 class="text-3xl font-bold mb-4">Apply for {job.title}</h1>
 
     <form
+      id="applicationForm"
       method="POST"
       enctype="multipart/form-data"
       action={`/careers/apply/${slug}/review`}
@@ -140,7 +142,10 @@ const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
 
       <div class="pt-6 flex justify-between">
         <a href={`/careers/${job.slug}`} class="bg-[#ed1c24] hover:bg-red-600 text-white px-6 py-2 rounded text-sm font-medium">Back to Job</a>
-        <button type="submit" class="bg-[#0054a4] hover:bg-blue-700 text-white px-6 py-2 rounded text-sm font-medium">Review Application</button>
+        <div class="flex flex-col items-end space-y-4">
+          <RecaptchaCheckbox client:load />
+          <button id="applyBtn" type="submit" class="bg-[#0054a4] hover:bg-blue-700 text-white px-6 py-2 rounded text-sm font-medium">Review Application</button>
+        </div>
       </div>
     </form>
   </section>
@@ -157,13 +162,36 @@ const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
         });
       }
 
-      document.querySelector("form")?.addEventListener("submit", (e) => {
+      document.getElementById("applyBtn")?.addEventListener("click", async (e) => {
+        e.preventDefault();
         const fileInput = document.getElementById("resumeInput");
-        if (!(fileInput instanceof HTMLInputElement)) return;
-        const file = fileInput.files?.[0];
-        if (file && file.size > 1048576) {
-          e.preventDefault();
-          alert("Resume must be under 1 MB.");
+        if (fileInput instanceof HTMLInputElement) {
+          const file = fileInput.files?.[0];
+          if (file && file.size > 1048576) {
+            alert("Resume must be under 1 MB.");
+            return;
+          }
+        }
+
+        try {
+          console.log("Requesting reCAPTCHA token");
+          const token = await window.recaptchaRef?.getToken();
+          console.log("Token received", token);
+          const resp = await fetch("/api/verifyRecaptcha", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token }),
+          });
+          const { success } = await resp.json();
+          console.log("Token verification", success);
+          if (!success) {
+            alert("Recaptcha failed—please try again.");
+            return;
+          }
+          document.getElementById("applicationForm")?.submit();
+        } catch (err) {
+          console.error(err);
+          alert("Recaptcha failed—please try again.");
         }
       });
     });
