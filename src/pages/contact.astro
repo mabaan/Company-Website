@@ -15,7 +15,6 @@ if (Astro.request.method === "POST") {
       Email: get("email"),
       Phone: get("phone"),
       Message: get("message"),
-      "Submitted at": new Date().toISOString(),
     };
 
     await createContact(data);

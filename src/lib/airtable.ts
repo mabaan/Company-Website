@@ -108,7 +108,6 @@ export interface ContactFields extends FieldSet {
   Email: string;
   Phone: string;
   Message: string;
-  'Submitted at': string;
 }
 
 function contactTable(): Table<ContactFields> {
