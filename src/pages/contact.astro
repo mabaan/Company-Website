@@ -4,6 +4,8 @@ export const prerender = false;
 
 import Layout from "../layouts/BaseLayout.astro";
 import { createContact } from "../lib/airtable";
+import { contactAcknowledgement, contactNotification } from "../lib/emailTemplates";
+import { sendMail } from "../lib/mailgunClient";
 
 if (Astro.request.method === "POST") {
   try {
@@ -18,6 +20,39 @@ if (Astro.request.method === "POST") {
     };
 
     await createContact(data);
+
+    const contactData = {
+      name: get("name"),
+      company: get("company"),
+      email: get("email"),
+      phone: get("phone"),
+      message: get("message"),
+      submittedAt: new Date().toISOString(),
+    };
+
+    const contactAck = contactAcknowledgement({ name: contactData.name });
+    const contactNotif = contactNotification(contactData);
+
+    try {
+      await sendMail({
+        to: contactData.email,
+        subject: contactAck.subject,
+        html: contactAck.html,
+      });
+    } catch (err) {
+      console.error("Failed to send contact acknowledgement:", err);
+    }
+
+    try {
+      await sendMail({
+        to: process.env.MAIL_CONTACT!,
+        subject: contactNotif.subject,
+        html: contactNotif.html,
+      });
+    } catch (err) {
+      console.error("Failed to send contact notification:", err);
+    }
+
     return new Response(null, { status: 200 });
   } catch (err) {
     console.error("Failed to submit contact form:", err);

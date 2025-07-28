@@ -6,6 +6,8 @@ import Layout from "../../../../layouts/BaseLayout.astro";
 import { getJobs } from "../../../../lib/jobs";
 import { uploadResumeToCloudinary } from "../../../../lib/uploadResumeToCloudinary";
 import { base, APPLICATIONS_TABLE } from "../../../../lib/airtable";
+import { applicantConfirmation, hrNotification } from "../../../../lib/emailTemplates";
+import { sendMail } from "../../../../lib/mailgunClient";
 
 // Load job by slug
 const jobs = await getJobs();
@@ -94,6 +96,52 @@ if (!resumeUrl && resumeFile && resumeFile.size > 0) {
   resumeUrl = await uploadResumeToCloudinary(resumeFile, jobId, applicationId);
 
   console.log("✅ Resume uploaded:", resumeUrl);
+}
+
+// Step 3: Prepare and send confirmation emails
+const applicantPayload = applicantConfirmation({
+  firstName: get("firstName"),
+  role: job.title,
+});
+
+const hrPayload = hrNotification({
+  applicationId,
+  jobId: job.jobId,
+  firstName: get("firstName"),
+  lastName: get("lastName"),
+  email: get("email"),
+  countryCode: get("countryCode"),
+  phone: get("phone"),
+  nationality: get("nationality"),
+  gender,
+  dob,
+  visa: get("visa"),
+  experience,
+  linkedin: get("linkedin"),
+  about: get("about"),
+  resumeUrl,
+  role: job.title,
+});
+
+try {
+  await sendMail({
+    to: formData.get("email") as string,
+    subject: applicantPayload.subject,
+    html: applicantPayload.html,
+  });
+} catch (err) {
+  console.error("Failed to send applicant email:", err);
+}
+
+try {
+  await sendMail({
+    to: process.env.MAIL_HR!,
+    bcc: process.env.MAIL_CONTACT!,
+    subject: hrPayload.subject,
+    html: hrPayload.html,
+  });
+} catch (err) {
+  console.error("Failed to send HR notification:", err);
 }
 
 // You can add a redirect or render confirmation here
