@@ -115,7 +115,7 @@ const NetworkMap: React.FC<Props> = ({ locations }) => {
         ))}
       </MapContainer>
 
-      <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-center">
+      <div className="mt-6 flex flex-wrap justify-center gap-4 text-md text-center">
         <LegendItem color="blue" label="Headquarters" />
         <LegendItem color="green" label="Partner" />
         <LegendItem color="orange" label="End User" />

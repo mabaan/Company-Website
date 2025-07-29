@@ -5,7 +5,7 @@ import Layout from "../../../../layouts/BaseLayout.astro";
 import { getJobs, type Job } from "../../../../lib/jobs";
 import { getCountryList } from "../../../../lib/getCountryData";
 import type { Country } from "../../../../lib/getCountryData";
-import { submitToAirtable } from "../../../../lib/submitApplication";
+import RecaptchaCheckbox from "../../../../components/RecaptchaCheckbox";
 
 // Static paths
 export async function getStaticPaths() {
@@ -29,79 +29,6 @@ const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
 
 
 
-// Handle POST
-if (Astro.request.method === "POST") {
-  const allJobs = await getJobs();
-  const job = allJobs.find((j) => j.slug === Astro.params.slug);
-
-  if (!job) {
-    return new Response("Job not found", { status: 404 });
-  }
-
-  try {
-    const formData = await Astro.request.formData();
-
-    const firstName = formData.get("firstName")?.toString() || "";
-    const lastName = formData.get("lastName")?.toString() || "";
-    const email = formData.get("email")?.toString() || "";
-    const phone = formData.get("phone")?.toString() || "";
-    const countryCode = formData.get("countryCode")?.toString() || "";
-    const gender = formData.get("gender")?.toString() || "";
-    const nationality = formData.get("nationality")?.toString() || "";
-    const dob = formData.get("dob")?.toString() || "";
-    const visa = formData.get("visa")?.toString() || "";
-    const linkedin = formData.get("linkedin")?.toString() || "";
-    const about = formData.get("about")?.toString() || "";
-    const resumeFile = formData.get("resume") as File;
-
-    const experienceRaw = formData.get("experience")?.toString() || "";
-    const experience = parseFloat(experienceRaw);
-    if (isNaN(experience)) throw new Error("Invalid experience value.");
-
-    console.log("📋 Form parsed. Submitting to Airtable...");
-
-    const applicationId = await submitToAirtable({
-      firstName,
-      lastName,
-      email,
-      phone,
-      countryCode,
-      gender,
-      nationality,
-      dob,
-      visa,
-      linkedin,
-      about,
-      experience,
-      resume: resumeFile,
-      jobRecordId: job.id,
-    });
-
-    console.log("✅ Submission successful. Airtable ID:", applicationId);
-
-    const query = new URLSearchParams({
-      firstName,
-      lastName,
-      email,
-      phone,
-      countryCode,
-      gender,
-      nationality,
-      dob,
-      visa,
-      experience: experienceRaw,
-      linkedin,
-      about,
-    }).toString();
-
-    return Astro.redirect(`/careers/apply/${job.slug}/review?${query}`);
-  } catch (err: any) {
-    console.error("❌ Submission failed:", JSON.stringify(err, null, 2));
-    return new Response(`Submission failed: ${err?.message || "Unknown error"}`, {
-      status: 500,
-    });
-  }
-}
 
 ---
 
@@ -115,7 +42,13 @@ if (Astro.request.method === "POST") {
   <section class="pt-32 pb-12 px-4 max-w-3xl mx-auto">
     <h1 class="text-3xl font-bold mb-4">Apply for {job.title}</h1>
 
-    <form method="POST" enctype="multipart/form-data" class="space-y-6">
+    <form
+      id="applicationForm"
+      method="POST"
+      enctype="multipart/form-data"
+      action={`/careers/apply/${slug}/review`}
+      class="space-y-6"
+    >
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="grid gap-1">
           <label for="firstName">First Name *</label>
@@ -209,7 +142,10 @@ if (Astro.request.method === "POST") {
 
       <div class="pt-6 flex justify-between">
         <a href={`/careers/${job.slug}`} class="bg-[#ed1c24] hover:bg-red-600 text-white px-6 py-2 rounded text-sm font-medium">Back to Job</a>
-        <button type="submit" class="bg-[#0054a4] hover:bg-blue-700 text-white px-6 py-2 rounded text-sm font-medium">Submit Application</button>
+        <div class="flex flex-col items-end space-y-4">
+          <RecaptchaCheckbox client:load />
+          <button id="applyBtn" type="submit" class="bg-[#0054a4] hover:bg-blue-700 text-white px-6 py-2 rounded text-sm font-medium">Review Application</button>
+        </div>
       </div>
     </form>
   </section>
@@ -226,13 +162,36 @@ if (Astro.request.method === "POST") {
         });
       }
 
-      document.querySelector("form")?.addEventListener("submit", (e) => {
+      document.getElementById("applyBtn")?.addEventListener("click", async (e) => {
+        e.preventDefault();
         const fileInput = document.getElementById("resumeInput");
-        if (!(fileInput instanceof HTMLInputElement)) return;
-        const file = fileInput.files?.[0];
-        if (file && file.size > 1048576) {
-          e.preventDefault();
-          alert("Resume must be under 1 MB.");
+        if (fileInput instanceof HTMLInputElement) {
+          const file = fileInput.files?.[0];
+          if (file && file.size > 1048576) {
+            alert("Resume must be under 1 MB.");
+            return;
+          }
+        }
+
+        try {
+          console.log("Requesting reCAPTCHA token");
+          const token = await window.recaptchaRef?.getToken();
+          console.log("Token received", token);
+          const resp = await fetch("/api/verifyRecaptcha", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token }),
+          });
+          const { success } = await resp.json();
+          console.log("Token verification", success);
+          if (!success) {
+            alert("Recaptcha failed—please try again.");
+            return;
+          }
+          document.getElementById("applicationForm")?.submit();
+        } catch (err) {
+          console.error(err);
+          alert("Recaptcha failed—please try again.");
         }
       });
     });

@@ -1,192 +1,167 @@
+// src/components/ValveViewer.tsx
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
-const ValveViewer = () => {
+export default function ValveViewer() {
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const modelRef = useRef<THREE.Group | null>(null);
   const frameRef = useRef<number | null>(null);
-
-  const baseSizeRef = useRef<THREE.Vector3 | null>(null);
-  const updateModelSizeRef = useRef<() => void>(() => {});
+  const updateSizeRef = useRef<() => void>(() => {});
 
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const width = containerRef.current.clientWidth || window.innerWidth;
-    const height = containerRef.current.clientHeight || window.innerHeight;
-
+    // ————————————————————————————————
+    // 1) Scene, Camera & Lights
+    // ————————————————————————————————
     const scene = new THREE.Scene();
-
-    const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
+    const camera = new THREE.PerspectiveCamera(
+      50,
+      containerRef.current.clientWidth / containerRef.current.clientHeight,
+      0.1,
+      100
+    );
     camera.position.set(2, 0, 6);
     camera.lookAt(0, 0, 0);
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(width, height);
-    renderer.domElement.style.position = "fixed";
-    renderer.domElement.style.top = "0";
-    renderer.domElement.style.left = "0";
-    renderer.domElement.style.width = "100%";
-    renderer.domElement.style.height = "100%";
-    renderer.domElement.style.pointerEvents = "none";
-    renderer.domElement.style.zIndex = "10";
-
+    renderer.setSize(
+      containerRef.current.clientWidth,
+      containerRef.current.clientHeight
+    );
+    Object.assign(renderer.domElement.style, {
+      position: "absolute",
+      top: "0",
+      left: "0",
+      width: "100%",
+      height: "100%",
+      pointerEvents: "none",
+      zIndex: "0",
+    });
     containerRef.current.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.5));
-    const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(5, 5, 5);
-    scene.add(light);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+    dirLight.position.set(5, 5, 5);
+    scene.add(dirLight);
 
-    let scrollTriggerInstance: ScrollTrigger | undefined;
+    // ————————————————————————————————
+    // 2) Load & center the model
+    // ————————————————————————————————
+    import("three/examples/jsm/loaders/GLTFLoader.js").then(({ GLTFLoader }) => {
+      new GLTFLoader().load("/models/3way_valve.glb", (gltf) => {
+        const valve = gltf.scene;
+        scene.add(valve);
 
-    import("three/examples/jsm/loaders/GLTFLoader.js").then(
-      ({ GLTFLoader }) => {
-        const loader = new GLTFLoader();
-        loader.load("/models/3way_valve.glb", (gltf) => {
-          const model = gltf.scene;
-          scene.add(model);
-          modelRef.current = model;
+        // center pivot
+        const box = new THREE.Box3().setFromObject(valve);
+        const center = box.getCenter(new THREE.Vector3());
+        valve.position.sub(center);
 
-          // --- Center model to its origin so positions are consistent ---
-          const box = new THREE.Box3().setFromObject(model);
-          const center = box.getCenter(new THREE.Vector3());
-          model.position.sub(center);
-          model.updateMatrixWorld(true);
+        // compute base size
+        const size = new THREE.Vector3();
+        box.getSize(size);
 
-          const baseSize = new THREE.Vector3();
-          box.getSize(baseSize);
-          baseSizeRef.current = baseSize;
+        // responsive size & position fn
+        const updateValve = () => {
+          const w = window.innerWidth;
+          if (w < 640) {
+            valve.visible = false;
+            return;
+          }
+          valve.visible = true;
 
-          // --- Responsive sizing & positioning (anchored to right edge) ---
-          const updateModelSize = () => {
-            const screenWidth = window.innerWidth;
+          // detailed breakpoints
+          const scale =
+            w >= 3440 ? 0.007 :  // super-ultrawide
+            w >= 2560 ? 0.006 :  // ultrawide
+            w >= 1920 ? 0.005 :  // large desktop
+            w >= 1440 ? 0.0045 : // desktop
+            w >= 1024 ? 0.004 :  // laptop/tablet
+            0.0032;              // small
 
-            if (screenWidth < 768) {
-              model.visible = false;
-              return;
-            }
-            model.visible = true;
+          valve.scale.setScalar(scale);
 
-            // 1) Choose scale by breakpoint (tweak these freely)
-            let scale: number;
-            if (screenWidth >= 3000) scale = 0.0024;
-            else if (screenWidth >= 2560) scale = 0.0028;
-            else if (screenWidth >= 1920) scale = 0.0035;
-            else if (screenWidth >= 1440) scale = 0.004;
-            else if (screenWidth >= 1024) scale = 0.0042;
-            else scale = 0.0031; // 768–1023
+          // maintain camera aspect
+          const h = window.innerHeight;
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
 
-            model.scale.setScalar(scale);
+          // anchor to right edge
+          const dist = camera.position.z;
+          const halfH = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * dist;
+          const halfW = halfH * camera.aspect;
+          const marginPx = 
+            w >= 3440 ? 500 :
+            w >= 2560 ? 400 :
+            w >= 1920 ? 300 :
+            200;
+          const worldPerPx = (halfW * 2) / w;
+          const marginWorld = marginPx * worldPerPx;
+          const halfModelW = (size.x * scale) / 2;
 
-            // 2) Keep constant pixel margin from the right edge
-            const w = containerRef.current?.clientWidth ?? window.innerWidth;
-            const h = containerRef.current?.clientHeight ?? window.innerHeight;
+          valve.position.set(halfW - marginWorld - halfModelW, 0, 0);
 
-            camera.aspect = w / h;
-            camera.updateProjectionMatrix();
+          // initial static orientation: tilt X/Z so “top” faces up
+          valve.rotation.set(2.25, 0, 5.5); 
+          // note: Y=0 so we spin purely around vertical axis
+        };
 
-            const distance = camera.position.z - 0; // model at z = 0
-            const halfHeight =
-              Math.tan(THREE.MathUtils.degToRad(camera.fov * 0.5)) * distance;
-            const halfWidth = halfHeight * camera.aspect;
+        updateSizeRef.current = updateValve;
+        updateValve();
 
-            const marginPx =
-              screenWidth < 1024
-                ? 72
-                : screenWidth < 1440
-                ? 190
-                : screenWidth < 1920
-                ? 260
-                : screenWidth < 2560
-                ? 300
-                : screenWidth < 3000
-                ? 400
-                : 500;
-
-            const worldPerPx = (halfWidth * 2) / w;
-            const marginWorld = marginPx * worldPerPx;
-
-            const base = baseSizeRef.current ?? new THREE.Vector3(1, 1, 1);
-            const modelHalfWidth = (base.x * scale) / 2;
-
-            const xPos = halfWidth - marginWorld - modelHalfWidth;
-            const yPos = 0;
-
-            model.position.set(xPos, yPos, 0);
-            model.rotation.set(2.25, 0.3, 5.5);
-          };
-
-          updateModelSizeRef.current = updateModelSize;
-          updateModelSize(); // initial
-
-          // Scroll rotation
-          scrollTriggerInstance = gsap.to(model.rotation, {
-            y: "+=6.28",
-            ease: "none",
-            scrollTrigger: {
-              trigger: document.body,
-              start: "top top",
-              end: "bottom bottom",
-              scrub: true,
-            },
-          }) as unknown as ScrollTrigger;
+        // ————————————————————————————————
+        // 3) Continuous Y-axis spin (left ↔ right)
+        // ————————————————————————————————
+        gsap.to(valve.rotation, {
+          y: "+=6.28319",  // 2π radians
+          duration: 40,
+          ease: "none",
+          repeat: -1,
         });
-      }
-    );
+      });
+    });
 
+    // ————————————————————————————————
+    // 4) Render loop
+    // ————————————————————————————————
     const animate = () => {
       frameRef.current = requestAnimationFrame(animate);
       renderer.render(scene, camera);
     };
     animate();
 
-    const handleResize = () => {
+    // ————————————————————————————————
+    // 5) Resize handler
+    // ————————————————————————————————
+    const onResize = () => {
       if (!rendererRef.current || !containerRef.current) return;
-      const newWidth = containerRef.current.clientWidth || window.innerWidth;
-      const newHeight = containerRef.current.clientHeight || window.innerHeight;
-
-      renderer.setSize(newWidth, newHeight);
-      camera.aspect = newWidth / newHeight;
+      rendererRef.current.setSize(
+        containerRef.current.clientWidth,
+        containerRef.current.clientHeight
+      );
+      camera.aspect =
+        containerRef.current.clientWidth / containerRef.current.clientHeight;
       camera.updateProjectionMatrix();
-
-      if (modelRef.current) {
-        updateModelSizeRef.current();
-      }
+      updateSizeRef.current();
     };
+    window.addEventListener("resize", onResize);
 
-    window.addEventListener("resize", handleResize);
-
+    // ————————————————————————————————
+    // 6) Cleanup
+    // ————————————————————————————————
     return () => {
-      if (frameRef.current) cancelAnimationFrame(frameRef.current);
+      cancelAnimationFrame(frameRef.current!);
+      window.removeEventListener("resize", onResize);
       if (rendererRef.current) {
         rendererRef.current.dispose();
-        if (rendererRef.current.domElement.parentNode) {
-          rendererRef.current.domElement.parentNode.removeChild(
-            rendererRef.current.domElement
-          );
-        }
+        rendererRef.current.domElement.remove();
       }
-      window.removeEventListener("resize", handleResize);
-      if (scrollTriggerInstance) scrollTriggerInstance.kill();
-      if (containerRef.current) containerRef.current.innerHTML = "";
     };
   }, []);
 
-  return (
-    <div
-      ref={containerRef}
-      // If you prefer Tailwind to hide completely on mobile, keep md:block hidden.
-      // Otherwise, drop those classes and let JS handle visibility.
-      className="fixed top-0 left-0 w-full h-screen z-10 pointer-events-none md:block hidden"
-    />
-  );
-};
-
-export default ValveViewer;
+  // Parent container must be `.relative` so this `.absolute` fills it:
+  return <div ref={containerRef} className="absolute inset-0" />;
+}
