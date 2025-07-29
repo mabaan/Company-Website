@@ -23,7 +23,7 @@ export default function RecaptchaCheckbox() {
 
     function init() {
       widgetIdRef.current = window.grecaptcha.render("recaptcha-container", {
-        sitekey: import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY,
+        sitekey: import.meta.env.RECAPTCHA_SITE_KEY,
         theme: "light",
       });
 
