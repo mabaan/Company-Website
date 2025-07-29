@@ -7,7 +7,7 @@ const images = [
   "/factory/offshore.jpg",
   "/factory/valve3.jpg",
   "/factory/DIEZ.jpg",
-  "/factory/factory3.jpg",
+  // "/factory/factory3.jpg",
   "/factory/valve2.png",
 ];
 
