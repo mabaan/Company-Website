@@ -58,7 +58,10 @@ export function applicantConfirmation({
                 </h1>
                 <p style="font-size:16px;color:#555;line-height:1.5;margin-top:12px;">
                   Thanks for applying for the <strong style="color:#0054a4;">${role}</strong> role at GC International.
-                  We’ve received your CV and our HR team will be in touch shortly.
+                  We’ve received your CV and our HR team will be in reviewing your application shortly.
+                </p>
+                <p style="font-size:16px;color:#555;line-height:1.5;margin-top:12px;">
+                  Good Luck!
                 </p>
               </td></tr>
               <tr><td align="center" style="padding:30px 40px;">

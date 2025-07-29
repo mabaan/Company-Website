@@ -75,11 +75,11 @@ export default function ValveViewer() {
 
           // detailed breakpoints
           const scale =
-            w >= 3440 ? 0.007 :  // super-ultrawide
-            w >= 2560 ? 0.006 :  // ultrawide
-            w >= 1920 ? 0.005 :  // large desktop
-            w >= 1440 ? 0.0045 : // desktop
-            w >= 1024 ? 0.004 :  // laptop/tablet
+            w >= 3440 ? 0.0055 :  // super-ultrawide
+            w >= 2560 ? 0.005 :  // ultrawide
+            w >= 1920 ? 0.0045 :  // large desktop
+            w >= 1440 ? 0.004 : // desktop
+            w >= 1024 ? 0.003 :  // laptop/tablet
             0.0032;              // small
 
           valve.scale.setScalar(scale);
