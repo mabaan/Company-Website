@@ -174,23 +174,19 @@ const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
         }
 
         try {
-          console.log("Requesting reCAPTCHA token");
           const token = await window.recaptchaRef?.getToken();
-          console.log("Token received", token);
           const resp = await fetch("/api/verifyRecaptcha", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ token }),
           });
           const { success } = await resp.json();
-          console.log("Token verification", success);
           if (!success) {
             alert("Recaptcha failed—please try again.");
             return;
           }
           document.getElementById("applicationForm")?.submit();
         } catch (err) {
-          console.error(err);
           alert("Recaptcha failed—please try again.");
         }
       });
