@@ -1,6 +1,7 @@
 // src/components/BlogCard.tsx
 import React from "react";
 import { PortableText } from "@portabletext/react";
+import { getOptimizedImage } from "src/utils/getOptimizedImage.ts"; // at top
 
 export type Slug = { current: string };
 
@@ -12,27 +13,25 @@ export interface PostSummary {
   imageUrl?: string;
   author?: string;
   categories?: { title: string }[];
-  body?: any; // for PortableText preview
+  body?: any;
   featured?: boolean;
 }
 
 interface Props {
   post: PostSummary;
-  maxChars?: number;
   className?: string;
+  index?: number; // new prop for FCP logic
 }
 
-const BlogCard: React.FC<Props> = ({
-  post,
-  maxChars = 180,
-  className = "",
-}) => {
+const BlogCard: React.FC<Props> = ({ post, className = "", index = 0 }) => {
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleDateString(undefined, {
       year: "numeric",
       month: "short",
       day: "numeric",
     });
+
+  const isFirstCard = index === 0;
 
   return (
     <article
@@ -41,20 +40,13 @@ const BlogCard: React.FC<Props> = ({
       {post.imageUrl && (
         <a href={`/blog/${post.slug.current}`} className="block mb-4">
           <img
-            src={post.imageUrl}
+            src={getOptimizedImage(post.imageUrl, 1100, 734)} // ideal display size
             alt={post.title}
-            className="
-    w-full 
-    object-cover 
-    rounded 
-    mb-4
-
-    h-32        /* small screens: 8rem tall */
-    md:h-48     /* medium (≥768px): 12rem tall */
-    lg:h-56     /* large (≥1024px): 14rem tall */
-    xl:h-64     /* extra-large (≥1280px): 16rem tall */
-  "
-            loading="lazy"
+            width={1100}
+            height={734}
+            className="w-full object-cover rounded h-32 md:h-48 lg:h-56 xl:h-64"
+            loading={isFirstCard ? "eager" : "lazy"}
+            fetchPriority={isFirstCard ? "high" : "auto"}
           />
         </a>
       )}
@@ -76,18 +68,17 @@ const BlogCard: React.FC<Props> = ({
       </div>
 
       <a href={`/blog/${post.slug.current}`}>
-        <h2 className="text-xl font-semibold mb-2 text-[#0054a4]">
+        <h2 className="text-xl font-semibold mb-1 text-[#0054a4]">
           {post.title}
         </h2>
       </a>
 
       {post.author && (
-        <p className="text-sm text-gray-600 mb-2">by {post.author}</p>
+        <p className="text-sm text-gray-600 mb-3">by {post.author}</p>
       )}
 
-      {/* Clipped Portable Text preview */}
       {post.body && (
-        <div className="relative overflow-hidden max-h-24 mb-4">
+        <div className="relative overflow-hidden max-h-20 mb-4">
           <PortableText value={post.body} />
           <div className="pointer-events-none absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-[#f9fbfc]" />
         </div>
