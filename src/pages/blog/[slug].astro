@@ -39,15 +39,21 @@ const description = getPostDescription(post.body);
       by {post.author}
     </p>
 
-    <!-- Optional Cover Image -->
-    {post.imageUrl && (
-      <img
-        src={post.imageUrl}
-        alt={post.title}
-        class="w-full rounded-lg mb-8 object-cover"
-      />
-    )}
-
+<!-- Optional Cover Image -->
+{post.imageUrl && (
+    <img
+      src={post.imageUrl}
+      alt={post.title}
+      class="w-full rounded-lg mb-8 object-cover max-h-[400px]"
+      width="1280"
+      height="720"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+  )}
+  
+      
     <!-- Vercel-style clipped body preview -->
     <div class="relative overflow-hidden max-h-[12rem]">
       <PortableText value={post.body} />

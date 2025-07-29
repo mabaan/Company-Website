@@ -37,13 +37,24 @@ const {
     <meta property="og:image" content={ogImage} />
     <meta property="og:url" content={ogUrl} />
     <meta name="theme-color" content="#ffffff" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- ✅ Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+<!-- Preload font stylesheet (high priority hint) -->
+<link
+  rel="preload"
+  as="style"
+  href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap"
+/>
 
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+<!-- Load CSS non-blocking -->
+<link
+  href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap"
+  rel="stylesheet"
+  media="print"
+  onload="this.media='all'"
+/>
+
   </head>
 
   <body class="bg-white text-gray-800 font-sans scroll-smooth">

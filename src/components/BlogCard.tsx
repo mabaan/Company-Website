@@ -1,6 +1,7 @@
 // src/components/BlogCard.tsx
 import React from "react";
 import { PortableText } from "@portabletext/react";
+import { getOptimizedImage } from "src/utils/getOptimizedImage.ts"; // at top
 
 export type Slug = { current: string };
 
@@ -10,7 +11,7 @@ export interface PostSummary {
   excerpt?: string;
   publishedAt: string;
   imageUrl?: string;
-  author?: string; // make sure this comes through your GROQ query
+  author?: string;
   categories?: { title: string }[];
   body?: any;
   featured?: boolean;
@@ -19,15 +20,18 @@ export interface PostSummary {
 interface Props {
   post: PostSummary;
   className?: string;
+  index?: number; // new prop for FCP logic
 }
 
-const BlogCard: React.FC<Props> = ({ post, className = "" }) => {
+const BlogCard: React.FC<Props> = ({ post, className = "", index = 0 }) => {
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleDateString(undefined, {
       year: "numeric",
       month: "short",
       day: "numeric",
     });
+
+  const isFirstCard = index === 0;
 
   return (
     <article
@@ -36,10 +40,13 @@ const BlogCard: React.FC<Props> = ({ post, className = "" }) => {
       {post.imageUrl && (
         <a href={`/blog/${post.slug.current}`} className="block mb-4">
           <img
-            src={post.imageUrl}
+            src={getOptimizedImage(post.imageUrl, 1100, 734)} // ideal display size
             alt={post.title}
+            width={1100}
+            height={734}
             className="w-full object-cover rounded h-32 md:h-48 lg:h-56 xl:h-64"
-            loading="lazy"
+            loading={isFirstCard ? "eager" : "lazy"}
+            fetchPriority={isFirstCard ? "high" : "auto"}
           />
         </a>
       )}
@@ -70,7 +77,6 @@ const BlogCard: React.FC<Props> = ({ post, className = "" }) => {
         <p className="text-sm text-gray-600 mb-3">by {post.author}</p>
       )}
 
-      {/* Clipped PortableText preview */}
       {post.body && (
         <div className="relative overflow-hidden max-h-20 mb-4">
           <PortableText value={post.body} />
