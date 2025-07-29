@@ -56,64 +56,82 @@ const LegendItem: React.FC<LegendItemProps> = ({ color, label }) => (
 );
 
 const NetworkMap: React.FC<Props> = ({ locations }) => {
-  const center: [number, number] = [25.2048, 55.2708]; // dubai default center
+  const center: [number, number] = [25.2048, 55.2708]; // Dubai default center
+  const [hydrated, setHydrated] = useState(false);
+  const [showMarkers, setShowMarkers] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setHydrated(true);
     setLoading(false);
+    const timeout = setTimeout(() => setShowMarkers(true), 400);
+    return () => clearTimeout(timeout);
   }, []);
 
   return (
-    <div className="relative h-[600px] w-full">
+    <div className="relative w-full h-[300px] md:h-[600px]">
       {loading && (
         <div className="absolute inset-0 flex items-center justify-center bg-white/70 z-10">
           <Spinner />
         </div>
       )}
-      <MapContainer
-        center={center}
-        zoom={2}
-        scrollWheelZoom={true}
-        // attributionControl={false} // ✅ disables the attribution box
-        className="h-full w-full z-0 rounded-lg"
-      >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='© <a href="https://openstreetmap.org">OpenStreetMap</a> | GC International'
-        />
-        {locations.map((loc) => (
-          <Marker
-            key={loc.id}
-            position={[loc.Latitude, loc.Longitude]}
-            icon={getMarkerIcon(loc.Type)}
-          >
-            <Popup className="max-w-[260px] text-sm leading-snug">
-              {loc.Website ? (
-                <a
-                  href={loc.Website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-bold text-blue-700 underline"
-                >
-                  {loc.Name}
-                </a>
-              ) : (
-                <strong>{loc.Name}</strong>
-              )}
-              {loc.Description && (
-                <>
+
+      {hydrated ? (
+        <MapContainer
+          center={center}
+          zoom={2}
+          scrollWheelZoom={true}
+          className="h-full w-full z-0 rounded-lg"
+        >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='© <a href="https://openstreetmap.org">OpenStreetMap</a> | GC International'
+            subdomains={["a", "b", "c"]}
+          />
+
+          {showMarkers &&
+            locations.map((loc) => (
+              <Marker
+                key={loc.id}
+                position={[loc.Latitude, loc.Longitude]}
+                icon={getMarkerIcon(loc.Type)}
+              >
+                <Popup className="max-w-[260px] text-sm leading-snug">
+                  {loc.Website ? (
+                    <a
+                      href={loc.Website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-bold text-blue-700 underline"
+                    >
+                      {loc.Name}
+                    </a>
+                  ) : (
+                    <strong>{loc.Name}</strong>
+                  )}
+                  {loc.Description && (
+                    <>
+                      <br />
+                      <span className="font-semibold">Description:</span>{" "}
+                      {loc.Description}
+                    </>
+                  )}
                   <br />
-                  <span className="font-semibold">Description:</span> {loc.Description}
-                </>
-              )}
-              <br />
-              <span className="font-semibold">Type:</span> {loc.Type}
-              <br />
-              <span className="font-semibold">Location:</span> {loc.City}, {loc.Country}
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
+                  <span className="font-semibold">Type:</span> {loc.Type}
+                  <br />
+                  <span className="font-semibold">Location:</span> {loc.City},{" "}
+                  {loc.Country}
+                </Popup>
+              </Marker>
+            ))}
+        </MapContainer>
+      ) : (
+        <img
+          src="/static-map-placeholder.jpg"
+          alt="Map preview"
+          className="w-full h-full rounded-lg object-cover"
+        />
+      )}
 
       <div className="mt-6 flex flex-wrap justify-center gap-4 text-md text-center">
         <LegendItem color="blue" label="Headquarters" />
