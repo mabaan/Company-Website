@@ -1,22 +1,19 @@
 // astro.config.mjs
-// @ts-check
 import { defineConfig } from "astro/config";
-import vercel from "@astrojs/vercel";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
+import vercel from "@astrojs/vercel";          // ← import the adapter
 
 export default defineConfig({
-  // — Adapter tells Astro how to build & deploy your site —
-  // Here we use the Vercel adapter for Serverless Functions
+  // Tell Astro to use the Vercel Serverless adapter
   adapter: vercel(),
 
-  // — Integrations enable React components & TailwindCSS support —
+  // Your other integrations
   integrations: [
     react(),
     tailwind(),
   ],
 
-  // (You can add any other config flags you need below)
-  // buildOptions: { /* … */ },
-  // vite: { /* … */ },
+  // (optional) if you need server output rather than a fully static site:
+  // output: "server",
 });
