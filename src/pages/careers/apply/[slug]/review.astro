@@ -81,24 +81,35 @@ const isPdf = resumeUrl.endsWith(".pdf");
   ogDescription={`Review your application for ${job.title}.`}
   ogUrl={Astro.url.href}
 >
-  <section class="pt-32 pb-12 px-4 max-w-3xl mx-auto">
-    <h1 class="text-3xl font-bold mb-6">
-      Review Your Application for <span class="text-blue-800">{job.title}</span>
-    </h1>
+  <section class="pt-32 pb-12 px-4">
+    <div class="max-w-3xl mx-auto space-y-8">
+      <h1 class="text-3xl font-bold mb-6">
+        Step 2: Review Your Application for <span class="text-blue-800">{job.title}</span>
+      </h1>
 
-    <ul class="space-y-3 text-lg">
-      <li><strong>First Name:</strong> {values.firstName}</li>
-      <li><strong>Last Name:</strong> {values.lastName}</li>
-      <li><strong>Email:</strong> {values.email}</li>
-      <li><strong>Phone:</strong> {values.countryCode} {values.phone}</li>
-      <li><strong>Gender:</strong> {values.gender}</li>
-      <li><strong>Nationality:</strong> {values.nationality}</li>
-      <li><strong>Date of Birth:</strong> {values.dob}</li>
-      <li><strong>Visa Status:</strong> {values.visa}</li>
-      <li><strong>Experience:</strong> {values.experience}</li>
-      <li><strong>LinkedIn:</strong> {values.linkedin}</li>
-      <li><strong>About:</strong> {values.about}</li>
-    </ul>
+      <!-- Progress bar -->
+      <div class="flex items-center justify-between mb-8">
+        <span class="font-medium text-gray-600 opacity-50">1. Fill Details</span>
+        <span class="font-medium text-gray-600">2. Review</span>
+        <span class="font-medium text-gray-600 opacity-50">3. Submit</span>
+      </div>
+
+      {/* Review content in a card */}
+      <div class="bg-white p-6 rounded-lg shadow">
+        <ul class="space-y-3 text-lg">
+          <li><strong>First Name:</strong> {values.firstName}</li>
+          <li><strong>Last Name:</strong> {values.lastName}</li>
+          <li><strong>Email:</strong> {values.email}</li>
+          <li><strong>Phone:</strong> {values.countryCode} {values.phone}</li>
+          <li><strong>Gender:</strong> {values.gender}</li>
+          <li><strong>Nationality:</strong> {values.nationality}</li>
+          <li><strong>Date of Birth:</strong> {values.dob}</li>
+          <li><strong>Visa Status:</strong> {values.visa}</li>
+          <li><strong>Experience:</strong> {values.experience}</li>
+          <li><strong>LinkedIn:</strong> {values.linkedin}</li>
+          <li><strong>About:</strong> {values.about}</li>
+        </ul>
+      </div>
 
     {isPdf && (
       <div class="mt-10">
@@ -138,10 +149,11 @@ const isPdf = resumeUrl.endsWith(".pdf");
 
       <button
         type="submit"
-        class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded mt-4"
+        class="bg-[#ed1c24] hover:bg-red-600 text-white px-8 py-3 rounded font-medium mt-4"
       >
         Submit Application
       </button>
     </form>
+    </div>
   </section>
 </Layout>

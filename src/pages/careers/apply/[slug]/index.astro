@@ -38,32 +38,40 @@ const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
   ogDescription={`Apply for ${job.title} at GC International.`}
   ogUrl={Astro.url.href}
 >
-  <section class="pt-32 pb-12 px-4 max-w-3xl mx-auto">
-    <h1 class="text-3xl font-bold mb-4">Apply for {job.title}</h1>
+  <section class="pt-32 pb-12 px-4">
+    <div class="max-w-3xl mx-auto space-y-8">
+      <h1 class="text-3xl font-bold mb-4">Apply for {job.title}</h1>
 
-    <form
-      method="POST"
-      enctype="multipart/form-data"
-      action={`/careers/apply/${slug}/review`}
-      class="space-y-6"
-    >
+      <!-- Progress bar -->
+      <div class="flex items-center justify-between mb-8">
+        <span class="font-medium text-gray-600">1. Fill Details</span>
+        <span class="font-medium text-gray-600 opacity-50">2. Review</span>
+        <span class="font-medium text-gray-600 opacity-50">3. Submit</span>
+      </div>
+
+      <form
+        method="POST"
+        enctype="multipart/form-data"
+        action={`/careers/apply/${slug}/review`}
+        class="space-y-6"
+      >
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="grid gap-1">
-          <label for="firstName">First Name *</label>
-          <input id="firstName" name="firstName" placeholder="First Name" required class="border px-4 py-2 rounded" />
+          <label for="firstName" class="block font-medium mb-1">First Name *</label>
+          <input id="firstName" name="firstName" placeholder="First Name" required class="border px-4 py-2 rounded focus:ring-2 focus:ring-[#ed1c24]" />
         </div>
         <div class="grid gap-1">
-          <label for="lastName">Last Name *</label>
-          <input id="lastName" name="lastName" placeholder="Last Name" required class="border px-4 py-2 rounded" />
+          <label for="lastName" class="block font-medium mb-1">Last Name *</label>
+          <input id="lastName" name="lastName" placeholder="Last Name" required class="border px-4 py-2 rounded focus:ring-2 focus:ring-[#ed1c24]" />
         </div>
         <div class="grid gap-1 md:col-span-2">
-          <label for="email">Email *</label>
-          <input id="email" name="email" type="email" placeholder="Email" required class="border px-4 py-2 rounded" />
+          <label for="email" class="block font-medium mb-1">Email *</label>
+          <input id="email" name="email" type="email" placeholder="Email" required class="border px-4 py-2 rounded focus:ring-2 focus:ring-[#ed1c24]" />
         </div>
 
         <div class="grid gap-1">
-          <label for="countryCode">Country Code *</label>
-        <select id="countryCode" name="countryCode" required class="border px-3 py-2 rounded">
+          <label for="countryCode" class="block font-medium mb-1">Country Code *</label>
+        <select id="countryCode" name="countryCode" required class="border px-3 py-2 rounded focus:ring-2 focus:ring-[#ed1c24]">
           <option value="" disabled selected>-- Select your country code --</option>
           {countryCodes.map((country: Country) => (
             <option value={country.dial_code}>
@@ -74,8 +82,8 @@ const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
         </div>
 
         <div class="grid gap-1">
-          <label for="phone">Phone *</label>
-        <input id="phone" name="phone" placeholder="Phone" required class="border px-4 py-2 rounded" />
+          <label for="phone" class="block font-medium mb-1">Phone *</label>
+        <input id="phone" name="phone" placeholder="Phone" required class="border px-4 py-2 rounded focus:ring-2 focus:ring-[#ed1c24]" />
         </div>
 
         <div>
@@ -87,17 +95,17 @@ const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
         </div>
 
         <div class="grid gap-1">
-          <label for="nationality">Nationality *</label>
-        <input id="nationality" name="nationality" placeholder="Nationality" required class="border px-4 py-2 rounded" />
+          <label for="nationality" class="block font-medium mb-1">Nationality *</label>
+        <input id="nationality" name="nationality" placeholder="Nationality" required class="border px-4 py-2 rounded focus:ring-2 focus:ring-[#ed1c24]" />
         </div>
         <div class="grid gap-1">
-          <label for="dob">Date of Birth *</label>
-        <input id="dob" name="dob" type="date" required class="border px-4 py-2 rounded" />
+          <label for="dob" class="block font-medium mb-1">Date of Birth *</label>
+        <input id="dob" name="dob" type="date" required class="border px-4 py-2 rounded focus:ring-2 focus:ring-[#ed1c24]" />
         </div>
 
         <div class="grid gap-1">
-          <label for="visa">Visa Status *</label>
-        <select id="visa" name="visa" required class="border px-4 py-2 rounded">
+          <label for="visa" class="block font-medium mb-1">Visa Status *</label>
+        <select id="visa" name="visa" required class="border px-4 py-2 rounded focus:ring-2 focus:ring-[#ed1c24]">
           <option value="">-- Visa Status --</option>
           <option value="Visit">Visit</option>
           <option value="Work">Work</option>
@@ -109,17 +117,17 @@ const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
         </div>
 
         <div class="grid gap-1">
-          <label for="experience">Years of Experience *</label>
-        <input id="experience" name="experience" type="number" min="0" placeholder="Years of Experience" required class="border px-4 py-2 rounded" />
+          <label for="experience" class="block font-medium mb-1">Years of Experience *</label>
+        <input id="experience" name="experience" type="number" min="0" placeholder="Years of Experience" required class="border px-4 py-2 rounded focus:ring-2 focus:ring-[#ed1c24]" />
         </div>
         <div class="grid gap-1 md:col-span-2">
-          <label for="linkedin">LinkedIn (optional)</label>
-        <input id="linkedin" name="linkedin" placeholder="LinkedIn (optional)" class="border px-4 py-2 rounded" />
+          <label for="linkedin" class="block font-medium mb-1">LinkedIn (optional)</label>
+        <input id="linkedin" name="linkedin" placeholder="LinkedIn (optional)" class="border px-4 py-2 rounded focus:ring-2 focus:ring-[#ed1c24]" />
         </div>
 
         <div class="md:col-span-2">
           <label for="about" class="block font-medium mb-1">Tell us about yourself (optional)</label>
-          <textarea id="about" name="about" rows="4" maxlength="500" placeholder="Max 500 characters..." class="border px-4 py-2 rounded w-full"></textarea>
+          <textarea id="about" name="about" rows="4" maxlength="500" placeholder="Max 500 characters..." class="border px-4 py-2 rounded w-full focus:ring-2 focus:ring-[#ed1c24]"></textarea>
           <div class="text-sm text-gray-500 text-right mt-1">
             <span id="charCount">0</span>/500
           </div>
@@ -143,6 +151,7 @@ const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
         <button type="submit" class="bg-[#0054a4] hover:bg-blue-700 text-white px-6 py-2 rounded text-sm font-medium">Review Application</button>
       </div>
     </form>
+    </div>
   </section>
 
   <script is:inline>
