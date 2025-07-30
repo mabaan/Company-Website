@@ -38,15 +38,22 @@ const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
   ogDescription={`Apply for ${job.title} at GC International.`}
   ogUrl={Astro.url.href}
 >
-  <section class="pt-32 pb-12 px-4 max-w-3xl mx-auto">
-    <h1 class="text-3xl font-bold mb-4">Apply for {job.title}</h1>
+  <section class="pt-32 pb-12 px-4">
+    <div class="max-w-3xl mx-auto space-y-8">
+      <h1 class="text-3xl font-bold">Apply for {job.title}</h1>
+      <!-- Progress bar -->
+      <div class="flex items-center justify-between mb-8">
+        <span class="font-medium text-gray-600">1. Fill Details</span>
+        <span class="font-medium text-gray-600 opacity-50">2. Review</span>
+        <span class="font-medium text-gray-600 opacity-50">3. Submit</span>
+      </div>
 
-    <form
-      method="POST"
-      enctype="multipart/form-data"
-      action={`/careers/apply/${slug}/review`}
-      class="space-y-6"
-    >
+      <form
+        method="POST"
+        enctype="multipart/form-data"
+        action={`/careers/apply/${slug}/review`}
+        class="space-y-6"
+      >
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="grid gap-1">
           <label for="firstName">First Name *</label>
@@ -143,6 +150,7 @@ const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
         <button type="submit" class="bg-[#0054a4] hover:bg-blue-700 text-white px-6 py-2 rounded text-sm font-medium">Review Application</button>
       </div>
     </form>
+    </div>
   </section>
 
   <script is:inline>

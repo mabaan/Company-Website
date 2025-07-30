@@ -67,7 +67,7 @@ export default function PartnersSection() {
         </h2>
 
         {/* Main partner grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-y-24 gap-x-24 justify-items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
           {partners.map((partner, idx) => (
           <a
             key={idx}
@@ -77,13 +77,15 @@ export default function PartnersSection() {
             className="group flex flex-col items-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 rounded-md"
             aria-label={`${partner.name} – ${partner.title}`}
           >
-            <img
-              src={partner.image}
-              alt={partner.name}
-              loading="lazy"
-              className="h-32 mb-3 object-contain transition-transform duration-200 group-hover:scale-105"
-            />
-            <h3 className="text-base font-semibold text-gray-800">
+            <div className="flex items-center justify-center p-4 bg-white rounded shadow-sm hover:shadow-md">
+              <img
+                src={partner.image}
+                alt={partner.name}
+                loading="lazy"
+                className="h-32 object-contain transition-transform duration-200 group-hover:scale-105"
+              />
+            </div>
+            <h3 className="text-base font-semibold text-gray-800 mt-3">
               {partner.name}
             </h3>
             <p className="text-sm text-gray-500">{partner.title}</p>
@@ -100,13 +102,15 @@ export default function PartnersSection() {
             className="group flex flex-col items-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 rounded-md"
             aria-label={`${lastPartner.name} – ${lastPartner.title}`}
           >
-            <img
-              src={lastPartner.image}
-              alt={lastPartner.name}
-              loading="lazy"
-              className="h-32 mb-3 object-contain transition-transform duration-200 group-hover:scale-105"
-            />
-            <h3 className="text-base font-semibold text-gray-800">
+            <div className="flex items-center justify-center p-4 bg-white rounded shadow-sm hover:shadow-md">
+              <img
+                src={lastPartner.image}
+                alt={lastPartner.name}
+                loading="lazy"
+                className="h-32 object-contain transition-transform duration-200 group-hover:scale-105"
+              />
+            </div>
+            <h3 className="text-base font-semibold text-gray-800 mt-3">
               {lastPartner.name}
             </h3>
             <p className="text-sm text-gray-500">{lastPartner.title}</p>

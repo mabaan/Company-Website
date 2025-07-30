@@ -82,10 +82,14 @@ const isPdf = resumeUrl.endsWith(".pdf");
   ogUrl={Astro.url.href}
 >
   <section class="pt-32 pb-12 px-4 max-w-3xl mx-auto">
-    <h1 class="text-3xl font-bold mb-6">
-      Review Your Application for <span class="text-blue-800">{job.title}</span>
-    </h1>
+    <h1 class="text-3xl font-bold mb-6">Step 2: Review Your Application</h1>
+    <div class="flex items-center justify-between mb-8">
+      <span class="font-medium text-gray-600 opacity-50">1. Fill Details</span>
+      <span class="font-medium text-gray-600">2. Review</span>
+      <span class="font-medium text-gray-600 opacity-50">3. Submit</span>
+    </div>
 
+    <div class="bg-white p-6 rounded-lg shadow">
     <ul class="space-y-3 text-lg">
       <li><strong>First Name:</strong> {values.firstName}</li>
       <li><strong>Last Name:</strong> {values.lastName}</li>
@@ -99,6 +103,7 @@ const isPdf = resumeUrl.endsWith(".pdf");
       <li><strong>LinkedIn:</strong> {values.linkedin}</li>
       <li><strong>About:</strong> {values.about}</li>
     </ul>
+    </div>
 
     {isPdf && (
       <div class="mt-10">
@@ -138,7 +143,7 @@ const isPdf = resumeUrl.endsWith(".pdf");
 
       <button
         type="submit"
-        class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded mt-4"
+        class="bg-[#ed1c24] hover:bg-red-600 text-white px-8 py-4 rounded-lg mt-4"
       >
         Submit Application
       </button>

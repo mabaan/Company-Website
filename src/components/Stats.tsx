@@ -62,7 +62,7 @@ export default function StatsSection() {
 
         <div
           ref={containerRef}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-12"
         >
           {metrics.map((stat, i) => (
             <div
@@ -71,7 +71,7 @@ export default function StatsSection() {
             >
               <div className="flex items-baseline">
                 <span
-                  className="counter text-4xl sm:text-5xl font-bold text-[#ed1c24]"
+                  className="counter text-5xl md:text-6xl font-bold text-[#ed1c24]"
                   data-end={stat.value}
                 >
                   0
@@ -82,7 +82,7 @@ export default function StatsSection() {
                   </span>
                 )}
               </div>
-              <h3 className="mt-4 text-lg sm:text-xl font-semibold text-[#0054a4] text-center">
+              <h3 className="mt-4 text-lg sm:text-xl font-semibold text-[#ed1c24] text-center">
                 {stat.title}
               </h3>
             </div>

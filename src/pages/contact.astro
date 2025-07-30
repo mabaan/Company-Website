@@ -80,29 +80,30 @@ if (Astro.request.method === "POST") {
 >
   <!-- push content below the fixed navbar -->
   <section class="min-h-screen bg-[#f9f9f9] pt-48 pb-20 px-4 text-gray-800">
-    <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-md grid md:grid-cols-2 gap-12 p-10">
+    <div class="max-w-6xl mx-auto text-center">
+      <div class="bg-white rounded-lg shadow-md grid md:grid-cols-2 gap-12 p-10">
 
       <!-- LEFT: heading / logo / blurb / office info -->
       <div class="flex flex-col h-full">
 
         <!-- Heading, Logo & Blurb spaced out -->
-        <div class="flex flex-col items-center text-center space-y-16">
-          <h1 class="text-4xl font-bold text-[#0054a4]">Contact Us</h1>
+        <div class="flex flex-col items-center space-y-4 mb-12">
+          <h1 class="text-4xl font-bold text-[#ed1c24]">Contact Us</h1>
           <img
             src="/GC Logo.png"
             alt="GC International Logo"
-            class="w-80"
+            class="w-56 h-auto"
           />
-          <p class="text-gray-600 max-w-sm">
-            We would love to hear from you. Fill out the form and our team will be in touch shortly.
-          </p>
         </div>
+        <p class="text-gray-600 max-w-sm mx-auto">
+          We would love to hear from you. Fill out the form and our team will be in touch shortly.
+        </p>
 
         <!-- push office info to bottom -->
         <div class="flex-1"></div>
 
         <!-- Centered Head Office block -->
-        <div class="text-sm text-gray-700 leading-relaxed text-center mt-10 space-y-1">
+        <div class="mt-auto text-center text-sm text-gray-700 leading-relaxed space-y-1">
           <div><strong>Head Office – Dubai</strong></div>
           <div>GC International FZE</div>
           <div>Dubai Airport Freezone</div>
@@ -115,58 +116,58 @@ if (Astro.request.method === "POST") {
 
       <!-- RIGHT: Contact Form (unchanged) -->
       <div>
-        <form id="contactForm" method="POST" class="grid gap-6" novalidate>
+        <form id="contactForm" method="POST" class="grid gap-6 sm:gap-8 md:gap-12" novalidate>
           <!-- Name -->
           <div class="grid gap-2">
-            <label for="name" class="font-medium">Name</label>
+            <label for="name" class="block font-medium mb-1">Name</label>
             <input
               id="name"
               name="name"
               type="text"
               placeholder="Your full name"
               required
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0054a4]"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ed1c24] placeholder-gray-400"
             />
           </div>
           <!-- Company -->
           <div class="grid gap-2">
-            <label for="company" class="font-medium">Company</label>
+            <label for="company" class="block font-medium mb-1">Company</label>
             <input
               id="company"
               name="company"
               type="text"
               placeholder="Company name"
               required
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0054a4]"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ed1c24] placeholder-gray-400"
             />
           </div>
           <!-- Email -->
           <div class="grid gap-2">
-            <label for="email" class="font-medium">Email</label>
+            <label for="email" class="block font-medium mb-1">Email</label>
             <input
               id="email"
               name="email"
               type="email"
               placeholder="you@example.com"
               required
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0054a4]"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ed1c24] placeholder-gray-400"
             />
           </div>
           <!-- Phone -->
           <div class="grid gap-2">
-            <label for="phone" class="font-medium">Phone</label>
+            <label for="phone" class="block font-medium mb-1">Phone</label>
             <input
               id="phone"
               name="phone"
               type="tel"
               placeholder="+971 50 123 4567"
               required
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0054a4]"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ed1c24] placeholder-gray-400"
             />
           </div>
           <!-- Message + Counter -->
-          <div class="grid gap-2 relative">
-            <label for="message" class="font-medium">Message</label>
+          <div class="grid gap-2">
+            <label for="message" class="block font-medium mb-1">Message</label>
             <textarea
               id="message"
               name="message"
@@ -174,11 +175,9 @@ if (Astro.request.method === "POST") {
               placeholder="Type your message here..."
               required
               maxlength="500"
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0054a4]"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ed1c24] placeholder-gray-400"
             ></textarea>
-            <div id="charCount" class="absolute bottom-2 right-3 text-xs text-gray-500">
-              0 / 500
-            </div>
+            <div id="charCount" class="text-right text-xs text-gray-500 mt-1">0 / 500</div>
           </div>
           <!-- Submit -->
           <button
@@ -195,6 +194,7 @@ if (Astro.request.method === "POST") {
           class="hidden fixed bottom-5 right-5 bg-green-600 text-white py-2 px-4 rounded shadow"
         ></div>
       </div>
+    </div>
     </div>
   </section>
 
