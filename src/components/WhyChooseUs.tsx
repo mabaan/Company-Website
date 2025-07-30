@@ -5,8 +5,7 @@ export default function WhyChooseUs() {
       className="
         w-full
         px-6 sm:px-8 md:px-12
-        pt-12 sm:pt-16 md:pt-20 lg:pt-24
-        pb-16 sm:pb-20 md:pb-24 lg:pb-28
+        py-12 md:py-20 lg:py-32
         bg-[#f3f6f9] text-gray-800
       "
     >
@@ -15,7 +14,7 @@ export default function WhyChooseUs() {
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 md:mb-10 text-gray-900">
           Why Choose GC International
         </h2>
-        <p className="text-sm sm:text-base md:text-lg mb-12 sm:mb-16 md:mb-20 leading-relaxed text-gray-600 max-w-3xl">
+        <p className="text-sm sm:text-base md:text-lg mb-12 md:mb-20 leading-relaxed text-gray-600 max-w-3xl">
           We deliver reliability and excellence through global partnerships,
           certified quality, and fast execution. Our solutions are tailored to
           meet industrial challenges across the Middle East and beyond.
@@ -57,23 +56,20 @@ export default function WhyChooseUs() {
           ].map((card, i) => (
             <div
               key={i}
-              className="bg-white rounded-xl shadow-sm p-6 sm:p-8 border border-gray-200 hover:shadow-md transition"
+              className="bg-white rounded-xl shadow-sm p-6 sm:p-8 border border-gray-200 hover:shadow-md hover:scale-105 transition-transform duration-300"
             >
               <div className="flex items-center gap-3 mb-3 sm:gap-4 sm:mb-4">
                 <img
                   src={card.icon}
                   alt={card.title + " Icon"}
-                  className="w-8 h-8 sm:w-10 sm:h-10"
+                  className="w-12 h-12 md:w-14 md:h-14"
                   loading="lazy"
                 />
-                <h3 className="font-semibold text-gray-800
-                               text-base sm:text-lg md:text-xl">
+                <h3 className="font-semibold text-gray-800 text-lg md:text-xl">
                   {card.title}
                 </h3>
               </div>
-              <p className="text-gray-600
-                            text-sm sm:text-base md:text-lg
-                            leading-relaxed">
+              <p className="text-gray-600 text-sm md:text-base leading-relaxed">
                 {card.text}
               </p>
             </div>

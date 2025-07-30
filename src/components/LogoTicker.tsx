@@ -12,21 +12,14 @@ const duplicated = [...logos, ...logos];
 export default function LogoTicker({ className = "" }: { className?: string }) {
   return (
     <div className={`pt-16 pb-8 bg-white overflow-hidden ${className}`}>
-      <div className="flex items-center gap-12 sm:gap-16 md:gap-20 lg:gap-24 animate-scroll whitespace-nowrap hover:pause-on-hover">
+      <div className="flex items-center gap-8 md:gap-12 animate-scroll whitespace-nowrap group">
         {duplicated.map((logo, idx) => (
           <img
             key={idx}
             src={logo.src}
             alt={logo.alt}
             loading="lazy"
-            className="
-              w-16 h-16
-              sm:w-20 sm:h-20
-              md:w-24 md:h-24
-              lg:w-28 lg:h-28
-              xl:w-32 xl:h-32
-              object-contain
-            "
+            className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 object-contain"
           />
         ))}
       </div>
@@ -36,10 +29,10 @@ export default function LogoTicker({ className = "" }: { className?: string }) {
           100% { transform: translateX(-50%); }
         }
         .animate-scroll {
-          animation: scroll 40s linear infinite;
+          animation: scroll 60s linear infinite;
         }
-        .pause-on-hover:hover {
-          animation-play-state: paused !important;
+        .group:hover .animate-scroll {
+          animation-play-state: paused;
         }
       `}</style>
     </div>

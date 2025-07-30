@@ -66,51 +66,57 @@ export default function PartnersSection() {
           Trusted by Industry Leaders
         </h2>
 
-        {/* Main partner grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-y-24 gap-x-24 justify-items-center">
+        {/* Main partner grid using CSS Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
           {partners.map((partner, idx) => (
-          <a
+          <div
             key={idx}
-            href={partner.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex flex-col items-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 rounded-md"
-            aria-label={`${partner.name} – ${partner.title}`}
+            className="flex items-center justify-center p-4 bg-white rounded shadow-sm hover:shadow-md transition-shadow"
           >
-            <img
-              src={partner.image}
-              alt={partner.name}
-              loading="lazy"
-              className="h-32 mb-3 object-contain transition-transform duration-200 group-hover:scale-105"
-            />
-            <h3 className="text-base font-semibold text-gray-800">
-              {partner.name}
-            </h3>
-            <p className="text-sm text-gray-500">{partner.title}</p>
-          </a>
+            <a
+              href={partner.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-col items-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 rounded-md"
+              aria-label={`${partner.name} – ${partner.title}`}
+            >
+              <img
+                src={partner.image}
+                alt={partner.name}
+                loading="lazy"
+                className="h-20 mb-3 object-contain transition-transform duration-200 group-hover:scale-105"
+              />
+              <h3 className="text-sm font-semibold text-gray-800">
+                {partner.name}
+              </h3>
+              <p className="text-xs text-gray-500">{partner.title}</p>
+            </a>
+          </div>
           ))}
         </div>
 
         {/* Centered final partner */}
-        <div className="mt-28 flex justify-center">
-          <a
-            href={lastPartner.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex flex-col items-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 rounded-md"
-            aria-label={`${lastPartner.name} – ${lastPartner.title}`}
-          >
-            <img
-              src={lastPartner.image}
-              alt={lastPartner.name}
-              loading="lazy"
-              className="h-32 mb-3 object-contain transition-transform duration-200 group-hover:scale-105"
-            />
-            <h3 className="text-base font-semibold text-gray-800">
-              {lastPartner.name}
-            </h3>
-            <p className="text-sm text-gray-500">{lastPartner.title}</p>
-          </a>
+        <div className="mt-16 flex justify-center">
+          <div className="flex items-center justify-center p-4 bg-white rounded shadow-sm hover:shadow-md transition-shadow">
+            <a
+              href={lastPartner.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-col items-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 rounded-md"
+              aria-label={`${lastPartner.name} – ${lastPartner.title}`}
+            >
+              <img
+                src={lastPartner.image}
+                alt={lastPartner.name}
+                loading="lazy"
+                className="h-20 mb-3 object-contain transition-transform duration-200 group-hover:scale-105"
+              />
+              <h3 className="text-sm font-semibold text-gray-800">
+                {lastPartner.name}
+              </h3>
+              <p className="text-xs text-gray-500">{lastPartner.title}</p>
+            </a>
+          </div>
         </div>
       </div>
     </section>

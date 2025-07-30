@@ -50,19 +50,19 @@ export default function StatsSection() {
   return (
     <section
       id="metrics"
-      className="w-full px-6 md:px-12 py-16 bg-[#eceff2] text-gray-800"
+      className="w-full px-6 md:px-12 py-12 md:py-20 lg:py-32 bg-[#eceff2] text-gray-800"
     >
       <div className="max-w-6xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
           Delivering Excellence Across Every Metric
         </h2>
-        <p className="text-base md:text-lg mb-12 leading-relaxed text-gray-600 max-w-3xl">
+        <p className="text-base md:text-lg mb-12 md:mb-20 leading-relaxed text-gray-600 max-w-3xl">
           From customer satisfaction to on-time delivery, we measure what matters so you get the reliability and quality you deserve.
         </p>
 
         <div
           ref={containerRef}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-12"
         >
           {metrics.map((stat, i) => (
             <div
@@ -71,7 +71,7 @@ export default function StatsSection() {
             >
               <div className="flex items-baseline">
                 <span
-                  className="counter text-4xl sm:text-5xl font-bold text-[#ed1c24]"
+                  className="counter text-5xl md:text-6xl font-bold text-[#ed1c24]"
                   data-end={stat.value}
                 >
                   0
@@ -82,7 +82,7 @@ export default function StatsSection() {
                   </span>
                 )}
               </div>
-              <h3 className="mt-4 text-lg sm:text-xl font-semibold text-[#0054a4] text-center">
+              <h3 className="mt-4 text-lg sm:text-xl font-semibold text-[#ed1c24] text-center">
                 {stat.title}
               </h3>
             </div>
