@@ -95,7 +95,13 @@ if (!resumeUrl && resumeFile && resumeFile.size > 0) {
   }
 
   console.log("📤 Uploading resume to Cloudinary...");
-  resumeUrl = await uploadResumeToCloudinary(resumeFile, jobId, applicationId);
+  resumeUrl = await uploadResumeToCloudinary(
+    resumeFile,
+    jobId,
+    typeof applicationId === "string" || typeof applicationId === "number"
+      ? applicationId
+      : applicationId?.toString?.() ?? ""
+  );
 
   console.log("✅ Resume uploaded:", resumeUrl);
 }
@@ -107,7 +113,9 @@ const applicantPayload = applicantConfirmation({
 });
 
 const hrPayload = hrNotification({
-  applicationId,
+  applicationId: typeof applicationId === "string" || typeof applicationId === "number"
+    ? applicationId
+    : applicationId?.toString?.() ?? "",
   jobId: job.jobId,
   firstName: get("firstName"),
   lastName: get("lastName"),

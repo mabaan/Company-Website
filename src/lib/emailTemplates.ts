@@ -1,5 +1,3 @@
-// src/lib/emailTemplates.ts
-
 export interface ApplicantData {
   applicationId: string | number;
   jobId:         string | number;
@@ -41,48 +39,55 @@ export function applicantConfirmation({
   return {
     subject: `Your application for “${role}” has been received`,
     html: `
-      <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><title>Application Received</title></head>
-      <body style="margin:0;padding:0;font-family:Arial,sans-serif;background:#f5f5f5;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="padding:20px 0;">
-          <tr><td align="center">
-            <table width="600" cellpadding="0" cellspacing="0" border="0"
-                   style="background:#fff;border-radius:8px;overflow:hidden;
-                          box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-              <tr><td align="center" style="padding:20px;">
-                <img src="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1753543466/GC_Logo_axkvdz.png"
-                     width="160" alt="GC International Logo"/>
-              </td></tr>
-              <tr><td style="padding:0 40px;">
-                <h1 style="font-size:24px;color:#333;margin:0;">
-                  Hello ${firstName},
-                </h1>
-                <p style="font-size:16px;color:#555;line-height:1.5;margin-top:12px;">
-                  Thanks for applying for the <strong style="color:#0054a4;">${role}</strong> role at GC International.
-                  We’ve received your CV and our HR team will be in reviewing your application shortly.
-                </p>
-                <p style="font-size:16px;color:#555;line-height:1.5;margin-top:12px;">
-                  Good Luck!
-                </p>
-              </td></tr>
-              <tr><td align="center" style="padding:30px 40px;">
-                <a href="https://gcintle.com"
-                   style="background:#0054a4;color:#fff;padding:12px 24px;
-                          border-radius:4px;text-decoration:none;">
-                  Visit Our Website
-                </a>
-              </td></tr>
-              <tr><td style="padding:20px 40px;font-size:12px;color:#999;text-align:center;">
-                <p style="margin:0;">
-                  GC International FZCO, Dubai Airport Freezone, UAE
-                </p>
-                <p style="margin-top:4px;">
-                  &copy; ${new Date().getFullYear()} GC International. All rights reserved.
-                </p>
-              </td></tr>
-            </table>
-          </td></tr>
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Application Received</title>
+        <style>
+          body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; }
+          .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+          .header { background-color: #045082; padding: 24px; text-align: center; }
+          .header img { max-width: 150px; }
+          .content { padding: 32px; color: #333333; }
+          .content h1 { font-size: 24px; color: #045082; margin-top: 0; }
+          .content p { font-size: 16px; line-height: 1.6; color: #555555; }
+          .content strong { color: #f22d30; }
+          .button-container { text-align: center; padding: 20px 0 32px; }
+          .button { background-color: #f22d30; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; }
+          .footer { background-color: #f4f7f6; padding: 24px; text-align: center; font-size: 12px; color: #888888; }
+          .footer p { margin: 4px 0; }
+        </style>
+      </head>
+      <body>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f7f6; padding: 20px;">
+          <tr>
+            <td align="center">
+              <div class="container">
+                <div class="header">
+                  <img src="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1753543466/GC_Logo_axkvdz.png" alt="GC International Logo">
+                </div>
+                <div class="content">
+                  <h1>Hello ${firstName},</h1>
+                  <p>Thank you for applying for the <strong>${role}</strong> position at GC International. We’re thrilled to see your interest in joining our team.</p>
+                  <p>We have successfully received your application. Our HR team will carefully review your profile and get in touch with you if your qualifications meet our requirements.</p>
+                  <p>We appreciate your patience during this process.</p>
+                  <p>Best of luck!</p>
+                </div>
+                <div class="button-container">
+                  <a href="https://gcintle.com" class="button">Visit Our Website</a>
+                </div>
+                <div class="footer">
+                  <p>GC International FZCO, Dubai Airport Freezone, UAE</p>
+                  <p>&copy; ${new Date().getFullYear()} GC International. All rights reserved.</p>
+                </div>
+              </div>
+            </td>
+          </tr>
         </table>
-      </body></html>
+      </body>
+      </html>
     `,
   };
 }
@@ -92,65 +97,72 @@ export function applicantConfirmation({
 // ───────────────────────────────────────────────────────────────────────────────
 export function hrNotification(data: ApplicantData) {
   return {
-    subject: `[#${data.applicationId}] App for Job #${data.jobId}: ${data.firstName} ${data.lastName}`,
+    subject: `[#${data.applicationId}] New Application for ${data.role}: ${data.firstName} ${data.lastName}`,
     html: `
-      <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><title>New Application</title></head>
-      <body style="margin:0;padding:0;font-family:Arial,sans-serif;background:#f0f2f5;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="padding:20px 0;">
-          <tr><td align="center">
-            <table width="600" cellpadding="0" cellspacing="0" border="0"
-                   style="background:#fff;border-radius:8px;overflow:hidden;
-                          box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-              <tr><td align="center" style="padding:20px;">
-                <img src="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1753543466/GC_Logo_axkvdz.png"
-                     width="160" alt="GC International Logo"/>
-              </td></tr>
-              <tr><td style="padding:0 40px;">
-                <h2 style="margin:0;font-size:20px;color:#333;text-align:center;">
-                  New Application Received
-                </h2>
-                <p style="margin:8px 0 0;font-size:14px;color:#666;text-align:center;">
-                  Application <strong>#${data.applicationId}</strong> for Job <strong>#${data.jobId}</strong>:
-                  <strong>${data.firstName} ${data.lastName}</strong>
-                </p>
-              </td></tr>
-              <tr><td style="padding:20px 40px;">
-                <table width="100%" cellpadding="4" cellspacing="0" border="0"
-                       style="font-size:14px;color:#444;">
-                  <tr><td><strong>Email</strong></td><td>${data.email}</td></tr>
-                  <tr><td><strong>Phone</strong></td>
-                      <td>${data.countryCode} ${data.phone}</td></tr>
-                  <tr><td><strong>Gender</strong></td><td>${data.gender}</td></tr>
-                  <tr><td><strong>Nationality</strong></td><td>${data.nationality}</td></tr>
-                  <tr><td><strong>DOB</strong></td><td>${data.dob}</td></tr>
-                  <tr><td><strong>Visa Status</strong></td><td>${data.visa}</td></tr>
-                  <tr><td><strong>Experience</strong></td>
-                      <td>${data.experience} years</td></tr>
-                  ${
-                    data.linkedin
-                      ? `<tr><td><strong>LinkedIn</strong></td>
-                           <td><a href="${data.linkedin}" style="color:#0054a4;">${data.linkedin}</a></td></tr>`
-                      : ``
-                  }
-                  <tr><td valign="top"><strong>About</strong></td>
-                      <td style="line-height:1.4;">${data.about || "—"}</td></tr>
-                </table>
-              </td></tr>
-              <tr><td style="padding:0 40px 30px;">
-                <p style="font-size:14px;color:#555;">
-                  <strong>Resume URL:</strong>
-                  ${data.resumeUrl
-                    ? `<a href="${data.resumeUrl}" style="color:#0054a4;">Download CV</a>`
-                    : "—"}
-                </p>
-              </td></tr>
-              <tr><td style="padding:20px 40px 30px;font-size:12px;color:#999;text-align:center;">
-                GC International FZCO, Dubai Airport Freezone, UAE
-              </td></tr>
-            </table>
-          </td></tr>
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>New Job Application</title>
+        <style>
+          body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; }
+          .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+          .header { background-color: #045082; padding: 24px; color: #ffffff; text-align: center; }
+          .header h1 { font-size: 24px; margin: 0; }
+          .header p { font-size: 16px; margin: 4px 0 0; opacity: 0.9; }
+          .content { padding: 32px; }
+          .details-table { width: 100%; border-collapse: collapse; }
+          .details-table th, .details-table td { text-align: left; padding: 12px; border-bottom: 1px solid #eeeeee; }
+          .details-table th { color: #888888; font-weight: normal; width: 150px; }
+          .details-table td { color: #333333; }
+          .details-table a { color: #f22d30; text-decoration: none; }
+          .details-table a:hover { text-decoration: underline; }
+          .section-title { font-size: 20px; color: #045082; margin-top: 0; margin-bottom: 16px; border-bottom: 2px solid #f22d30; padding-bottom: 8px; }
+          .about-section { margin-top: 24px; }
+          .about-section p { white-space: pre-wrap; font-size: 14px; line-height: 1.6; color: #555; }
+          .button-container { text-align: center; padding: 20px 0 32px; }
+          .button { background-color: #f22d30; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; }
+          .footer { background-color: #f4f7f6; padding: 24px; text-align: center; font-size: 12px; color: #888888; }
+        </style>
+      </head>
+      <body>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f7f6; padding: 20px;">
+          <tr>
+            <td align="center">
+              <div class="container">
+                <div class="header">
+                  <h1>New Job Application</h1>
+                  <p>For the <strong>${data.role}</strong> position</p>
+                </div>
+                <div class="content">
+                  <h2 class="section-title">Applicant Details</h2>
+                  <table class="details-table">
+                    <tr><th>Name</th><td>${data.firstName} ${data.lastName}</td></tr>
+                    <tr><th>Email</th><td><a href="mailto:${data.email}">${data.email}</a></td></tr>
+                    <tr><th>Phone</th><td>${data.countryCode} ${data.phone}</td></tr>
+                    <tr><th>Nationality</th><td>${data.nationality}</td></tr>
+                    <tr><th>Gender</th><td>${data.gender}</td></tr>
+                    <tr><th>Date of Birth</th><td>${data.dob}</td></tr>
+                    <tr><th>Visa Status</th><td>${data.visa}</td></tr>
+                    <tr><th>Experience</th><td>${data.experience} years</td></tr>
+                    ${data.linkedin ? `<tr><th>LinkedIn</th><td><a href="${data.linkedin}" target="_blank">View Profile</a></td></tr>` : ''}
+                  </table>
+                  <div class="about-section">
+                    <h3 class="section-title">About</h3>
+                    <p>${data.about || "Not provided."}</p>
+                  </div>
+                </div>
+                ${data.resumeUrl ? `<div class="button-container"><a href="${data.resumeUrl}" class="button">Download Resume</a></div>` : ''}
+                <div class="footer">
+                  Application ID: ${data.applicationId} | Job ID: ${data.jobId}
+                </div>
+              </div>
+            </td>
+          </tr>
         </table>
-      </body></html>
+      </body>
+      </html>
     `,
   };
 }
@@ -162,39 +174,52 @@ export function contactAcknowledgement({ name }: { name: string }) {
   return {
     subject: `Thank you for contacting GC International`,
     html: `
-      <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><title>We’ve Received Your Message</title></head>
-      <body style="margin:0;padding:0;font-family:Arial,sans-serif;background:#f5f5f5;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="padding:20px 0;">
-          <tr><td align="center">
-            <table width="600" cellpadding="0" cellspacing="0" border="0"
-                   style="background:#fff;border-radius:8px;overflow:hidden;
-                          box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-              <tr><td align="center" style="padding:20px;">
-                <img src="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1753543466/GC_Logo_axkvdz.png"
-                     width="160" alt="GC International Logo"/>
-              </td></tr>
-              <tr><td style="padding:0 40px;">
-                <h1 style="font-size:24px;color:#333;margin:0;">
-                  Hello ${name},
-                </h1>
-                <p style="font-size:16px;color:#555;line-height:1.5;margin-top:12px;">
-                  Thank you for reaching out. We’ve received your message and will respond within 1–2 business days.
-                </p>
-              </td></tr>
-              <tr><td align="center" style="padding:30px 40px;">
-                <a href="https://gcintle.com"
-                   style="background:#0054a4;color:#fff;padding:12px 24px;
-                          border-radius:4px;text-decoration:none;">
-                  Visit Our Website
-                </a>
-              </td></tr>
-              <tr><td style="padding:20px 40px;font-size:12px;color:#999;text-align:center;">
-                &copy; ${new Date().getFullYear()} GC International FZCO. All rights reserved.
-              </td></tr>
-            </table>
-          </td></tr>
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>We've Received Your Message</title>
+        <style>
+          body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; }
+          .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+          .header { background-color: #045082; padding: 24px; text-align: center; }
+          .header img { max-width: 150px; }
+          .content { padding: 32px; color: #333333; }
+          .content h1 { font-size: 24px; color: #045082; margin-top: 0; }
+          .content p { font-size: 16px; line-height: 1.6; color: #555555; }
+          .button-container { text-align: center; padding: 20px 0 32px; }
+          .button { background-color: #f22d30; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; }
+          .footer { background-color: #f4f7f6; padding: 24px; text-align: center; font-size: 12px; color: #888888; }
+          .footer p { margin: 4px 0; }
+        </style>
+      </head>
+      <body>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f7f6; padding: 20px;">
+          <tr>
+            <td align="center">
+              <div class="container">
+                <div class="header">
+                  <img src="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1753543466/GC_Logo_axkvdz.png" alt="GC International Logo">
+                </div>
+                <div class="content">
+                  <h1>Hello ${name},</h1>
+                  <p>Thank you for reaching out to GC International. We have successfully received your message.</p>
+                  <p>Our team will review your inquiry and get back to you within 1-2 business days.</p>
+                </div>
+                <div class="button-container">
+                  <a href="https://gcintle.com" class="button">Visit Our Website</a>
+                </div>
+                <div class="footer">
+                  <p>GC International FZCO, Dubai Airport Freezone, UAE</p>
+                  <p>&copy; ${new Date().getFullYear()} GC International. All rights reserved.</p>
+                </div>
+              </div>
+            </td>
+          </tr>
         </table>
-      </body></html>
+      </body>
+      </html>
     `,
   };
 }
@@ -204,44 +229,64 @@ export function contactAcknowledgement({ name }: { name: string }) {
 // ───────────────────────────────────────────────────────────────────────────────
 export function contactNotification(data: ContactData) {
   return {
-    subject: `New Inquiry from ${data.name}`,
+    subject: `New Contact Form Inquiry from ${data.name}`,
     html: `
-      <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><title>New Contact Inquiry</title></head>
-      <body style="margin:0;padding:0;font-family:Arial,sans-serif;background:#f0f2f5;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="padding:20px 0;">
-          <tr><td align="center">
-            <table width="600" cellpadding="0" cellspacing="0" border="0"
-                   style="background:#fff;border-radius:8px;overflow:hidden;
-                          box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-              <tr><td align="center" style="padding:20px;">
-                <img src="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1753543466/GC_Logo_axkvdz.png"
-                     width="160" alt="GC International Logo"/>
-              </td></tr>
-              <tr><td style="padding:0 40px;">
-                <h2 style="margin:0;font-size:20px;color:#333;text-align:center;">
-                  New Contact Inquiry Received
-                </h2>
-                <p style="margin:8px 0 0;font-size:14px;color:#666;text-align:center;">
-                  <strong>${data.name}</strong> from <strong>${data.company}</strong>
-                  submitted a new message on ${data.submittedAt}.
-                </p>
-              </td></tr>
-              <tr><td style="padding:20px 40px;">
-                <table width="100%" cellpadding="4" cellspacing="0" border="0"
-                       style="font-size:14px;color:#444;">
-                  <tr><td><strong>Email</strong></td><td>${data.email}</td></tr>
-                  <tr><td><strong>Phone</strong></td><td>${data.phone}</td></tr>
-                  <tr><td valign="top"><strong>Message</strong></td>
-                      <td style="line-height:1.4;">${data.message}</td></tr>
-                </table>
-              </td></tr>
-              <tr><td style="padding:20px 40px;font-size:12px;color:#999;text-align:center;">
-                &copy; ${new Date().getFullYear()} GC International FZCO. All rights reserved.
-              </td></tr>
-            </table>
-          </td></tr>
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>New Contact Inquiry</title>
+        <style>
+          body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; }
+          .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+          .header { background-color: #045082; padding: 24px; color: #ffffff; text-align: center; }
+          .header h1 { font-size: 24px; margin: 0; }
+          .header p { font-size: 16px; margin: 4px 0 0; opacity: 0.9; }
+          .content { padding: 32px; }
+          .details-table { width: 100%; border-collapse: collapse; }
+          .details-table th, .details-table td { text-align: left; padding: 12px; border-bottom: 1px solid #eeeeee; }
+          .details-table th { color: #888888; font-weight: normal; width: 120px; }
+          .details-table td { color: #333333; }
+          .details-table a { color: #f22d30; text-decoration: none; }
+          .details-table a:hover { text-decoration: underline; }
+          .section-title { font-size: 20px; color: #045082; margin-top: 0; margin-bottom: 16px; border-bottom: 2px solid #f22d30; padding-bottom: 8px; }
+          .message-section { margin-top: 24px; }
+          .message-section p { white-space: pre-wrap; font-size: 14px; line-height: 1.6; color: #555; background-color: #f9f9f9; padding: 16px; border-radius: 5px; }
+          .footer { background-color: #f4f7f6; padding: 24px; text-align: center; font-size: 12px; color: #888888; }
+        </style>
+      </head>
+      <body>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f7f6; padding: 20px;">
+          <tr>
+            <td align="center">
+              <div class="container">
+                <div class="header">
+                  <h1>New Contact Inquiry</h1>
+                  <p>from <strong>${data.name}</strong></p>
+                </div>
+                <div class="content">
+                  <h2 class="section-title">Contact Details</h2>
+                  <table class="details-table">
+                    <tr><th>Name</th><td>${data.name}</td></tr>
+                    <tr><th>Company</th><td>${data.company}</td></tr>
+                    <tr><th>Email</th><td><a href="mailto:${data.email}">${data.email}</a></td></tr>
+                    <tr><th>Phone</th><td>${data.phone}</td></tr>
+                  </table>
+                  <div class="message-section">
+                    <h3 class="section-title">Message</h3>
+                    <p>${data.message}</p>
+                  </div>
+                </div>
+                <div class="footer">
+                  Submitted on ${data.submittedAt}
+                </div>
+              </div>
+            </td>
+          </tr>
         </table>
-      </body></html>
+      </body>
+      </html>
     `,
   };
 }
