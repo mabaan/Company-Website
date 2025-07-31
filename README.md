@@ -39,7 +39,7 @@
 </details>
 
 ## About The Project
-This repository contains the **public-facing static website** for GC International FZCO, built to showcase company services and career opportunities. It is developed using Astro for static site generation, React for interactive components, jQuery for legacy scripts, and Airtable as a headless CMS. The site is deployed via AWS Amplify for continuous integration and hosting.
+This repository contains the **public-facing static website** for GC International FZCO, built to showcase company services and career opportunities. It is developed using Astro for static site generation, React for interactive components, and Airtable and Sanity as a headless CMS. The site is deployed via AWS Amplify for continuous integration and hosting.
 
 ## Built With
 - **Astro** &mdash; Static site framework
