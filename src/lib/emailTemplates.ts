@@ -48,14 +48,14 @@ export function applicantConfirmation({
         <style>
           body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; }
           .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-          .header { background-color: #0d2240; padding: 24px; text-align: center; }
+          .header { background-color: #045082; padding: 24px; text-align: center; }
           .header img { max-width: 150px; }
           .content { padding: 32px; color: #333333; }
-          .content h1 { font-size: 24px; color: #0d2240; margin-top: 0; }
+          .content h1 { font-size: 24px; color: #045082; margin-top: 0; }
           .content p { font-size: 16px; line-height: 1.6; color: #555555; }
-          .content strong { color: #ed1c24; }
+          .content strong { color: #f22d30; }
           .button-container { text-align: center; padding: 20px 0 32px; }
-          .button { background-color: #ed1c24; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; }
+          .button { background-color: #f22d30; color: #ffffff !important; padding: 14px 28px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; }
           .footer { background-color: #f4f7f6; padding: 24px; text-align: center; font-size: 12px; color: #888888; }
           .footer p { margin: 4px 0; }
         </style>
@@ -108,7 +108,7 @@ export function hrNotification(data: ApplicantData) {
         <style>
           body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; }
           .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-          .header { background-color: #0d2240; padding: 24px; color: #ffffff; text-align: center; }
+          .header { background-color: #045082; padding: 24px; color: #ffffff; text-align: center; }
           .header h1 { font-size: 24px; margin: 0; }
           .header p { font-size: 16px; margin: 4px 0 0; opacity: 0.9; }
           .content { padding: 32px; }
@@ -116,13 +116,13 @@ export function hrNotification(data: ApplicantData) {
           .details-table th, .details-table td { text-align: left; padding: 12px; border-bottom: 1px solid #eeeeee; }
           .details-table th { color: #888888; font-weight: normal; width: 150px; }
           .details-table td { color: #333333; }
-          .details-table a { color: #ed1c24; text-decoration: none; }
+          .details-table a { color: #f22d30; text-decoration: none; }
           .details-table a:hover { text-decoration: underline; }
-          .section-title { font-size: 20px; color: #0d2240; margin-top: 0; margin-bottom: 16px; border-bottom: 2px solid #ed1c24; padding-bottom: 8px; }
+          .section-title { font-size: 20px; color: #045082; margin-top: 0; margin-bottom: 16px; border-bottom: 2px solid #f22d30; padding-bottom: 8px; }
           .about-section { margin-top: 24px; }
           .about-section p { white-space: pre-wrap; font-size: 14px; line-height: 1.6; color: #555; }
           .button-container { text-align: center; padding: 20px 0 32px; }
-          .button { background-color: #ed1c24; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; }
+          .button { background-color: #f22d30; color: #ffffff !important; padding: 14px 28px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; }
           .footer { background-color: #f4f7f6; padding: 24px; text-align: center; font-size: 12px; color: #888888; }
         </style>
       </head>
@@ -183,13 +183,13 @@ export function contactAcknowledgement({ name }: { name: string }) {
         <style>
           body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; }
           .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-          .header { background-color: #0d2240; padding: 24px; text-align: center; }
+          .header { background-color: #045082; padding: 24px; text-align: center; }
           .header img { max-width: 150px; }
           .content { padding: 32px; color: #333333; }
-          .content h1 { font-size: 24px; color: #0d2240; margin-top: 0; }
+          .content h1 { font-size: 24px; color: #045082; margin-top: 0; }
           .content p { font-size: 16px; line-height: 1.6; color: #555555; }
           .button-container { text-align: center; padding: 20px 0 32px; }
-          .button { background-color: #ed1c24; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; }
+          .button { background-color: #f22d30; color: #ffffff !important; padding: 14px 28px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; }
           .footer { background-color: #f4f7f6; padding: 24px; text-align: center; font-size: 12px; color: #888888; }
           .footer p { margin: 4px 0; }
         </style>
@@ -240,7 +240,7 @@ export function contactNotification(data: ContactData) {
         <style>
           body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; }
           .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-          .header { background-color: #0d2240; padding: 24px; color: #ffffff; text-align: center; }
+          .header { background-color: #045082; padding: 24px; color: #ffffff; text-align: center; }
           .header h1 { font-size: 24px; margin: 0; }
           .header p { font-size: 16px; margin: 4px 0 0; opacity: 0.9; }
           .content { padding: 32px; }
@@ -248,9 +248,9 @@ export function contactNotification(data: ContactData) {
           .details-table th, .details-table td { text-align: left; padding: 12px; border-bottom: 1px solid #eeeeee; }
           .details-table th { color: #888888; font-weight: normal; width: 120px; }
           .details-table td { color: #333333; }
-          .details-table a { color: #ed1c24; text-decoration: none; }
+          .details-table a { color: #f22d30; text-decoration: none; }
           .details-table a:hover { text-decoration: underline; }
-          .section-title { font-size: 20px; color: #0d2240; margin-top: 0; margin-bottom: 16px; border-bottom: 2px solid #ed1c24; padding-bottom: 8px; }
+          .section-title { font-size: 20px; color: #045082; margin-top: 0; margin-bottom: 16px; border-bottom: 2px solid #f22d30; padding-bottom: 8px; }
           .message-section { margin-top: 24px; }
           .message-section p { white-space: pre-wrap; font-size: 14px; line-height: 1.6; color: #555; background-color: #f9f9f9; padding: 16px; border-radius: 5px; }
           .footer { background-color: #f4f7f6; padding: 24px; text-align: center; font-size: 12px; color: #888888; }
