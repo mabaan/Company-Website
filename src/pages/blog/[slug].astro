@@ -29,7 +29,7 @@ const description = getPostDescription(post.body);
 <Layout
   title={`${post.title} | GC Blog`}
   description={description}
-  ogImage={post.imageUrl}
+  ogImage={post.imageUrl || '/logo.png'}
 >
   <!-- Spacer for fixed navbar -->
   <div class="h-24 md:h-28" aria-hidden="true"></div>
