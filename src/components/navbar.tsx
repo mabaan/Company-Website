@@ -41,8 +41,23 @@ export default function Navbar() {
             </span>
           </a>
 
+          {/* GC International Centered on Mobile */}
+          <div className="md:hidden absolute left-1/2 transform -translate-x-1/2">
+            <span
+              className="font-extrabold text-lg tracking-tight"
+              style={{
+                letterSpacing: "0.02em",
+                fontFamily: "inherit",
+                whiteSpace: "nowrap",
+                color: "#1e3a8a",
+              }}
+            >
+              GC International
+            </span>
+          </div>
+
           {/* Desktop Nav */}
-          <ul className="hidden md:flex gap-8 font-medium text-blue-800">
+          <ul className="hidden md:flex gap-8 font-medium text-[#1e3a8a]">
             {links.map((link) => {
               const isActive =
                 path &&
@@ -95,6 +110,21 @@ export default function Navbar() {
         >
           ✕
         </button>
+
+        {/* GC International Centered in Mobile Menu */}
+        <div className="absolute top-6 left-1/2 transform -translate-x-1/2">
+          <span
+            className="font-extrabold text-2xl tracking-tight"
+            style={{
+              letterSpacing: "0.02em",
+              fontFamily: "inherit",
+              whiteSpace: "nowrap",
+              color: "#1e3a8a",
+            }}
+          >
+            GC International
+          </span>
+        </div>
 
         {/* Menu content */}
         <div className="flex flex-col gap-6 items-center justify-center h-full text-xl font-semibold tracking-wide">
