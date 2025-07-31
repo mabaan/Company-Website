@@ -21,14 +21,15 @@ const { job } = Astro.props;
   ogDescription={`Job opening: ${job.title} at GC International.`}
   ogUrl={Astro.url.href}
 >
-  <section class="pt-32 pb-16 px-6 bg-[#f9f9f9] min-h-screen">
+  <section class="pt-32 pb-16 px-6 bg-[#f9f9f9] min-h-screen" data-job-slug={job.slug}>
     <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-8 border border-gray-200 space-y-6">
       <div>
         <h1 class="text-3xl font-bold mb-2">{job.title}</h1>
         <p class="text-gray-600">{job.department} · {job.location} · {job.employmentType}</p>
         <p class="text-sm text-gray-400 mt-1">
-            Posted on: {job.posted ? new Date(job.posted as string).toLocaleDateString() : "Date not available"}
-          </p>      </div>
+          Posted on: {job.posted ? new Date(job.posted as string).toLocaleDateString() : "Date not available"}
+        </p>
+      </div>
 
       <div>
         <h2 class="text-xl font-semibold mb-2">Job Description</h2>
@@ -40,7 +41,7 @@ const { job } = Astro.props;
           <h2 class="text-xl font-semibold mb-2">Responsibilities</h2>
           <ul class="list-disc pl-6 space-y-1 text-gray-700">
             {job.responsibilities.map((item: string) => <li>{item}</li>)}
-        </ul>
+          </ul>
         </div>
       )}
 
@@ -49,15 +50,80 @@ const { job } = Astro.props;
           <h2 class="text-xl font-semibold mb-2">Qualifications</h2>
           <ul class="list-disc pl-6 space-y-1 text-gray-700">
             {job.qualifications.map((item: string) => <li>{item}</li>)}
-        </ul>
+          </ul>
         </div>
       )}
 
       <div class="pt-6">
-        <a href={`/careers/apply/${job.slug}`} class="inline-block bg-[#0054a4] hover:bg-[#003d80] text-white font-semibold px-6 py-3 rounded-lg transition">
+        <button onclick="openCaptcha()" class="inline-block bg-[#0054a4] hover:bg-[#003d80] text-white font-semibold px-6 py-3 rounded-lg transition">
           Apply Now
-        </a>
+        </button>
       </div>
     </div>
   </section>
+
+ <!-- CAPTCHA Modal -->
+<div id="captchaModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 hidden">
+  <div class="bg-white p-6 rounded-lg shadow-xl w-[90%] max-w-md text-center">
+    <h2 class="text-xl font-semibold mb-4">Verify you're human</h2>
+    <div id="recaptcha-container"></div>
+    <button onclick="closeCaptcha()" class="mt-4 text-sm text-gray-500 hover:text-gray-700 underline">
+      Cancel
+    </button>
+  </div>
+</div>
+
+<!-- Load reCAPTCHA explicitly -->
+<script src="https://www.google.com/recaptcha/api.js?onload=renderCaptcha&render=explicit" async defer></script>
+
+<script>
+  console.log("✅ PUBLIC_RECAPTCHA_SITE_KEY =", import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY);
+
+  let captchaRendered = false;
+
+  // Define globally for TypeScript
+  declare global {
+    interface Window {
+      openCaptcha: () => void;
+      closeCaptcha: () => void;
+      onCaptchaSuccess: (token: string) => void;
+      renderCaptcha: () => void;
+    }
+    var grecaptcha: any; // Declare grecaptcha globally
+  }
+
+  window.renderCaptcha = function () {
+    if (!captchaRendered) {
+      grecaptcha.render("recaptcha-container", {
+        sitekey: import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY,
+        callback: window.onCaptchaSuccess,
+      });
+      captchaRendered = true;
+    }
+  };
+
+  window.openCaptcha = function () {
+    const modal = document.getElementById("captchaModal");
+    if (modal) modal.classList.remove("hidden");
+
+    // Render CAPTCHA after modal is shown
+    setTimeout(window.renderCaptcha, 200);
+  };
+
+  window.closeCaptcha = function () {
+    const modal = document.getElementById("captchaModal");
+    if (modal) modal.classList.add("hidden");
+  };
+
+  window.onCaptchaSuccess = function (token) {
+    const slug = document.querySelector("[data-job-slug]")?.getAttribute("data-job-slug");
+    if (slug) {
+      window.location.href = `/careers/apply/${slug}`;
+    } else {
+      alert("Something went wrong. Please refresh the page and try again.");
+    }
+  };
+</script>
+
+  
 </Layout>
