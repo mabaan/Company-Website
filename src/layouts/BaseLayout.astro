@@ -19,17 +19,17 @@ const {
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WL2XB7DZCZ"></script>
     <script is:inline>
-      // @ts-ignore
       window.dataLayer = window.dataLayer || [];
-      // @ts-ignore
       function gtag(){ dataLayer.push(arguments); }
       gtag('js', new Date());
       gtag('config', 'G-WL2XB7DZCZ');
     </script>
-
+  
+    <!-- Meta -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  
+    <!-- SEO / Open Graph -->
     <title>{ogTitle}</title>
     {description && <meta name="description" content={description} />}
     <meta property="og:title" content={ogTitle} />
@@ -37,25 +37,26 @@ const {
     <meta property="og:image" content={ogImage} />
     <meta property="og:url" content={ogUrl} />
     <meta name="theme-color" content="#ffffff" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-<!-- Preload font stylesheet (high priority hint) -->
-<link
-  rel="preload"
-  as="style"
-  href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap"
-/>
-
-<!-- Load CSS non-blocking -->
-<link
-  href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap"
-  rel="stylesheet"
-  media="print"
-  onload="this.media='all'"
-/>
-
+  
+    <!-- Font Optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Preload & non-blocking load -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+  
   </head>
+  
 
   <body class="bg-white text-gray-800 font-sans scroll-smooth">
     <Navbar client:load />

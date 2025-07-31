@@ -1,52 +1,53 @@
 "use client";
+import { getCdnImage } from "../lib/getCdnImage";
 
 const partners = [
   {
     name: "Galli & Cassina",
     title: "Lubricated & Sleeved Plug Valve Manufacturing",
-    image: "/partners/gc.png",
+    image: "gc-copy.png",
     url: "https://www.gallicassina.com/",
   },
   {
     name: "Bernard Controls",
     title: "Electric Actuators and Control Systems",
-    image: "/partners/bernard.png",
+    image: "bernard-copy.png",
     url: "https://www.bernardcontrols.com/en",
   },
   {
     name: "Dafram",
     title: "Ball Valve Manufacturing",
-    image: "/partners/dafram.png",
+    image: "dafram-copy.png",
     url: "https://www.dafram.it/",
   },
   {
     name: "Bonomi Group",
     title: "Industrial Supply Chain",
-    image: "/partners/bonomi.png",
+    image: "bonomi-copy.png",
     url: "https://www.bonomiindustries.com/",
   },
   {
     name: "Melesi",
     title: "Forged Fittings & Flanges",
-    image: "/partners/melesi.png",
+    image: "melesi-copy.png",
     url: "https://www.melesi.it/en",
   },
   {
     name: "Bonney Forge",
     title: "Valves & Fittings Manufacturer",
-    image: "/partners/bonneyforge.png",
+    image: "bonneyforge-copy.png",
     url: "https://bonneyforge.com/",
   },
   {
     name: "Quam",
     title: "Innovative Engineering Partner",
-    image: "/partners/quam.png",
+    image: "quam-copy.png",
     url: "https://www.iamquam.it/",
   },
   {
     name: "Crane",
     title: "Process Flow Technologies",
-    image: "/partners/cranecpe.png",
+    image: "cranecpe-copy.png",
     url: "https://cranecpe.com/brand/xomox/",
   },
 ];
@@ -54,7 +55,7 @@ const partners = [
 const lastPartner = {
   name: "Jiangsu Huaying Valves",
   title: "Valve Manufacturing",
-  image: "/partners/HYV.png",
+  image: "HYV-copy.png",
   url: "http://jshyv.com/en",
 };
 
@@ -69,25 +70,25 @@ export default function PartnersSection() {
         {/* Main partner grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-y-24 gap-x-24 justify-items-center">
           {partners.map((partner, idx) => (
-          <a
-            key={idx}
-            href={partner.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex flex-col items-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 rounded-md"
-            aria-label={`${partner.name} – ${partner.title}`}
-          >
-            <img
-              src={partner.image}
-              alt={partner.name}
-              loading="lazy"
-              className="h-32 mb-3 object-contain transition-transform duration-200 group-hover:scale-105"
-            />
-            <h3 className="text-base font-semibold text-gray-800">
-              {partner.name}
-            </h3>
-            <p className="text-sm text-gray-500">{partner.title}</p>
-          </a>
+            <a
+              key={idx}
+              href={partner.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-col items-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 rounded-md"
+              aria-label={`${partner.name} – ${partner.title}`}
+            >
+              <img
+                src={getCdnImage(partner.image)}
+                alt={partner.name}
+                loading="lazy"
+                className="h-32 mb-3 object-contain transition-transform duration-200 group-hover:scale-105"
+              />
+              <h3 className="text-base font-semibold text-gray-800">
+                {partner.name}
+              </h3>
+              <p className="text-sm text-gray-500">{partner.title}</p>
+            </a>
           ))}
         </div>
 
@@ -101,9 +102,9 @@ export default function PartnersSection() {
             aria-label={`${lastPartner.name} – ${lastPartner.title}`}
           >
             <img
-              src={lastPartner.image}
+              src={getCdnImage(lastPartner.image)}
               alt={lastPartner.name}
-              loading="lazy"
+              loading="eager"
               className="h-32 mb-3 object-contain transition-transform duration-200 group-hover:scale-105"
             />
             <h3 className="text-base font-semibold text-gray-800">

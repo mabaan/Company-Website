@@ -2,14 +2,19 @@
 
 import { useState, useEffect } from "react";
 
-const images = [
-  "/factory/industry.jpg",
-  "/factory/offshore.jpg",
-  "/factory/valve3.jpg",
-  "/factory/DIEZ.jpg",
-  "/factory/factory3.jpg",
-  "/factory/valve2.png",
+// Optimized image URLs (next-gen with f_auto, q_auto)
+const rawImages = [
+  "v1753875177/gcintle/resume/industry.jpg",
+  "v1753875177/gcintle/resume/offshore.jpg",
+  "v1753875175/gcintle/resume/valve3.jpg",
+  "v1753875185/gcintle/resume/DIEZ.jpg",
+  "v1753875178/gcintle/resume/valve2.png",
 ];
+
+const images = rawImages.map(
+  (path) =>
+    `https://res.cloudinary.com/dxrwnc5g4/image/upload/f_auto,q_auto/${path}`
+);
 
 export default function ImageCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -17,7 +22,6 @@ export default function ImageCarousel() {
     null
   );
 
-  // Auto-slide every 3s
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
@@ -27,14 +31,12 @@ export default function ImageCarousel() {
 
   const handleArrowClick = (direction: "prev" | "next") => {
     setClickedArrow(direction);
-
-    if (direction === "prev") {
-      setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-    } else {
-      setCurrentIndex((prev) => (prev + 1) % images.length);
-    }
-
-    setTimeout(() => setClickedArrow(null), 300); // reset after 300ms
+    setCurrentIndex((prev) =>
+      direction === "prev"
+        ? (prev - 1 + images.length) % images.length
+        : (prev + 1) % images.length
+    );
+    setTimeout(() => setClickedArrow(null), 300);
   };
 
   return (
@@ -43,7 +45,8 @@ export default function ImageCarousel() {
       <img
         src={images[currentIndex]}
         alt={`Slide ${currentIndex + 1}`}
-        loading="lazy"
+        loading={currentIndex === 0 ? "eager" : "lazy"}
+        fetchPriority={currentIndex === 0 ? "high" : "auto"}
         className="absolute w-full h-full object-contain transition-opacity duration-500"
       />
 
