@@ -15,25 +15,23 @@ import JoinUsSection from "../components/JoinUsSection";
   ogDescription="Learn about GC International and our global partnerships."
   ogUrl={Astro.url.href}
 >
-
   <div class="pt-32 bg-[#f5f7fa]">
-
     <!-- Hero / Image Carousel -->
-    <ImageCarousel client:only="react" />
+    <ImageCarousel client:load />
 
-  <!-- Who We Are Section -->
-  <WhoWeAre client:only="react" />
+    <!-- Who We Are Section -->
+    <WhoWeAre client:visible />
 
-  <!-- What We Do Section -->
-  <WhatWeDo client:only="react" />
+    <!-- What We Do Section -->
+    <WhatWeDo client:visible />
 
-  <!-- Partners Section -->
-  <PartnersSection client:only="react" />
+    <!-- Partners Section -->
+    <PartnersSection client:visible />
 
-  <!-- Become a Partner Section -->
-  <BecomePartnerSection client:only="react" />
+    <!-- Become a Partner Section -->
+    <BecomePartnerSection client:visible />
 
     <!-- Join Us Section -->
-    <JoinUsSection client:only="react" />
+    <JoinUsSection client:visible />
   </div>
 </Layout>

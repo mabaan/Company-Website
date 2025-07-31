@@ -4,7 +4,7 @@ import { uploadResumeToCloudinary } from "./uploadResumeToCloudinary";
 export async function submitToAirtable(data: Record<string, any>) {
   const { resume, jobRecordId } = data;
 
-  console.log("📤 Submitting application to Airtable...");
+  console.log("Submitting application to Airtable...");
 
   // Step 1: Create application record (no Resume, no Resume URL)
   const [applicationRecord] = await base(APPLICATIONS_TABLE).create([
@@ -28,7 +28,7 @@ export async function submitToAirtable(data: Record<string, any>) {
     },
   ]);
 
-  console.log("✅ Airtable record created:", applicationRecord);
+  console.log("Airtable record created:", applicationRecord);
 
   const applicationId = applicationRecord.fields["Application ID"] as
     | string
@@ -36,8 +36,8 @@ export async function submitToAirtable(data: Record<string, any>) {
   const applicationAirtableId = applicationRecord.id;
 
   if (!applicationId) {
-    console.error("❌ Application ID missing in record:", applicationRecord);
-    throw new Error("❌ Application ID is missing from Airtable response.");
+    console.error("Application ID missing in record:", applicationRecord);
+    throw new Error("Application ID is missing from Airtable response.");
   }
 
   // Step 2: Get Job ID (auto number) from linked Job
@@ -47,8 +47,8 @@ export async function submitToAirtable(data: Record<string, any>) {
   console.log("🔍 Fetched Job record:", job);
 
   if (!jobId) {
-    console.error("❌ Job ID missing in record:", job);
-    throw new Error("❌ Job ID is missing from job record.");
+    console.error("Job ID missing in record:", job);
+    throw new Error("Job ID is missing from job record.");
   }
 
   // Step 3: Upload resume to Cloudinary using IDs (no PATCH to Airtable)
@@ -61,12 +61,12 @@ export async function submitToAirtable(data: Record<string, any>) {
       applicationId
     );
 
-    console.log("✅ Resume uploaded to Cloudinary:", resumeUrl);
+    console.log("Resume uploaded to Cloudinary:", resumeUrl);
     console.log(
-      "ℹ️ Resume URL is computed automatically in Airtable via formula."
+      "Resume URL is computed automatically in Airtable via formula."
     );
   } else {
-    console.warn("⚠️ No resume provided or file is not a valid File object.");
+    console.warn("No resume provided or file is not a valid File object.");
   }
 
   console.log(

@@ -15,7 +15,7 @@ import Stats from "../components/Stats";
   ogUrl={Astro.url.href}
 >
   <main id="page-content" class="main-content">
-    <Hero client:only="react" />
+    <Hero client:load />
     <!-- <GearScroll client:only="react" direction="cw" /> -->
 
     <WhyChooseUs />
