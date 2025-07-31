@@ -4,6 +4,7 @@ export const prerender = false;
 import Layout from "../../layouts/BaseLayout.astro";
 import { client } from "../../lib/sanityClient";
 import { PortableText } from "@portabletext/react";
+import { getPostDescription } from "../../lib/getDescription";
 
 const { slug } = Astro.params;
 
@@ -19,24 +20,26 @@ const post = await client.fetch(
   { slug }
 );
 
-const description = post.body && post.body[0] && post.body[0].children ? post.body[0].children.map((c: any) => c.text).join(" ").slice(0, 150) : "";
+// Optional: fallback if post not found
+if (!post) throw new Error("Post not found");
+
+const description = getPostDescription(post.body);
 ---
 
 <Layout
-  title={post.title}
+  title={`${post.title} | GC Blog`}
   description={description}
-  ogTitle={post.title}
-  ogDescription={description}
-  ogImage={post.imageUrl || "/logo.png"}
-  ogUrl={Astro.url.href}
+  ogImage={post.imageUrl}
 >
+  <!-- Spacer for fixed navbar -->
+  <div class="h-24 md:h-28" aria-hidden="true"></div>
+
   <article class="max-w-3xl mx-auto px-6 py-16">
     <!-- Title & Meta -->
     <h1 class="text-4xl font-bold mb-2 text-[#0054a4]">{post.title}</h1>
     <p class="text-sm text-gray-600 mb-6">
-      by {post.author} • {new Date(post.publishedAt).toLocaleDateString()}
+      by {post.author}
     </p>
-
 
     <!-- Optional Cover Image -->
     {post.imageUrl && (
@@ -52,14 +55,12 @@ const description = post.body && post.body[0] && post.body[0].children ? post.bo
       />
     )}
 
-    <!-- Full blog content without preview clipping -->
+    <!-- Full blog content -->
     <div class="prose prose-lg max-w-none">
-
       <PortableText value={post.body} />
     </div>
 
-
-    <!-- Back to all blogs -->
+    <!-- Back button -->
     <div class="mt-12">
       <a
         href="/blog"
