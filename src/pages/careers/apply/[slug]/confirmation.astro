@@ -8,6 +8,7 @@ import { uploadResumeToCloudinary } from "../../../../lib/uploadResumeToCloudina
 import { base, APPLICATIONS_TABLE } from "../../../../lib/airtable";
 import { applicantConfirmation, hrNotification } from "../../../../lib/emailTemplates";
 import { sendMail } from "../../../../lib/mailgunClient";
+import ProgressBar from "../../../../components/ProgressBar.tsx";
 
 // Load job by slug
 console.log('--- Handling job application confirmation ---');
@@ -170,6 +171,7 @@ try {
   ogDescription={`Thank you for applying to GC International.`}
   ogUrl={Astro.url.href}
 >
+  <ProgressBar currentStep="confirmation" client:load />
   <section class="pt-32 pb-12 px-4 max-w-2xl mx-auto text-center">
     <h1 class="text-3xl font-bold mb-4">Application Submitted</h1>
     <p class="text-lg mb-4">

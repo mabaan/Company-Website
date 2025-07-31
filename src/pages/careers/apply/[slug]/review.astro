@@ -3,6 +3,7 @@ export const prerender = false;
 
 import Layout from "../../../../layouts/BaseLayout.astro";
 import { getJobs, type Job } from "../../../../lib/jobs";
+import ProgressBar from "../../../../components/ProgressBar.tsx";
 
 // Static paths
 export async function getStaticPaths() {
@@ -79,6 +80,7 @@ const isPdf = values.resumeMime === "application/pdf";
   ogDescription={`Review your application for ${job.title}.`}
   ogUrl={Astro.url.href}
 >
+  <ProgressBar currentStep="review" client:load />
   <section class="pt-24 md:pt-32 pb-12 px-4 bg-gray-50 min-h-screen">
     <div class="max-w-4xl mx-auto">
       <div class="text-center mb-8 md:mb-10">

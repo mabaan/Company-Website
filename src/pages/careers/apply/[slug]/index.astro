@@ -5,6 +5,7 @@ import Layout from "../../../../layouts/BaseLayout.astro";
 import { getJobs, type Job } from "../../../../lib/jobs";
 import { getCountryList } from "../../../../lib/getCountryData";
 import type { Country } from "../../../../lib/getCountryData";
+import ProgressBar from "../../../../components/ProgressBar.tsx";
 
 // Static paths
 export async function getStaticPaths() {
@@ -38,6 +39,7 @@ const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
   ogDescription={`Apply for ${job.title} at GC International.`}
   ogUrl={Astro.url.href}
 >
+  <ProgressBar currentStep="application" client:load />
   <section class="pt-32 pb-12 px-4 max-w-3xl mx-auto">
     <h1 class="text-3xl font-bold mb-4">Apply for {job.title}</h1>
 
