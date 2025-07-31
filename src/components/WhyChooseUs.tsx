@@ -2,17 +2,27 @@ export default function WhyChooseUs() {
   return (
     <section
       id="why"
-      className="w-full px-6 md:px-12 pt-24 pb-38 md:pt-38 lg:pt-52 bg-[#f3f6f9] text-gray-800"
+
+      className="
+        w-full
+        px-6 sm:px-8 md:px-12
+        pt-12 sm:pt-16 md:pt-20 lg:pt-24
+        pb-16 sm:pb-20 md:pb-24 lg:pb-28
+        bg-[#f3f6f9] text-gray-800
+      "
+
     >
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold mb-10 text-gray-900">
+        {/* Title & intro */}
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 md:mb-10 text-gray-900">
           Why Choose GC International
         </h2>
-        <p className="text-base md:text-lg mb-20 leading-relaxed text-gray-600 max-w-3xl">
+        <p className="text-sm sm:text-base md:text-lg mb-12 sm:mb-16 md:mb-20 leading-relaxed text-gray-600 max-w-3xl">
           We deliver reliability and excellence through global partnerships,
           certified quality, and fast execution. Our solutions are tailored to
           meet industrial challenges across the Middle East and beyond.
         </p>
+
 
         <div className="grid md:grid-cols-3 gap-12">
           {/* Card 1 */}
@@ -128,6 +138,7 @@ export default function WhyChooseUs() {
               customized packages.
             </p>
           </div>
+
         </div>
       </div>
     </section>

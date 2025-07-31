@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 
+
 // Optimized image URLs (next-gen with f_auto, q_auto)
 const rawImages = [
   "v1753875177/gcintle/resume/industry.jpg",
@@ -9,6 +10,7 @@ const rawImages = [
   "v1753875175/gcintle/resume/valve3.jpg",
   "v1753875185/gcintle/resume/DIEZ.jpg",
   "v1753875178/gcintle/resume/valve2.png",
+
 ];
 
 const images = rawImages.map(

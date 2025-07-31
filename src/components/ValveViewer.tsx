@@ -73,16 +73,40 @@ export default function ValveViewer() {
           }
           valve.visible = true;
 
-          // detailed breakpoints
-          const scale =
-            w >= 3440 ? 0.007 :  // super-ultrawide
-            w >= 2560 ? 0.006 :  // ultrawide
-            w >= 1920 ? 0.005 :  // large desktop
-            w >= 1440 ? 0.0045 : // desktop
-            w >= 1024 ? 0.004 :  // laptop/tablet
-            0.0032;              // small
+          // detailed, granular breakpoints for valve scaling
+const scale = (() => {
+  // super-ultrawide 5K and above
+  if (w >= 5120) return 0.0060;
 
-          valve.scale.setScalar(scale);
+  // super-ultrawide 4K (e.g. 3840×1440 and above)
+  if (w >= 3840) return 0.0041;
+
+  // ultrawide 3440px (common 21:9 monitors)
+  if (w >= 3440) return 0.0050;
+
+  // ultrawide QHD 2560px
+  if (w >= 2560) return 0.0040;
+
+  // large desktop (1920×1080+)
+  if (w >= 1920) return 0.0045;
+
+  // standard desktop (1600px)
+  if (w >= 1600) return 0.0042;
+
+  // laptop / small desktop (1440px)
+  if (w >= 1440) return 0.0040;
+
+  // tablet / large phone landscape (1024px)
+  if (w >= 1024) return 0.0036;
+
+  // small tablets and large phones portrait (768px)
+  if (w >= 768) return 0.0032;
+
+  // mobile portrait and below
+  return 0.0028;
+})();
+
+valve.scale.setScalar(scale);
 
           // maintain camera aspect
           const h = window.innerHeight;
@@ -93,11 +117,28 @@ export default function ValveViewer() {
           const dist = camera.position.z;
           const halfH = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * dist;
           const halfW = halfH * camera.aspect;
-          const marginPx = 
-            w >= 3440 ? 500 :
-            w >= 2560 ? 400 :
-            w >= 1920 ? 300 :
-            200;
+          // granular pixel margins to keep valve pinned neatly at the right
+          const marginPx = (() => {
+            // 5K and above ultrawide
+            if (w >= 5120) return 900;
+            // 4K ultrawide (3840px+)
+            if (w >= 3840) return 800;
+            // 21:9 common ultrawide (3440px+)
+            if (w >= 3440) return 700;
+            // QHD / widescreen (2560px+)
+            if (w >= 2560) return 500;
+            // Full HD and above (1920px+)
+            if (w >= 1920) return 350;
+            // Laptop / small desktop (1440px+)
+            if (w >= 1440) return 300;
+            // Tablet / large phone landscape (1024px+)
+            if (w >= 1024) return 200;
+            // Small tablets / large phones (768px+)
+            if (w >= 768)  return 150;
+            // Mobile portrait
+            return 100;
+          })();
+
           const worldPerPx = (halfW * 2) / w;
           const marginWorld = marginPx * worldPerPx;
           const halfModelW = (size.x * scale) / 2;
