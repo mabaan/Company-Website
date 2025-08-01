@@ -26,6 +26,15 @@ export interface ContactData {
   submittedAt: string;
 }
 
+function escapeHtml(input: string = ""): string {
+  return input
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 // ───────────────────────────────────────────────────────────────────────────────
 // Applicant confirmation after submitting a job application
 // ───────────────────────────────────────────────────────────────────────────────
@@ -69,7 +78,7 @@ export function applicantConfirmation({
                   <img src="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1753543466/GC_Logo_axkvdz.png" alt="GC International Logo">
                 </div>
                 <div class="content">
-                  <h1>Hello ${firstName},</h1>
+                  <h1>Hello ${escapeHtml(firstName)},</h1>
                   <p>Thank you for applying for the <strong>${role}</strong> position at GC International. We’re thrilled to see your interest in joining our team.</p>
                   <p>We have successfully received your application. Our HR team will carefully review your profile and get in touch with you if your qualifications meet our requirements.</p>
                   <p>We appreciate your patience during this process.</p>
@@ -97,7 +106,7 @@ export function applicantConfirmation({
 // ───────────────────────────────────────────────────────────────────────────────
 export function hrNotification(data: ApplicantData) {
   return {
-    subject: `[#${data.applicationId}] New Application for ${data.role}: ${data.firstName} ${data.lastName}`,
+    subject: `[#${data.applicationId}] New Application for ${data.role}: ${escapeHtml(data.firstName)} ${escapeHtml(data.lastName)}`,
     html: `
       <!DOCTYPE html>
       <html lang="en">
@@ -138,7 +147,7 @@ export function hrNotification(data: ApplicantData) {
                 <div class="content">
                   <h2 class="section-title">Applicant Details</h2>
                   <table class="details-table">
-                    <tr><th>Name</th><td>${data.firstName} ${data.lastName}</td></tr>
+                    <tr><th>Name</th><td>${escapeHtml(data.firstName)} ${escapeHtml(data.lastName)}</td></tr>
                     <tr><th>Email</th><td><a href="mailto:${data.email}">${data.email}</a></td></tr>
                     <tr><th>Phone</th><td>${data.countryCode} ${data.phone}</td></tr>
                     <tr><th>Nationality</th><td>${data.nationality}</td></tr>
@@ -150,7 +159,7 @@ export function hrNotification(data: ApplicantData) {
                   </table>
                   <div class="about-section">
                     <h3 class="section-title">About</h3>
-                    <p>${data.about || "Not provided."}</p>
+                    <p>${data.about ? escapeHtml(data.about) : "Not provided."}</p>
                   </div>
                 </div>
                 ${data.resumeUrl ? `<div class="button-container"><a href="${data.resumeUrl}" class="button">Download Resume</a></div>` : ''}
@@ -203,7 +212,7 @@ export function contactAcknowledgement({ name }: { name: string }) {
                   <img src="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1753543466/GC_Logo_axkvdz.png" alt="GC International Logo">
                 </div>
                 <div class="content">
-                  <h1>Hello ${name},</h1>
+                  <h1>Hello ${escapeHtml(name)},</h1>
                   <p>Thank you for reaching out to GC International. We have successfully received your message.</p>
                   <p>Our team will review your inquiry and get back to you within 1-2 business days.</p>
                 </div>
@@ -229,7 +238,7 @@ export function contactAcknowledgement({ name }: { name: string }) {
 // ───────────────────────────────────────────────────────────────────────────────
 export function contactNotification(data: ContactData) {
   return {
-    subject: `New Contact Form Inquiry from ${data.name}`,
+    subject: `New Contact Form Inquiry from ${escapeHtml(data.name)}`,
     html: `
       <!DOCTYPE html>
       <html lang="en">
@@ -263,19 +272,19 @@ export function contactNotification(data: ContactData) {
               <div class="container">
                 <div class="header">
                   <h1>New Contact Inquiry</h1>
-                  <p>from <strong>${data.name}</strong></p>
+                  <p>from <strong>${escapeHtml(data.name)}</strong></p>
                 </div>
                 <div class="content">
                   <h2 class="section-title">Contact Details</h2>
                   <table class="details-table">
-                    <tr><th>Name</th><td>${data.name}</td></tr>
-                    <tr><th>Company</th><td>${data.company}</td></tr>
-                    <tr><th>Email</th><td><a href="mailto:${data.email}">${data.email}</a></td></tr>
-                    <tr><th>Phone</th><td>${data.phone}</td></tr>
+                    <tr><th>Name</th><td>${escapeHtml(data.name)}</td></tr>
+                    <tr><th>Company</th><td>${escapeHtml(data.company)}</td></tr>
+                    <tr><th>Email</th><td><a href="mailto:${escapeHtml(data.email)}">${escapeHtml(data.email)}</a></td></tr>
+                    <tr><th>Phone</th><td>${escapeHtml(data.phone)}</td></tr>
                   </table>
                   <div class="message-section">
                     <h3 class="section-title">Message</h3>
-                    <p>${data.message}</p>
+                    <p>${escapeHtml(data.message)}</p>
                   </div>
                 </div>
                 <div class="footer">
