@@ -13,12 +13,16 @@ const stepIndex =
       );
 ---
 <nav aria-label="Application progress" class="w-full max-w-3xl mx-auto mt-6">
-  <ol class="flex items-center justify-between">
+  <ol class="flex flex-col sm:flex-row items-start sm:items-center">
     {steps.map((step, idx) => (
-      <li class="flex-1 flex items-center" aria-current={idx === stepIndex ? 'step' : undefined}>
+      <li
+        class="flex items-center sm:flex-1"
+        aria-current={idx === stepIndex ? 'step' : undefined}
+      >
         <div
           class={`flex items-center justify-center w-8 h-8 rounded-full text-white text-sm font-semibold ${idx <= stepIndex ? 'bg-[#e41f26]' : 'bg-[#003b71]'}`}
         >
+          <span class="sr-only">Step {idx + 1}</span>
           {idx < stepIndex ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -37,12 +41,14 @@ const stepIndex =
           )}
         </div>
         {idx < steps.length - 1 && (
-          <div class={`flex-1 h-0.5 sm:h-1 ${idx < stepIndex ? 'bg-[#e41f26]' : 'bg-[#003b71]'}`}></div>
+          <div
+            class={`sm:flex-1 sm:h-1 h-6 w-px sm:w-auto ${idx < stepIndex ? 'bg-[#e41f26]' : 'bg-[#003b71]'}`}
+          ></div>
         )}
       </li>
     ))}
   </ol>
-  <ol class="mt-2 flex justify-between text-xs sm:text-sm font-medium">
+  <ol class="mt-2 flex flex-col sm:flex-row justify-between text-xs sm:text-sm font-medium">
     {steps.map((step) => (
       <li class="flex-1 text-center">{step.label}</li>
     ))}
