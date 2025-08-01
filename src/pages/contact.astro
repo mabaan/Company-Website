@@ -36,7 +36,7 @@ if (Astro.request.method === "POST") {
 
     // Send acknowledgement back to the user
     try {
-      console.log("📧 Sending acknowledgement email");
+      console.log("📧 Sending acknowledgement to", contactData.email);
       await sendMail({
         to: contactData.email,
         subject: contactAck.subject,
@@ -76,25 +76,21 @@ if (Astro.request.method === "POST") {
   ogUrl={Astro.url.href}
 >
   <!-- push content below the fixed navbar -->
-<section class="min-h-screen bg-gradient-to-br from-[#f3f6f9] to-[#eaf1fa] pt-48 pb-20 px-4 text-gray-800">
-  <div class="max-w-6xl mx-auto rounded-3xl shadow-2xl ring-1 ring-[#dde5ee]/60 grid md:grid-cols-2 gap-0 overflow-hidden bg-white/80 backdrop-blur-md">
+<section class="min-h-screen bg-gradient-to-br from-[#f3f6f9] to-[#eaf1fa] pt-32 pb-8 px-2 text-gray-800">
+  <div class="max-w-6xl mx-auto rounded-3xl shadow-2xl ring-1 ring-[#dde5ee]/60 flex flex-col md:grid md:grid-cols-2 gap-0 overflow-hidden bg-white/80 backdrop-blur-md">
 
     <!-- LEFT: Company info -->
-    <div class="relative flex flex-col h-full p-10 bg-gradient-to-b from-[#ffffff99] to-[#f2f7fb]">
-      <!-- Faint vertical divider for md+ screens -->
+    <div class="relative flex flex-col h-full p-6 sm:p-10 bg-gradient-to-b from-[#ffffff99] to-[#f2f7fb]">
       <div class="hidden md:block absolute right-0 top-0 h-full w-px bg-gradient-to-b from-transparent via-[#e3e8ee] to-transparent z-10"></div>
 
-      <!-- Content block -->
-      <div class="flex flex-col items-center text-center space-y-14 md:space-y-16 z-20">
-        <h1 class="text-4xl md:text-5xl font-extrabold text-[#0054a4] tracking-tight drop-shadow-sm">
+      <div class="flex flex-col items-center text-center space-y-10 md:space-y-16 z-20">
+        <h1 class="text-3xl md:text-5xl font-extrabold text-[#0054a4] tracking-tight drop-shadow-sm mt-4">
           Contact Us
         </h1>
-        <!-- Logo: NO rectangle or background -->
         <img
           src="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1753901041/gcintle/resume/GC_Logo.png"
           alt="GC International Logo"
-          class="w-48 md:w-72 drop-shadow-lg rounded-xl"
-          style="background: none; box-shadow: none;"
+          class="w-40 md:w-72 drop-shadow-lg rounded-xl"
         />
         <p class="text-gray-600 text-base md:text-lg max-w-xs md:max-w-sm font-medium">
           We would love to hear from you and welcome your questions, business inquiries, or partnership proposals.<br>
@@ -104,8 +100,7 @@ if (Astro.request.method === "POST") {
 
       <div class="flex-1"></div>
 
-      <!-- Address block: No background/rectangle, add Google Maps link -->
-      <div class="mt-10 flex justify-center z-20">
+      <div class="mt-8 md:mt-10 flex justify-center z-20">
         <div class="text-gray-700 text-center text-sm leading-relaxed space-y-1 w-full max-w-xs">
           <div class="text-[#0054a4] font-bold mb-1">Head Office – Dubai</div>
           <div>GC International FZE</div>
@@ -126,12 +121,12 @@ if (Astro.request.method === "POST") {
       </div>
     </div>
 
-    <!-- RIGHT: Contact Form column with full blue background -->
-    <div class="flex flex-col justify-center items-center p-0 md:p-10 bg-[#003b71] relative min-h-[600px]">
+    <!-- RIGHT: Contact Form column, bg-[#f2f7fb] on mobile, blue on md+ screens -->
+    <div class="flex flex-col justify-center items-center p-0 py-8 md:py-10 bg-[#f2f7fb] md:bg-[#003b71] relative min-h-[500px] w-full">
       <form
         id="contactForm"
         method="POST"
-        class="grid gap-7 md:gap-6 bg-white/95 border border-[#e6eaf3] rounded-2xl shadow-lg px-6 py-7 md:px-10 md:py-10 mx-4 my-10 w-full max-w-md"
+        class="grid gap-7 md:gap-6 bg-white/95 border border-[#e6eaf3] rounded-2xl shadow-lg px-4 py-7 md:px-10 md:py-10 w-full max-w-md"
         novalidate
       >
         <!-- Name -->
@@ -232,6 +227,7 @@ if (Astro.request.method === "POST") {
     }
   </style>
 </section>
+
 
 
 

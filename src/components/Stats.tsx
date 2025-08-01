@@ -8,15 +8,56 @@ interface Stat {
   value: number;
   suffix?: string;
   title: string;
+  icon: string;
 }
 
 const metrics: Stat[] = [
-  { value: 4.2,  suffix: "/5", title: "Customer Satisfaction"      },
-  { value: 92,   suffix: "%",  title: "Repeat Business Rate"       },
-  { value: 9,    suffix: "+",  title: "Companies Represented"      },
-  { value: 6,    suffix: "+",  title: "Countries Served"           },
-  { value: 90,   suffix: "%",  title: "On-Time Delivery Rate"      },
-  { value: 100,  suffix: "%",  title: "ISO-Certified Partners"     },
+  {
+    value: 4.2,
+    suffix: "/5",
+    title: "Customer Satisfaction",
+    icon: "customer-satisfaction",
+  },
+  {
+    value: 100,
+    suffix: "%",
+    title: "ISO-Certified Partners",
+    icon: "ISO",
+  },
+  {
+    value: 90,
+    suffix: "%",
+    title: "On-Time Delivery Rate",
+    icon: "delivery-rate",
+  },
+  {
+    value: 6,
+    suffix: "+",
+    title: "Countries Served",
+    icon: "countries-served",
+  },
+  {
+    value: 9,
+    suffix: "+",
+    title: "Companies Represented",
+    icon: "companies-represented",
+  },
+  {
+    value: 92,
+    suffix: "%",
+    title: "Repeat Business Rate",
+    icon: "repeat-buisness",
+  },
+];
+
+// Assign a distinct, brand-harmonious border color to each card
+const borderColors = [
+  "#41a1ea", // Customer Satisfaction (blue)
+  "#1cb09e", // ISO-Certified Partners (teal)
+  "#7782aa", // On-Time Delivery Rate (steel blue)
+  "#f9c846", // Countries Served (gold)
+  "#5761c2", // Companies Represented (blue-violet)
+  "#fd8879", // Repeat Business Rate (coral)
 ];
 
 export default function StatsSection() {
@@ -53,37 +94,47 @@ export default function StatsSection() {
       className="w-full px-4 md:px-12 py-16 bg-[#eceff2] text-gray-800"
     >
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-2xl md:text-3xl font-extrabold mb-3 text-[#003b71]">
+        <h2 className="text-4xl font-bold mb-3 text-[#003b71] text-left">
           Delivering Excellence Across Every Metric
         </h2>
-        <p className="text-sm md:text-base mb-10 leading-relaxed text-gray-600 max-w-3xl">
+        <p className="text-lg md:text-xl mb-10 leading-relaxed text-gray-600 max-w-3xl text-left font-normal">
           From customer satisfaction to on-time delivery, we measure what matters so you get the reliability and quality you deserve.
         </p>
 
         <div
           ref={containerRef}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           {metrics.map((stat, i) => (
             <div
               key={i}
-              className="p-5 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition
-                h-full flex flex-col items-center group"
+              className="p-7 bg-white/95 rounded-2xl shadow-lg border-t-4 hover:-translate-y-2 hover:shadow-xl transition-all duration-200 flex flex-col items-center group"
+              style={{
+                borderTopColor: borderColors[i],
+              }}
             >
+              <div className="mb-5">
+                <img
+                  src={`https://res.cloudinary.com/dxrwnc5g4/image/upload/v1754083433/gcintle/resume/${stat.icon}.svg`}
+                  alt={stat.title + " Icon"}
+                  className="w-14 h-14 drop-shadow-md group-hover:scale-110 transition-transform duration-200"
+                  loading="lazy"
+                />
+              </div>
               <div className="flex items-baseline mb-2">
                 <span
-                  className="counter text-2xl sm:text-3xl font-bold text-[#e41f26] group-hover:scale-110 transition-transform"
+                  className="counter text-3xl font-bold text-[#e41f26] group-hover:scale-110 transition-transform"
                   data-end={stat.value}
                 >
                   0
                 </span>
                 {stat.suffix && (
-                  <span className="text-base sm:text-lg font-semibold text-[#e41f26] ml-1">
+                  <span className="text-lg font-semibold text-[#e41f26] ml-1">
                     {stat.suffix}
                   </span>
                 )}
               </div>
-              <h3 className="text-sm sm:text-base font-semibold text-[#003b71] text-center tracking-wide opacity-90">
+              <h3 className="text-base md:text-lg font-semibold text-[#003b71] text-center tracking-wide opacity-90">
                 {stat.title}
               </h3>
             </div>
