@@ -29,22 +29,23 @@ export default function Navbar() {
                    md:max-w-screen-lg md:mx-auto md:mt-4 md:rounded-xl"
       >
         <div className="flex justify-between items-center py-4 relative">
-          {/* Logo (left) */}
+          {/* Logo (left, text shifted right on desktop) */}
           <a
-            href="/"
-            className="flex items-center gap-4 no-underline hover:no-underline"
-          >
-            <img
-              src="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1753901040/gcintle/resume/GC_Transparent_Logo.png"
-              alt="GC Logo"
-              className="h-10 w-auto"
-            />
-            {/* Desktop text only */}
-            <span className="text-xl font-bold tracking-wide hidden md:inline">
-              <span className="text-blue-900">GC&nbsp;</span>
-              <span className="text-[#e41f26]">International</span>
-            </span>
-          </a>
+  href="/"
+  className="flex items-center gap-0 no-underline hover:no-underline"
+>
+  <img
+    src="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1753901040/gcintle/resume/GC_Transparent_Logo.png"
+    alt="GC Logo"
+    className="h-10 w-auto"
+  />
+  {/* Desktop text only, shifted further right */}
+  <span className="text-xl font-bold tracking-wide hidden md:inline ml-12">
+    <span className="text-blue-900">GC&nbsp;</span>
+    <span className="text-[#e41f26]">International</span>
+  </span>
+</a>
+
 
           {/* GC International Centered on Mobile */}
           <div className="absolute left-1/2 transform -translate-x-1/2 md:hidden">
@@ -68,7 +69,7 @@ export default function Navbar() {
                     href={link.href}
                     className={`no-underline hover:no-underline hover:text-blue-600 transition duration-200 ${
                       isActive
-                        ? "text-blue-600 font-extrabold"
+                        ? "text-[#e41f26] font-extrabold"
                         : "font-semibold"
                     }`}
                   >
