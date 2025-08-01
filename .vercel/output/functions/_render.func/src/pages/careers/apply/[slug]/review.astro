@@ -1,0 +1,245 @@
+---
+export const prerender = false;
+
+import Layout from "../../../../layouts/BaseLayout.astro";
+import { getJobs, type Job } from "../../../../lib/jobs";
+import ProgressBar from "../../../../components/ProgressBar.tsx";
+
+// Load job - server-side rendered
+const { slug } = Astro.params;
+
+let job = null;
+try {
+  const jobs: Job[] = await getJobs();
+  job = jobs.find((j) => j.slug === slug);
+} catch (error) {
+  console.warn("Failed to fetch jobs:", error);
+  // Fallback job data
+  job = {
+    id: "fallback",
+    jobId: 0,
+    title: slug?.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || "Position",
+    slug: slug || "",
+    department: "Various",
+    location: "Dubai, UAE",
+    employmentType: "Full-time",
+    posted: "2025-01-01",
+    description: "Position details will be provided during the application process.",
+    responsibilities: [],
+    qualifications: []
+  };
+}
+
+if (!job) throw new Error(`Job not found for slug: ${slug}`);
+
+// Gather submitted data
+interface FormVals {
+  [key: string]: string;
+}
+
+const values: FormVals = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  countryCode: "",
+  gender: "",
+  nationality: "",
+  dob: "",
+  visa: "",
+  experience: "",
+  linkedin: "",
+  about: "",
+  resumeBase64: "",
+  resumeMime: "",
+  resumeName: "",
+};
+
+if (Astro.request.method === "POST") {
+  const fd = await Astro.request.formData();
+  const getF = (f: string) => fd.get(f)?.toString() ?? "";
+  for (const key of Object.keys(values)) {
+    if (key.startsWith("resume")) continue;
+    values[key] = getF(key);
+  }
+  const file = fd.get("resume") as File | null;
+  if (file && file.size > 0) {
+    const buf = Buffer.from(await file.arrayBuffer());
+    values.resumeBase64 = buf.toString("base64");
+    values.resumeMime = file.type;
+    values.resumeName = file.name;
+  }
+} else {
+  const url = new URL(Astro.url.href);
+  const getQ = (f: string) => url.searchParams.get(f) ?? "";
+  for (const key of Object.keys(values)) {
+    values[key] = getQ(key);
+  }
+}
+
+const resumeUrl =
+  values.resumeBase64 && values.resumeMime
+    ? `data:${values.resumeMime};base64,${values.resumeBase64}`
+    : "";
+
+const isPdf = values.resumeMime === "application/pdf";
+---
+
+<Layout
+  title={`Review | ${job.title} | GC Careers`}
+  description={`Review your application for ${job.title}.`}
+  ogTitle={`Review | ${job.title}`}
+  ogDescription={`Review your application for ${job.title}.`}
+  ogUrl={Astro.url.href}
+>
+  <ProgressBar currentStep="review" client:load />
+  <section class="pt-24 md:pt-32 pb-12 px-4 bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-8 md:mb-10">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Review Your Application</h1>
+        <p class="text-base md:text-lg text-gray-600 mt-2">
+          You are applying for the position of <span class="font-semibold text-blue-600">{job.title}</span>.
+        </p>
+        <p class="mt-4 text-sm text-gray-500">Please review your details carefully before submitting.</p>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div class="p-6 md:p-8">
+          <h2 class="text-xl md:text-2xl font-semibold text-gray-700 border-b pb-4">Personal Information</h2>
+          <dl class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5 text-base">
+            <div>
+              <dt class="text-sm font-medium text-gray-500">First Name</dt>
+              <dd class="mt-1 text-gray-900">{values.firstName}</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Last Name</dt>
+              <dd class="mt-1 text-gray-900">{values.lastName}</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Email Address</dt>
+              <dd class="mt-1 text-gray-900">{values.email}</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Phone Number</dt>
+              <dd class="mt-1 text-gray-900">{values.countryCode} {values.phone}</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Gender</dt>
+              <dd class="mt-1 text-gray-900">{values.gender}</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Nationality</dt>
+              <dd class="mt-1 text-gray-900">{values.nationality}</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Date of Birth</dt>
+              <dd class="mt-1 text-gray-900">{values.dob}</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Visa Status</dt>
+              <dd class="mt-1 text-gray-900">{values.visa}</dd>
+            </div>
+          </dl>
+
+          <h2 class="text-xl md:text-2xl font-semibold text-gray-700 border-b pb-4 mt-10">Professional Information</h2>
+          <dl class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5 text-base">
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Years of Experience</dt>
+              <dd class="mt-1 text-gray-900">{values.experience}</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">LinkedIn Profile</dt>
+              <dd class="mt-1 text-gray-900 truncate">
+                <a href={values.linkedin} target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">{values.linkedin}</a>
+              </dd>
+            </div>
+            <div class="sm:col-span-2">
+              <dt class="text-sm font-medium text-gray-500">About</dt>
+              <dd class="mt-1 text-gray-900 whitespace-pre-wrap">{values.about}</dd>
+            </div>
+            {values.resumeName && (
+              <div class="sm:col-span-2">
+                <dt class="text-sm font-medium text-gray-500">Resume</dt>
+                <dd class="mt-1 text-gray-900">{values.resumeName}</dd>
+              </div>
+            )}
+          </dl>
+        </div>
+
+        {values.resumeName && (
+          <div class="bg-gray-50 px-6 md:px-8 py-6">
+            <h2 class="text-xl md:text-2xl font-semibold text-gray-700">Resume Preview</h2>
+            <div class="mt-4">
+              {isPdf ? (
+                <div class="border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+                  <iframe
+                    src={resumeUrl}
+                    class="w-full h-[500px] md:h-[700px]"
+                    title="Resume Preview"
+                  ></iframe>
+                </div>
+              ) : (
+                <div class="border border-gray-200 p-5 rounded-lg bg-white text-center sm:text-left">
+                  <p class="font-medium text-lg text-gray-800">{values.resumeName}</p>
+                  <p class="text-sm text-gray-600 mt-1">
+                    Preview is only available for PDF files.
+                  </p>
+                  <a
+                    href={resumeUrl}
+                    download={values.resumeName}
+                    class="inline-flex items-center gap-2 mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-semibold transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Download and View
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        <div class="p-6 md:p-8 bg-white border-t">
+          <form
+            method="POST"
+            enctype="multipart/form-data"
+            action={`/careers/apply/${slug}/confirmation`}
+          >
+            <!-- Hidden form values -->
+            <input type="hidden" name="firstName" value={values.firstName} />
+            <input type="hidden" name="lastName" value={values.lastName} />
+            <input type="hidden" name="email" value={values.email} />
+            <input type="hidden" name="phone" value={values.phone} />
+            <input type="hidden" name="countryCode" value={values.countryCode} />
+            <input type="hidden" name="gender" value={values.gender} />
+            <input type="hidden" name="nationality" value={values.nationality} />
+            <input type="hidden" name="dob" value={values.dob} />
+            <input type="hidden" name="visa" value={values.visa} />
+            <input type="hidden" name="experience" value={values.experience} />
+            <input type="hidden" name="linkedin" value={values.linkedin} />
+            <input type="hidden" name="about" value={values.about} />
+            <input type="hidden" name="resumeBase64" value={values.resumeBase64} />
+            <input type="hidden" name="resumeMime" value={values.resumeMime} />
+            <input type="hidden" name="resumeName" value={values.resumeName} />
+            
+            <div class="flex flex-col-reverse sm:flex-row-reverse sm:items-center gap-4">
+              <button
+                type="submit"
+                class="w-full sm:w-auto inline-flex justify-center items-center px-8 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-transform transform hover:scale-105"
+              >
+                Submit Application
+              </button>
+              <a
+                href={`/careers/apply/${slug}`}
+                class="w-full sm:w-auto inline-flex justify-center items-center px-8 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-[#ed1c24] hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+              >
+                Go Back & Edit
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -4,7 +4,13 @@ import NetworkMap   from '../components/NetworkMap';
 import LogoTicker   from '../components/LogoTicker';
 import { fetchLocations } from '../lib/airtable';
 
-const locations = await fetchLocations();
+let locations = [];
+try {
+  locations = await fetchLocations();
+} catch (error) {
+  console.warn("Failed to fetch network locations:", error);
+  // Fallback: empty locations array will show empty map
+}
 ---
 
 <Layout

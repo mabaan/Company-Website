@@ -7,10 +7,22 @@ import Airtable, {
   type Record as AirtableRecord,
 } from "airtable";
 
-// Airtable setup
-const base = new Airtable({ apiKey: import.meta.env.AIRTABLE_TOKEN }).base(
-  import.meta.env.AIRTABLE_BASE_ID as string
-);
+// Airtable setup - only create base if API token is available
+let base: ReturnType<InstanceType<typeof Airtable>['base']> | null = null;
+
+function getBase() {
+  if (!base && import.meta.env.AIRTABLE_TOKEN) {
+    try {
+      base = new Airtable({ apiKey: import.meta.env.AIRTABLE_TOKEN }).base(
+        import.meta.env.AIRTABLE_BASE_ID as string
+      );
+    } catch (error) {
+      console.warn("Failed to initialize Airtable base:", error);
+      return null;
+    }
+  }
+  return base;
+}
 
 export const APPLICATIONS_TABLE = import.meta.env
   .AIRTABLE_APPLICATIONS_TABLE as string;
@@ -19,7 +31,7 @@ export const NETWORKMAP_TABLE = import.meta.env
   .AIRTABLE_NETWORKMAP_NAME as string;
 export const CONTACT_TABLE = import.meta.env.AIRTABLE_CONTACT_TABLE as string;
 
-export { base };
+export { getBase as base };
 
 // ----------------------
 // ✅ Location Record Type
@@ -94,8 +106,10 @@ export interface ApplicationFields extends FieldSet {
   "Submitted at"?: string;
 }
 
-function applicationsTable(): Table<ApplicationFields> {
-  return base<ApplicationFields>(APPLICATIONS_TABLE);
+function applicationsTable(): Table<ApplicationFields> | null {
+  const baseInstance = getBase();
+  if (!baseInstance) return null;
+  return baseInstance<ApplicationFields>(APPLICATIONS_TABLE);
 }
 
 export async function createApplication(
@@ -103,6 +117,9 @@ export async function createApplication(
 ): Promise<AirtableRecord<ApplicationFields>> {
   try {
     const table = applicationsTable();
+    if (!table) {
+      throw new Error("Airtable not available - missing API credentials");
+    }
     const created = await table.create([{ fields }]);
     return created[0];
   } catch (error) {
@@ -123,8 +140,10 @@ export interface ContactFields extends FieldSet {
   Message: string;
 }
 
-function contactTable(): Table<ContactFields> {
-  return base<ContactFields>(CONTACT_TABLE);
+function contactTable(): Table<ContactFields> | null {
+  const baseInstance = getBase();
+  if (!baseInstance) return null;
+  return baseInstance<ContactFields>(CONTACT_TABLE);
 }
 
 export async function createContact(
@@ -132,6 +151,9 @@ export async function createContact(
 ): Promise<AirtableRecord<ContactFields>> {
   try {
     const table = contactTable();
+    if (!table) {
+      throw new Error("Airtable not available - missing API credentials");
+    }
     const created = await table.create([{ fields }]);
     return created[0];
   } catch (error) {

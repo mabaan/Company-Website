@@ -1,0 +1,6 @@
+import{j as e}from"./jsx-runtime.D_zvdyIk.js";import{c as a}from"./createLucideIcon.CtVFhDUJ.js";import"./index.6otl1p8d.js";/**
+ * @license lucide-react v0.525.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const t=[["path",{d:"M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384",key:"9njp5v"}]],o=a("phone",t);function c(){return e.jsx("section",{className:"bg-gray-200 py-16 px-6 text-center",children:e.jsxs("div",{className:"max-w-3xl mx-auto",children:[e.jsx("h2",{className:"text-3xl font-bold text-gray-900 mb-4",children:"Become One of Our Partners"}),e.jsx("p",{className:"text-gray-600 text-lg mb-6",children:"We represent and collaborate with world-class manufacturers across the globe. If you're looking to expand your industrial reach across the Middle East and beyond, we'd love to hear from you."}),e.jsxs("a",{href:"/contact",className:"inline-flex items-center gap-2 bg-[#ED1C24] hover:bg-[#C70E15] text-white font-medium px-6 py-3 rounded-full shadow-sm hover:shadow transition duration-300",children:["Contact Us ",e.jsx(o,{className:"w-5 h-5"})," "]})]})})}export{c as default};

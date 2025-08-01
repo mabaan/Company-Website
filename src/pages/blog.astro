@@ -5,24 +5,37 @@ import BlogNavbar from "src/components/BlogNavbar.tsx";
 import { client } from "src/lib/sanityClient.ts";
 import { getPostDescription } from "src/lib/getDescription.ts";
 
-// Fetch all posts
-const posts = await client.fetch(`
-  *[_type == "post" && defined(publishedAt)] | order(publishedAt desc) {
-    title,
-    slug,
-    publishedAt,
-    "imageUrl": mainImage.asset->url,
-    "author": author->name,
-    categories[]->{ title, slug },
-    body
-  }
-`);
+// Fetch all posts with graceful error handling
+let posts = [];
+let categories = [];
 
-// Fetch all categories for nav
-const categories = await client.fetch(`*[_type == "category"]{ title, slug }`);
+try {
+  posts = await client.fetch(`
+    *[_type == "post" && defined(publishedAt)] | order(publishedAt desc) {
+      title,
+      slug,
+      publishedAt,
+      "imageUrl": mainImage.asset->url,
+      "author": author->name,
+      categories[]->{ title, slug },
+      body
+    }
+  `);
+} catch (error) {
+  console.warn("Failed to fetch blog posts:", error);
+  // Fallback: empty posts array will show "No blog posts found" message
+}
+
+try {
+  // Fetch all categories for nav
+  categories = await client.fetch(`*[_type == "category"]{ title, slug }`);
+} catch (error) {
+  console.warn("Failed to fetch blog categories:", error);
+  // Fallback: empty categories array will work with BlogNavbar component
+}
 
 // SEO description using first post body
-const description = posts.length > 0 ? getPostDescription(posts[0].body) : "";
+const description = posts.length > 0 ? getPostDescription(posts[0].body) : "Latest news and insights from GC International";
 ---
 
 <Layout title="Blog | GC International" description={description}>
