@@ -16,16 +16,15 @@ export default function Hero() {
         <GradientCanvas />
       </div>
 
-      {/* PIPE DOODLE as hero underlay, bottom-right corner */}
+      {/* PIPE DOODLE (mobile/tablet only) */}
       <div
-        className="absolute z-0" // ensures doodle is behind hero content
+        className="absolute z-0 flex md:hidden" // Display flex by default, hide on medium screens and up
         style={{
           right: 0,
           bottom: "8vw",
           pointerEvents: "none",
           height: "180px",
           width: "340px",
-          display: "flex",
           justifyContent: "flex-end",
         }}
         aria-hidden="true"
@@ -37,7 +36,7 @@ export default function Hero() {
             width: "100%",
             height: "100%",
             objectFit: "contain",
-            opacity: 1, // 80% opacity for strong colors!
+            opacity: 0.9,
           }}
         />
       </div>
