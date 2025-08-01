@@ -1,0 +1,50 @@
+---
+const { currentStep = 1 } = Astro.props;
+const steps = [
+  { label: 'Application', key: 1 },
+  { label: 'Review', key: 2 },
+  { label: 'Confirmation', key: 3 }
+];
+const stepIndex =
+  typeof currentStep === 'number'
+    ? currentStep - 1
+    : steps.findIndex((s) =>
+        s.label.toLowerCase() === String(currentStep).toLowerCase()
+      );
+---
+<nav aria-label="Application progress" class="w-full max-w-3xl mx-auto mt-6">
+  <ol class="flex items-center justify-between">
+    {steps.map((step, idx) => (
+      <li class="flex-1 flex items-center" aria-current={idx === stepIndex ? 'step' : undefined}>
+        <div
+          class={`flex items-center justify-center w-8 h-8 rounded-full text-white text-sm font-semibold ${idx <= stepIndex ? 'bg-[#e41f26]' : 'bg-[#003b71]'}`}
+        >
+          {idx < stepIndex ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="w-5 h-5"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M16.704 5.29a1 1 0 00-1.408-1.418l-6.692 6.648-2.9-2.898a1 1 0 00-1.416 1.414l3.6 3.6a1 1 0 001.416 0l7.4-7.346z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          ) : (
+            idx + 1
+          )}
+        </div>
+        {idx < steps.length - 1 && (
+          <div class={`flex-1 h-0.5 sm:h-1 ${idx < stepIndex ? 'bg-[#e41f26]' : 'bg-[#003b71]'}`}></div>
+        )}
+      </li>
+    ))}
+  </ol>
+  <ol class="mt-2 flex justify-between text-xs sm:text-sm font-medium">
+    {steps.map((step) => (
+      <li class="flex-1 text-center">{step.label}</li>
+    ))}
+  </ol>
+</nav>
