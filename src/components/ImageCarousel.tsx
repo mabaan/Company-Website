@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 
-
 // Optimized image URLs (next-gen with f_auto, q_auto)
 const rawImages = [
   "v1753875177/gcintle/resume/industry.jpg",
@@ -10,7 +9,6 @@ const rawImages = [
   "v1753875175/gcintle/resume/valve3.jpg",
   "v1753875185/gcintle/resume/DIEZ.jpg",
   "v1753875178/gcintle/resume/valve2.png",
-
 ];
 
 const images = rawImages.map(
@@ -42,8 +40,7 @@ export default function ImageCarousel() {
   };
 
   return (
-    <section className="relative w-full aspect-[16/6] overflow-hidden bg-[#f5f7fa]">
-      {/* Image */}
+    <section className="relative w-full h-[40vh] sm:h-[50vh] md:h-[60vh] overflow-hidden bg-[#f5f7fa]">
       <img
         src={images[currentIndex]}
         alt={`Slide ${currentIndex + 1}`}

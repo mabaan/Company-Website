@@ -20,10 +20,7 @@ if (Astro.request.method === "POST") {
       Message: get("message"),
     };
 
-    console.log("📨 Contact form received", data);
-
     await createContact(data);
-    console.log("✅ Contact record stored");
 
     const contactData = {
       name: get("name"),
