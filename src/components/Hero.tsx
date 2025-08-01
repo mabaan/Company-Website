@@ -1,8 +1,6 @@
 "use client";
 
 import GradientCanvas from "./GradientCanvas";
-// import dynamic from "next/dynamic";
-// const ValveViewer = dynamic(() => import("./ValveViewer"), { ssr: false });
 
 export default function Hero() {
   return (
@@ -14,14 +12,37 @@ export default function Hero() {
       }}
     >
       {/* Animated Gradient BG */}
-      <div
-        className="absolute inset-0 w-full h-full z-0"
-        aria-hidden="true"
-      >
+      <div className="absolute inset-0 w-full h-full z-10" aria-hidden="true">
         <GradientCanvas />
       </div>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center w-full relative z-10">
+      {/* PIPE DOODLE as hero underlay, bottom-right corner */}
+      <div
+        className="absolute z-0" // ensures doodle is behind hero content
+        style={{
+          right: 0,
+          bottom: "8vw",
+          pointerEvents: "none",
+          height: "180px",
+          width: "340px",
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+        aria-hidden="true"
+      >
+        <img
+          src="/11.png"
+          alt=""
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            opacity: 1, // 80% opacity for strong colors!
+          }}
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center w-full relative z-20">
         {/* Left: Text Content */}
         <div className="text-left">
           <h1
@@ -65,15 +86,7 @@ export default function Hero() {
             </a>
           </div>
         </div>
-
-        {/* Right: Valve Model (optional, enable when ready) */}
-        {/*
-        <div className="hidden md:flex justify-center items-center">
-          <div className="w-[180px] sm:w-[220px] md:w-[260px] lg:w-[300px] xl:w-[320px] aspect-square">
-            <ValveViewer />
-          </div>
-        </div>
-        */}
+        {/* Right intentionally left empty */}
       </div>
     </section>
   );
