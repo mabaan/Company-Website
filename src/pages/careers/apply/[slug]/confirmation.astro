@@ -8,6 +8,7 @@ import { uploadResumeToCloudinary } from "../../../../lib/uploadResumeToCloudina
 import { base, APPLICATIONS_TABLE } from "../../../../lib/airtable";
 import { applicantConfirmation, hrNotification } from "../../../../lib/emailTemplates";
 import { sendMail } from "../../../../lib/mailgunClient";
+import ProgressSteps from "src/components/ProgressSteps.tsx";
 
 // Load job by slug
 console.log('--- Handling job application confirmation ---');
@@ -141,7 +142,7 @@ try {
     subject: applicantPayload.subject,
     html: applicantPayload.html,
   });
-  console.log("✅ Applicant email sent");
+  console.log("Applicant email sent");
 } catch (err) {
   console.error("Failed to send applicant email:", err);
 }
@@ -155,7 +156,7 @@ try {
     subject: hrPayload.subject,
     html: hrPayload.html,
   });
-  console.log("✅ HR notification sent");
+  console.log("HR notification sent");
 } catch (err) {
   console.error("Failed to send HR notification:", err);
 }
@@ -172,7 +173,8 @@ try {
   ogUrl={Astro.url.href}
 >
   <section class="pt-32 pb-12 px-4 max-w-2xl mx-auto text-center">
-    <h1 class="text-3xl font-bold mb-4">Application Submitted</h1>
+    <ProgressSteps currentStep={3} client:load />
+    <h1 class="text-3xl font-bold mb-4 mt-8">Application Submitted</h1>
     <p class="text-lg mb-4">
       Thank you for applying to <strong>{job.title}</strong> at GC International.
     </p>
