@@ -5,19 +5,31 @@ import Layout from "../../../../layouts/BaseLayout.astro";
 import { getJobs, type Job } from "../../../../lib/jobs";
 import ProgressBar from "../../../../components/ProgressBar.tsx";
 
-// Static paths
-export async function getStaticPaths() {
-  const jobs = await getJobs();
-  return jobs.map((job) => ({
-    params: { slug: job.slug },
-    props: { job },
-  }));
+// Load job - server-side rendered
+const { slug } = Astro.params;
+
+let job = null;
+try {
+  const jobs: Job[] = await getJobs();
+  job = jobs.find((j) => j.slug === slug);
+} catch (error) {
+  console.warn("Failed to fetch jobs:", error);
+  // Fallback job data
+  job = {
+    id: "fallback",
+    jobId: 0,
+    title: slug?.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || "Position",
+    slug: slug || "",
+    department: "Various",
+    location: "Dubai, UAE",
+    employmentType: "Full-time",
+    posted: "2025-01-01",
+    description: "Position details will be provided during the application process.",
+    responsibilities: [],
+    qualifications: []
+  };
 }
 
-// Load job
-const { slug } = Astro.params;
-const jobs: Job[] = await getJobs();
-const job = jobs.find((j) => j.slug === slug);
 if (!job) throw new Error(`Job not found for slug: ${slug}`);
 
 // Gather submitted data

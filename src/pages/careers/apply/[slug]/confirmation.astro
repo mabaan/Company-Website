@@ -10,11 +10,32 @@ import { applicantConfirmation, hrNotification } from "../../../../lib/emailTemp
 import { sendMail } from "../../../../lib/mailgunClient";
 import ProgressBar from "../../../../components/ProgressBar.tsx";
 
-// Load job by slug
+// Load job by slug - server-side rendered
 console.log('--- Handling job application confirmation ---');
-const jobs = await getJobs();
 const { slug } = Astro.params;
-const job = jobs.find((j) => j.slug === slug);
+
+let job = null;
+try {
+  const jobs = await getJobs();
+  job = jobs.find((j) => j.slug === slug);
+} catch (error) {
+  console.warn("Failed to fetch jobs:", error);
+  // Fallback job data
+  job = {
+    id: "fallback",
+    jobId: 0,
+    title: slug?.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || "Position",
+    slug: slug || "",
+    department: "Various",
+    location: "Dubai, UAE",
+    employmentType: "Full-time",
+    posted: "2025-01-01",
+    description: "Position details will be provided during the application process.",
+    responsibilities: [],
+    qualifications: []
+  };
+}
+
 if (!job) throw new Error("Job not found");
 
 console.log("✅ Job loaded:", job);

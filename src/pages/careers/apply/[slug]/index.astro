@@ -7,25 +7,50 @@ import { getCountryList } from "../../../../lib/getCountryData";
 import type { Country } from "../../../../lib/getCountryData";
 import ProgressBar from "../../../../components/ProgressBar.tsx";
 
-// Static paths
-export async function getStaticPaths() {
+// Grab job from URL params - server-side rendered
+const { slug } = Astro.params;
+
+// Try to get jobs and countries with fallbacks for when APIs fail
+let job = null;
+let countryCodes = [];
+
+try {
   const jobs = await getJobs();
-  return jobs.map((job) => ({
-    params: { slug: job.slug },
-    props: { job },
-  }));
+  job = jobs.find((j) => j.slug === slug);
+} catch (error) {
+  console.warn("Failed to fetch jobs:", error);
+  // Fallback job data for when API is unavailable
+  job = {
+    id: "fallback",
+    jobId: 0,
+    title: slug?.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || "Position",
+    slug: slug || "",
+    department: "Various",
+    location: "Dubai, UAE",
+    employmentType: "Full-time",
+    posted: "2025-01-01",
+    description: "Position details will be provided during the application process.",
+    responsibilities: [],
+    qualifications: []
+  };
 }
 
-// Grab job from props
-const { slug } = Astro.params;
-const jobs = await getJobs();
-const job = jobs.find((j) => j.slug === slug);
-if (!job) throw new Error("Job not found");
-if (!job) throw new Error("Job not found");
+try {
+  const countryData = await getCountryList();
+  countryCodes = countryData.sort((a, b) => a.name.localeCompare(b.name));
+} catch (error) {
+  console.warn("Failed to fetch countries:", error);
+  // Minimal fallback country list
+  countryCodes = [
+    { name: "United Arab Emirates", code: "AE", dial_code: "+971", flag: "🇦🇪" },
+    { name: "United States", code: "US", dial_code: "+1", flag: "🇺🇸" },
+    { name: "United Kingdom", code: "GB", dial_code: "+44", flag: "🇬🇧" }
+  ];
+}
 
-const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
-  a.name.localeCompare(b.name)
-);
+if (!job) {
+  throw new Error("Job not found");
+}
 
 
 

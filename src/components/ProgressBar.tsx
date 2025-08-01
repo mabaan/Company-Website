@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface ProgressBarProps {
   currentStep: "application" | "review" | "confirmation";
 }
