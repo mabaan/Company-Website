@@ -211,13 +211,9 @@ const isPdf = values.resumeMime === "application/pdf";
             <input type="hidden" name="resumeBase64" value={values.resumeBase64} />
             <input type="hidden" name="resumeMime" value={values.resumeMime} />
             <input type="hidden" name="resumeName" value={values.resumeName} />
-            <input type="hidden" name="recaptchaToken" id="recaptchaToken" />
             <div
-              id="recaptcha-widget"
               class="g-recaptcha"
               data-sitekey={import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}
-              data-size="invisible"
-              data-callback="onRecaptchaSuccess"
             ></div>
             
             <div class="flex flex-col-reverse sm:flex-row-reverse sm:items-center gap-4">
@@ -240,23 +236,5 @@ const isPdf = values.resumeMime === "application/pdf";
     </div>
   </section>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <script is:inline>
-    document.addEventListener("DOMContentLoaded", () => {
-      const form = document.querySelector("form");
-      if (!form) return;
-      window.onRecaptchaSuccess = (token) => {
-        const input = document.getElementById("recaptchaToken");
-        if (input) input.value = token;
-        form.submit();
-      };
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        if (typeof grecaptcha !== "undefined") {
-          grecaptcha.execute();
-        } else {
-          form.submit();
-        }
-      });
-    });
-  </script>
 </Layout>
+
