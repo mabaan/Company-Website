@@ -21,7 +21,6 @@ const { slug } = Astro.params;
 const jobs = await getJobs();
 const job = jobs.find((j) => j.slug === slug);
 if (!job) throw new Error("Job not found");
-if (!job) throw new Error("Job not found");
 
 const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
   a.name.localeCompare(b.name)
