@@ -28,7 +28,7 @@ export async function submitToAirtable(data: Record<string, any>) {
     },
   ]);
 
-  console.log("Airtable record created:", applicationRecord);
+  console.log("Airtable record created");
 
   const applicationId = applicationRecord.fields["Application ID"] as
     | string
@@ -44,7 +44,7 @@ export async function submitToAirtable(data: Record<string, any>) {
   const job = await base(JOBS_TABLE).find(jobRecordId);
   const jobId = job.fields["Job ID"] as string | number;
 
-  console.log("🔍 Fetched Job record:", job);
+  console.log("🔍 Fetched Job record");
 
   if (!jobId) {
     console.error("Job ID missing in record:", job);
@@ -61,7 +61,7 @@ export async function submitToAirtable(data: Record<string, any>) {
       applicationId
     );
 
-    console.log("Resume uploaded to Cloudinary:", resumeUrl);
+    console.log("Resume uploaded to Cloudinary");
     console.log(
       "Resume URL is computed automatically in Airtable via formula."
     );
@@ -69,9 +69,6 @@ export async function submitToAirtable(data: Record<string, any>) {
     console.warn("No resume provided or file is not a valid File object.");
   }
 
-  console.log(
-    "🎉 Application submission complete. Airtable ID:",
-    applicationAirtableId
-  );
+  console.log("🎉 Application submission complete");
   return applicationAirtableId;
 }

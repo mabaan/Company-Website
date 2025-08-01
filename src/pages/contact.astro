@@ -36,7 +36,7 @@ if (Astro.request.method === "POST") {
 
     // Send acknowledgement back to the user
     try {
-      console.log("📧 Sending acknowledgement to", contactData.email);
+      console.log("📧 Sending acknowledgement email");
       await sendMail({
         to: contactData.email,
         subject: contactAck.subject,
