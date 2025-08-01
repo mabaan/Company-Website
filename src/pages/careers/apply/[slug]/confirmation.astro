@@ -151,7 +151,7 @@ try {
   console.log("📧 Notifying HR at", process.env.MAIL_HR);
   await sendMail({
     to: process.env.MAIL_HR!,
-    bcc: process.env.MAIL_CONTACT!,
+    cc: `${process.env.MAIL_CONTACT!},${process.env.MAIL_MANAGEMENT!}`,
     subject: hrPayload.subject,
     html: hrPayload.html,
   });
