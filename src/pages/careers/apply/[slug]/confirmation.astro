@@ -72,10 +72,7 @@ if (!applicationId) {
   throw new Error("Application ID missing");
 }
 
-console.log("Created application record:", {
-  id: applicationRecordId,
-  appId: applicationId,
-});
+console.log("Created application record");
 
 // Step 2: Upload resume and PATCH Airtable
 if (!resumeUrl && resumeFile && resumeFile.size > 0) {
