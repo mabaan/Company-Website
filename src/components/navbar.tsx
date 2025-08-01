@@ -13,7 +13,7 @@ export default function Navbar() {
   const links = [
     { label: "Home", href: "/" },
     { label: "Company", href: "/company" },
-    { label: "Network Map", href: "/network" }, // updated
+    { label: "Network Map", href: "/network" },
     { label: "Careers", href: "/careers" },
     { label: "Contact", href: "/contact" },
     { label: "Blog", href: "/blog" },
@@ -21,6 +21,7 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50">
+      {/* Desktop + mobile header */}
       <div
         className="bg-gradient-to-r from-[#e3f2fd] to-[#bbdefb]
                    backdrop-blur-md shadow-md
@@ -94,36 +95,37 @@ export default function Navbar() {
       {/* Mobile Dropdown Menu */}
       <div
         className={`
-          fixed top-0 left-0 w-full h-[40vh] z-50
-          bg-[#bbdefb]/95 backdrop-blur-sm text-white
-          transform transition-transform duration-300 ease-in-out
+          fixed inset-0 z-50
+          bg-[#bbdefb]/95 backdrop-blur-sm
+          flex flex-col
+          transition-transform duration-300 ease-in-out
           ${isOpen ? "translate-y-0" : "-translate-y-full"}
         `}
       >
-        {/* Close button */}
-        <button
-          onClick={() => setIsOpen(false)}
-          className="absolute top-6 right-6 text-3xl text-white"
-          aria-label="Close menu"
-        >
-          ✕
-        </button>
-
-        {/* GC Logo + Title in dropdown */}
-        <div className="absolute top-6 left-1/2 transform -translate-x-1/2 flex items-center gap-2">
-          <img
-            src="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1753901040/gcintle/resume/GC_Transparent_Logo.png"
-            alt="GC Logo"
-            className="h-6 w-auto"
-          />
-          <span className="font-extrabold text-lg tracking-tight whitespace-nowrap leading-none">
-            <span className="text-blue-900">GC&nbsp;</span>
-            <span className="text-[#e41f26]">International</span>
-          </span>
+        {/* Top row: logo/title (center) and close button (right) */}
+        <div className="relative flex items-center justify-center h-20 w-full border-b border-[#90caf9]">
+          <div className="flex items-center gap-2 absolute left-1/2 transform -translate-x-1/2">
+            <img
+              src="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1753901040/gcintle/resume/GC_Transparent_Logo.png"
+              alt="GC Logo"
+              className="h-7 w-auto"
+            />
+            <span className="font-extrabold text-lg tracking-tight whitespace-nowrap leading-none">
+              <span className="text-blue-900">GC&nbsp;</span>
+              <span className="text-[#e41f26]">International</span>
+            </span>
+          </div>
+          <button
+            onClick={() => setIsOpen(false)}
+            className="absolute right-6 top-1/2 -translate-y-1/2 text-3xl text-[#003b71] hover:text-[#e41f26] transition"
+            aria-label="Close menu"
+          >
+            ✕
+          </button>
         </div>
 
         {/* Mobile nav links */}
-        <div className="flex flex-col gap-5 items-center justify-end h-full pb-6 text-xl tracking-wide">
+        <div className="flex-1 flex flex-col gap-6 items-center justify-center px-4 py-6 overflow-y-auto">
           {links.map((link) => {
             const isActive =
               path &&
@@ -134,11 +136,8 @@ export default function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                className={`no-underline hover:no-underline transition ${
-                  isActive
-                    ? "text-[#e41f26] font-extrabold"
-                    : "text-[#003b71] font-semibold"
-                }`}
+                className={`no-underline hover:no-underline transition text-xl
+                  ${isActive ? "text-[#e41f26] font-extrabold" : "text-[#003b71] font-semibold"}`}
                 onClick={() => setIsOpen(false)}
               >
                 {link.label}
