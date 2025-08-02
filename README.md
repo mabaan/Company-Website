@@ -1,7 +1,7 @@
 <!-- LOGO & TITLE -->
 <div align="center">
   <a href="https://github.com/mabaan/Company-Website">
-    <img src="https://github.com/user-attachments/assets/5e8f247f-55bf-448b-a281-60ca7e394a6f" alt="Logo" width="400">
+    <img src="https://github.com/user-attachments/assets/5e8f247f-55bf-448b-a281-60ca7e394a6f" alt="Logo" width="350">
 
   </a>
   <h3 align="center">Company Website</h3>
@@ -68,12 +68,18 @@ npm install
 
 ## To Run
 <div align="center">
-  <!-- Placeholder for homepage screenshot -->
-  <img src="PLACEHOLDER_FOR_SCREENSHOT_1_URL" width="500" />
+  <!-- Image 1 -->
+<img width="1917" height="901" alt="image" src="https://github.com/user-attachments/assets/79007da8-99ad-4b9c-9648-ea1b03ec7210" />
   &nbsp;&nbsp;
-  <!-- Placeholder for careers page screenshot -->
-  <img src="PLACEHOLDER_FOR_SCREENSHOT_2_URL" width="500" />
+  <!-- Image 2 -->
+<img width="1916" height="1036" alt="image" src="https://github.com/user-attachments/assets/4b242aa6-8f23-4692-b2ac-82e382e7466c" />
   &nbsp;&nbsp;
+  <!-- Image 3 -->
+  <img width="1916" height="1065" alt="image" src="https://github.com/user-attachments/assets/d70cb132-aa76-403b-9f47-4eff57b4e535" />
+    &nbsp;&nbsp;
+  <!-- Image 4 -->
+<img width="1918" height="1157" alt="image" src="https://github.com/user-attachments/assets/7821e341-b668-4f63-9828-305b1b078a00" />
+    &nbsp;&nbsp;
 </div>
 
 **Development Server**
