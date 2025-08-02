@@ -2,6 +2,7 @@
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import '../styles/global.css';
+import  SpeedInsights  from "@vercel/speed-insights/astro"
 
 // SEO props with formatting fallback
 const {
@@ -37,6 +38,10 @@ const {
     <meta property="og:image" content={ogImage} />
     <meta property="og:url" content={ogUrl} />
     <meta name="theme-color" content="#ffffff" />
+
+    <!-- Vercel Analytics -->
+    <SpeedInsights />
+     
   
     <!-- Favicons -->
     <link rel="icon" href="/favicon.ico" sizes="any">
