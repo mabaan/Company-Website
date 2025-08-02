@@ -3,15 +3,10 @@ type Props = {
 };
 
 const ProgressSteps: React.FC<Props> = ({ currentStep }) => {
-  // Responsive line width
-  const lineClass =
-    "h-1 transition-all duration-300";
-  const lineWidth = "w-12 sm:w-24 md:w-48 lg:w-56"; // mobile: 48px, sm: 96px, md: 192px, lg: 224px
-
   return (
-    <div className="w-full max-w-3xl mx-auto pt-0 flex items-center justify-between relative gap-2 sm:gap-8 md:gap-12">
+    <div className="w-full max-w-3xl mx-auto pt-0 flex items-center justify-between relative gap-2 sm:gap-6 md:gap-0">
       {/* Step 1 */}
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center min-w-[54px] sm:min-w-[68px]">
         <div
           className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white text-base sm:text-lg font-bold ${
             currentStep >= 1 ? "bg-blue-600" : "bg-gray-300"
@@ -20,7 +15,7 @@ const ProgressSteps: React.FC<Props> = ({ currentStep }) => {
           1
         </div>
         <p
-          className={`mt-2 text-xs sm:text-sm font-medium ${
+          className={`mt-2 text-xs sm:text-sm font-medium text-center ${
             currentStep >= 1 ? "text-blue-600" : "text-gray-400"
           }`}
         >
@@ -30,11 +25,19 @@ const ProgressSteps: React.FC<Props> = ({ currentStep }) => {
 
       {/* Line between 1 and 2 */}
       <div
-        className={`${lineClass} ${lineWidth} ${currentStep >= 2 ? "bg-blue-600" : "bg-gray-300"}`}
+        className={`hidden md:block flex-1 h-1 mx-2 transition-all duration-300 ${
+          currentStep >= 2 ? "bg-blue-600" : "bg-gray-300"
+        }`}
+        style={{ minWidth: 60, maxWidth: 180 }}
+      />
+      <div
+        className={`block md:hidden h-1 w-10 sm:w-16 mx-1 transition-all duration-300 ${
+          currentStep >= 2 ? "bg-blue-600" : "bg-gray-300"
+        }`}
       />
 
       {/* Step 2 */}
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center min-w-[54px] sm:min-w-[68px]">
         <div
           className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white text-base sm:text-lg font-bold ${
             currentStep >= 2 ? "bg-blue-600" : "bg-gray-300"
@@ -53,11 +56,19 @@ const ProgressSteps: React.FC<Props> = ({ currentStep }) => {
 
       {/* Line between 2 and 3 */}
       <div
-        className={`${lineClass} ${lineWidth} ${currentStep === 3 ? "bg-blue-600" : "bg-gray-300"}`}
+        className={`hidden md:block flex-1 h-1 mx-2 transition-all duration-300 ${
+          currentStep === 3 ? "bg-blue-600" : "bg-gray-300"
+        }`}
+        style={{ minWidth: 60, maxWidth: 180 }}
+      />
+      <div
+        className={`block md:hidden h-1 w-10 sm:w-16 mx-1 transition-all duration-300 ${
+          currentStep === 3 ? "bg-blue-600" : "bg-gray-300"
+        }`}
       />
 
       {/* Step 3 */}
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center min-w-[54px] sm:min-w-[68px]">
         <div
           className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white text-base sm:text-lg font-bold ${
             currentStep === 3 ? "bg-blue-600" : "bg-gray-300"
