@@ -12,28 +12,55 @@ const jobs = await getJobs();
   ogDescription="Explore open positions at GC International."
   ogUrl={Astro.url.href}
 >
-  <section class="pt-32 pb-20 px-6 bg-[#f9f9f9] min-h-screen">
-    <div class="max-w-5xl mx-auto">
+  <section class="pt-32 pb-20 px-4 sm:px-6 bg-[#f9f9f9] min-h-screen flex flex-col">
+    <div class="max-w-5xl mx-auto w-full flex-1">
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-center tracking-tight mb-6 text-[#003b71]">
+        Join Our Team
+      </h1>
+      <p class="text-lg text-center text-gray-600 mb-12 mt-6 max-w-2xl mx-auto">
+        Discover your next opportunity with GC International. We’re building a passionate, innovative, and inclusive workplace. Explore our open positions below!
+      </p>
 
-      <h1 class="text-4xl font-bold mb-10 text-center">Join Our Team</h1>
-
-      <ul class="space-y-8">
+      <div class="grid gap-8 sm:grid-cols-2">
         {jobs.map(job => (
-          <li class="bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
-            <h2 class="text-2xl font-semibold mb-2">{job.title}</h2>
-            <p class="text-gray-600 mb-4">{job.location}</p>
-            <a
-              href={`/careers/${job.slug}`}
-              class="inline-block bg-[#0054a4] text-white px-5 py-2 rounded hover:bg-blue-700 transition"
-            >
-              View Details
-            </a>
-          </li>
+          <div class="bg-white border border-gray-100 shadow-md rounded-2xl flex flex-col p-6 transition hover:shadow-lg group">
+            <div class="flex-1">
+              <h2 class="text-2xl font-semibold mb-1 group-hover:text-[#0054a4] transition">
+                {job.title}
+              </h2>
+              <div class="flex items-center text-sm text-gray-500 gap-2 mb-4">
+                <img src="/location.svg" alt="Location" class="w-5 h-5" style="display:inline;" />
+                <span>{job.location}</span>
+              </div>
+              <div class="flex flex-wrap gap-2 mb-4">
+                {job.department && (
+                  <span class="inline-block text-xs bg-blue-50 text-[#0054a4] font-semibold rounded px-2 py-1">
+                    {job.department}
+                  </span>
+                )}
+                {job.employmentType && (
+                  <span class="inline-block text-xs bg-gray-100 text-gray-700 rounded px-2 py-1">
+                    {job.employmentType}
+                  </span>
+                )}
+              </div>
+            </div>
+            <div class="flex justify-center mt-2">
+              <a
+                href={`/careers/${job.slug}`}
+                class="inline-block bg-[#0054a4] hover:bg-[#003b71] text-white font-semibold px-6 py-2 rounded-lg shadow transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0054a4] focus:ring-offset-2"
+                style="min-width:unset;"
+              >
+                View Details
+              </a>
+            </div>
+          </div>
         ))}
-      </ul>
-
-      <!-- Disclaimer -->
-      <p class="mt-16 text-sm text-gray-500 text-center max-w-3xl mx-auto leading-relaxed">
+      </div>
+    </div>
+    {/* Disclaimer at bottom, above the footer */}
+    <div class="w-full max-w-5xl mx-auto">
+      <p class="mt-28 text-xs text-gray-500 text-center max-w-3xl mx-auto leading-relaxed">
         GC International is an equal opportunity employer and prohibits discrimination and harassment of any kind based on race, color, sex, religion, national origin, disability, genetic information, pregnancy, or any other protected characteristic as outlined by Article 4 and Article 30 of the UAE Labour Law.
       </p>
     </div>

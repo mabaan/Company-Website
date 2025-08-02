@@ -21,108 +21,141 @@ const { job } = Astro.props;
   ogDescription={`Job opening: ${job.title} at GC International.`}
   ogUrl={Astro.url.href}
 >
-  <section class="pt-32 pb-16 px-6 bg-[#f9f9f9] min-h-screen" data-job-slug={job.slug}>
-    <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-8 border border-gray-200 space-y-6">
+  <section class="pt-32 pb-16 px-4 sm:px-6 bg-[#f9f9f9] min-h-screen" data-job-slug={job.slug}>
+    <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl p-6 sm:p-10 border border-gray-100 space-y-8">
+      {/* HEADER */}
       <div>
-        <h1 class="text-3xl font-bold mb-2">{job.title}</h1>
-        <p class="text-gray-600">{job.department} · {job.location} · {job.employmentType}</p>
-        <p class="text-sm text-gray-400 mt-1">
-          Posted on: {job.posted ? new Date(job.posted as string).toLocaleDateString() : "Date not available"}
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-1 text-[#003b71]">{job.title}</h1>
+        <div class="flex flex-wrap items-center gap-2 text-sm text-gray-500 font-medium mb-1">
+          <span>{job.department}</span>
+          <span>·</span>
+          <span>{job.location}</span>
+          <span>·</span>
+          <span>{job.employmentType}</span>
+        </div>
+        <p class="text-xs text-gray-400 mt-1">
+          Posted: {job.posted ? new Date(job.posted as string).toLocaleDateString() : "Date not available"}
         </p>
       </div>
 
+      {/* JOB DESCRIPTION */}
       <div>
-        <h2 class="text-xl font-semibold mb-2">Job Description</h2>
-        <p class="text-gray-700 whitespace-pre-line">{job.description}</p>
+        <h2 class="text-xl font-semibold mb-2 text-[#0054a4]">Job Description</h2>
+        <div class="text-gray-700 whitespace-pre-line leading-relaxed">{job.description}</div>
       </div>
 
+      {/* RESPONSIBILITIES */}
       {job.responsibilities.length > 0 && (
         <div>
-          <h2 class="text-xl font-semibold mb-2">Responsibilities</h2>
+          <h2 class="text-xl font-semibold mb-2 text-[#0054a4]">Responsibilities</h2>
           <ul class="list-disc pl-6 space-y-1 text-gray-700">
             {job.responsibilities.map((item: string) => <li>{item}</li>)}
           </ul>
         </div>
       )}
 
+      {/* QUALIFICATIONS */}
       {job.qualifications.length > 0 && (
         <div>
-          <h2 class="text-xl font-semibold mb-2">Qualifications</h2>
+          <h2 class="text-xl font-semibold mb-2 text-[#0054a4]">Qualifications</h2>
           <ul class="list-disc pl-6 space-y-1 text-gray-700">
             {job.qualifications.map((item: string) => <li>{item}</li>)}
           </ul>
         </div>
       )}
 
-      <div class="pt-6">
-        <button onclick="openCaptcha()" class="inline-block bg-[#0054a4] hover:bg-[#003d80] text-white font-semibold px-6 py-3 rounded-lg transition">
+      {/* APPLY BUTTON */}
+      <div class="pt-3 flex justify-center">
+        <button
+          onclick="openCaptcha()"
+          class="inline-flex items-center gap-2 bg-[#0054a4] hover:bg-[#003d80] text-white font-semibold px-8 py-3 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#0054a4] focus:ring-offset-2"
+        >
+          <!-- <svg width="20" height="20" fill="none" viewBox="0 0 20 20"><path fill="#fff" d="M16.3 6.3a1 1 0 1 0-1.4-1.4l-6.3 6.3-2.3-2.3a1 1 0 0 0-1.4 1.4l3 3a1 1 0 0 0 1.4 0l7-7z"/></svg> -->
           Apply Now
         </button>
       </div>
     </div>
   </section>
 
- <!-- CAPTCHA Modal -->
-<div id="captchaModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 hidden">
-  <div class="bg-white p-6 rounded-lg shadow-xl w-[90%] max-w-md text-center">
-    <h2 class="text-xl font-semibold mb-4">Verify you're human</h2>
-    <div id="recaptcha-container"></div>
-    <button onclick="closeCaptcha()" class="mt-4 text-sm text-gray-500 hover:text-gray-700 underline">
-      Cancel
-    </button>
+  {/* CAPTCHA Modal */}
+  <div id="captchaModal" class="fixed inset-0 flex items-center justify-center bg-black/60 z-50 hidden">
+    <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-2xl w-[92%] max-w-md text-center relative animate-fadeIn">
+      <button onclick="closeCaptcha()" class="absolute top-3 right-4 text-gray-400 hover:text-[#e41f26] text-2xl transition" aria-label="Close modal">&times;</button>
+      <h2 class="text-xl font-semibold mb-3 text-[#003b71]">Verify you're human</h2>
+      <div id="recaptcha-container" class="flex justify-center"></div>
+      <button onclick="closeCaptcha()" class="mt-6 text-sm text-gray-500 hover:text-gray-700 underline">
+        Cancel
+      </button>
+    </div>
   </div>
-</div>
 
-<!-- Load reCAPTCHA explicitly -->
-<script src="https://www.google.com/recaptcha/api.js?onload=renderCaptcha&render=explicit" async defer></script>
+  {/* reCAPTCHA script */}
+  <script src="https://www.google.com/recaptcha/api.js?onload=renderCaptcha&render=explicit" async defer></script>
 
-<script>
+  <script>
+    let captchaRendered = false, lastFocused: HTMLElement | null = null;
 
-  let captchaRendered = false;
-
-  // Define globally for TypeScript
-  declare global {
-    interface Window {
-      openCaptcha: () => void;
-      closeCaptcha: () => void;
-      onCaptchaSuccess: (token: string) => void;
-      renderCaptcha: () => void;
+    // Define globally for TypeScript
+    declare global {
+      interface Window {
+        openCaptcha: () => void;
+        closeCaptcha: () => void;
+        onCaptchaSuccess: (token: string) => void;
+        renderCaptcha: () => void;
+      }
+      var grecaptcha: any;
     }
-    var grecaptcha: any; // Declare grecaptcha globally
-  }
 
-  window.renderCaptcha = function () {
-    if (!captchaRendered) {
-      grecaptcha.render("recaptcha-container", {
-        sitekey: import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY,
-        callback: window.onCaptchaSuccess,
-      });
-      captchaRendered = true;
+    window.renderCaptcha = function () {
+      if (!captchaRendered) {
+        grecaptcha.render("recaptcha-container", {
+          sitekey: import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY,
+          callback: window.onCaptchaSuccess,
+        });
+        captchaRendered = true;
+      }
+    };
+
+    window.openCaptcha = function () {
+      const modal = document.getElementById("captchaModal");
+      if (modal) {
+        lastFocused = document.activeElement as HTMLElement | null;
+        modal.classList.remove("hidden");
+        (modal.querySelector("button[aria-label='Close modal']") as HTMLElement | null)?.focus();
+      }
+      setTimeout(window.renderCaptcha, 150);
+      // Prevent background scroll
+      document.body.style.overflow = "hidden";
+    };
+
+    window.closeCaptcha = function () {
+      const modal = document.getElementById("captchaModal");
+      if (modal) modal.classList.add("hidden");
+      // Restore focus
+      if (lastFocused && typeof lastFocused.focus === "function") (lastFocused as HTMLElement).focus();
+      document.body.style.overflow = "";
+    };
+
+    window.onCaptchaSuccess = function (token) {
+      const slug = document.querySelector("[data-job-slug]")?.getAttribute("data-job-slug");
+      if (slug) {
+        window.location.href = `/careers/apply/${slug}`;
+      } else {
+        alert("Something went wrong. Please refresh the page and try again.");
+      }
+    };
+
+    // Accessibility: close modal on Escape
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "Escape") window.closeCaptcha();
+    });
+  </script>
+
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px);}
+      to { opacity: 1; transform: translateY(0);}
     }
-  };
-
-  window.openCaptcha = function () {
-    const modal = document.getElementById("captchaModal");
-    if (modal) modal.classList.remove("hidden");
-
-    // Render CAPTCHA after modal is shown
-    setTimeout(window.renderCaptcha, 200);
-  };
-
-  window.closeCaptcha = function () {
-    const modal = document.getElementById("captchaModal");
-    if (modal) modal.classList.add("hidden");
-  };
-
-  window.onCaptchaSuccess = function (token) {
-    const slug = document.querySelector("[data-job-slug]")?.getAttribute("data-job-slug");
-    if (slug) {
-      window.location.href = `/careers/apply/${slug}`;
-    } else {
-      alert("Something went wrong. Please refresh the page and try again.");
-    }
-  };
-</script>
-
-  
+    .animate-fadeIn { animation: fadeIn 0.25s both; }
+  </style>
 </Layout>

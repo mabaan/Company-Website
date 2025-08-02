@@ -85,16 +85,16 @@ const isPdf = values.resumeMime === "application/pdf";
       <ProgressSteps currentStep={2} client:load />
 
       <div class="text-center mb-8 md:mb-10">
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mt-4">Review Your Application</h1>
+        <h1 class="text-3xl md:text-4xl font-extrabold mt-4 text-[#003b71] tracking-tight">Review Your Application</h1>
         <p class="text-base md:text-lg text-gray-600 mt-2">
-          You are applying for the position of <span class="font-semibold text-blue-600">{job.title}</span>.
+          You are applying for the position of <span class="font-semibold text-[#0054a4]">{job.title}</span>.
         </p>
         <p class="mt-4 text-sm text-gray-500">Please review your details carefully before submitting.</p>
       </div>
 
-      <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
         <div class="p-6 md:p-8">
-          <h2 class="text-xl md:text-2xl font-semibold text-gray-700 border-b pb-4">Personal Information</h2>
+          <h2 class="text-xl md:text-2xl font-semibold text-[#003b71] border-b pb-4">Personal Information</h2>
           <dl class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5 text-base">
             <div>
               <dt class="text-sm font-medium text-gray-500">First Name</dt>
@@ -130,7 +130,7 @@ const isPdf = values.resumeMime === "application/pdf";
             </div>
           </dl>
 
-          <h2 class="text-xl md:text-2xl font-semibold text-gray-700 border-b pb-4 mt-10">Professional Information</h2>
+          <h2 class="text-xl md:text-2xl font-semibold text-[#003b71] border-b pb-4 mt-10">Professional Information</h2>
           <dl class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5 text-base">
             <div>
               <dt class="text-sm font-medium text-gray-500">Years of Experience</dt>
@@ -139,7 +139,7 @@ const isPdf = values.resumeMime === "application/pdf";
             <div>
               <dt class="text-sm font-medium text-gray-500">LinkedIn Profile</dt>
               <dd class="mt-1 text-gray-900 truncate">
-                <a href={values.linkedin} target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">{values.linkedin}</a>
+                <a href={values.linkedin} target="_blank" rel="noopener noreferrer" class="text-[#0054a4] hover:underline">{values.linkedin}</a>
               </dd>
             </div>
             <div class="sm:col-span-2">
@@ -157,7 +157,7 @@ const isPdf = values.resumeMime === "application/pdf";
 
         {values.resumeName && (
           <div class="bg-gray-50 px-6 md:px-8 py-6">
-            <h2 class="text-xl md:text-2xl font-semibold text-gray-700">Resume Preview</h2>
+            <h2 class="text-xl md:text-2xl font-semibold text-[#003b71]">Resume Preview</h2>
             <div class="mt-4">
               {isPdf ? (
                 <div class="border border-gray-200 rounded-lg shadow-sm overflow-hidden">
@@ -176,7 +176,7 @@ const isPdf = values.resumeMime === "application/pdf";
                   <a
                     href={resumeUrl}
                     download={values.resumeName}
-                    class="inline-flex items-center gap-2 mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-semibold transition-colors"
+                    class="inline-flex items-center gap-2 mt-4 bg-[#0054a4] hover:bg-[#003b71] text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -190,44 +190,46 @@ const isPdf = values.resumeMime === "application/pdf";
         )}
 
         <div class="p-6 md:p-8 bg-white border-t">
-          <form
-            method="POST"
-            enctype="multipart/form-data"
-            action={`/careers/apply/${slug}/confirmation`}
-          >
-            <!-- Hidden form values -->
-            <input type="hidden" name="firstName" value={values.firstName} />
-            <input type="hidden" name="lastName" value={values.lastName} />
-            <input type="hidden" name="email" value={values.email} />
-            <input type="hidden" name="phone" value={values.phone} />
-            <input type="hidden" name="countryCode" value={values.countryCode} />
-            <input type="hidden" name="gender" value={values.gender} />
-            <input type="hidden" name="nationality" value={values.nationality} />
-            <input type="hidden" name="dob" value={values.dob} />
-            <input type="hidden" name="visa" value={values.visa} />
-            <input type="hidden" name="experience" value={values.experience} />
-            <input type="hidden" name="linkedin" value={values.linkedin} />
-            <input type="hidden" name="about" value={values.about} />
-            <input type="hidden" name="resumeBase64" value={values.resumeBase64} />
-            <input type="hidden" name="resumeMime" value={values.resumeMime} />
-            <input type="hidden" name="resumeName" value={values.resumeName} />
-            
-            <div class="flex flex-col-reverse sm:flex-row-reverse sm:items-center gap-4">
+          <div class="flex flex-col-reverse sm:flex-row sm:justify-between gap-4">
+            {/* Go Back & Edit Button - preserve form data */}
+            <form
+              method="POST"
+              enctype="multipart/form-data"
+              action={`/careers/apply/${slug}`}
+              class="w-full sm:w-auto"
+            >
+              {/* Hidden form values */}
+              {Object.entries(values).map(([key, val]) =>
+                <input type="hidden" name={key} value={val} />
+              )}
               <button
                 type="submit"
-                class="w-full sm:w-auto inline-flex justify-center items-center px-8 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-transform transform hover:scale-105"
+                class="w-full sm:w-auto px-6 py-2 rounded-lg bg-[#ed1c24] hover:bg-red-700 text-white font-semibold text-base transition-colors"
+              >
+                Go Back & Edit
+              </button>
+            </form>
+            {/* Submit Application Button */}
+            <form
+              method="POST"
+              enctype="multipart/form-data"
+              action={`/careers/apply/${slug}/confirmation`}
+              class="w-full sm:w-auto"
+            >
+              {/* Hidden form values */}
+              {Object.entries(values).map(([key, val]) =>
+                <input type="hidden" name={key} value={val} />
+              )}
+              <button
+                type="submit"
+                class="w-full sm:w-auto px-6 py-2 rounded-lg bg-[#0054a4] hover:bg-blue-700 text-white font-semibold text-base transition-colors"
               >
                 Submit Application
               </button>
-              <a
-                href={`/careers/apply/${slug}`}
-                class="w-full sm:w-auto inline-flex justify-center items-center px-8 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-[#ed1c24] hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
-              >
-                Go Back & Edit
-              </a>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
+
       </div>
     </div>
   </section>

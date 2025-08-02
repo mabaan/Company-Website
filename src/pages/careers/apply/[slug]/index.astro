@@ -35,112 +35,129 @@ const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
   ogDescription={`Apply for ${job.title} at GC International.`}
   ogUrl={Astro.url.href}
 >
-  <section class="pt-32 pb-12 px-4 max-w-3xl mx-auto">
+  <section class="pt-32 pb-12 px-2 sm:px-4 max-w-3xl mx-auto">
     <ProgressSteps currentStep={1} client:load />
-    <h1 class="text-3xl font-bold mb-4 mt-8">Apply for {job.title}</h1>
 
-    <form
-      method="POST"
-      enctype="multipart/form-data"
-      action={`/careers/apply/${slug}/review`}
-      class="space-y-6"
-    >
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="grid gap-1">
-          <label for="firstName">First Name *</label>
-          <input id="firstName" name="firstName" placeholder="First Name" required class="border px-4 py-2 rounded" />
-        </div>
-        <div class="grid gap-1">
-          <label for="lastName">Last Name *</label>
-          <input id="lastName" name="lastName" placeholder="Last Name" required class="border px-4 py-2 rounded" />
-        </div>
-        <div class="grid gap-1 md:col-span-2">
-          <label for="email">Email *</label>
-          <input id="email" name="email" type="email" placeholder="Email" required class="border px-4 py-2 rounded" />
-        </div>
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 mt-10 p-6 sm:p-10">
+      <h1 class="text-2xl sm:text-3xl font-extrabold mb-7 text-[#003b71] tracking-tight">
+        Apply for {job.title}
+      </h1>
 
-        <div class="grid gap-1">
-          <label for="countryCode">Country Code *</label>
-        <select id="countryCode" name="countryCode" required class="border px-3 py-2 rounded">
-          <option value="" disabled selected>-- Select your country code --</option>
-          {countryCodes.map((country: Country) => (
-            <option value={country.dial_code}>
-              {country.name} {country.flag} ({country.code}) {country.dial_code}
-            </option>
-          ))}
-        </select>
-        </div>
+      <form
+        method="POST"
+        enctype="multipart/form-data"
+        action={`/careers/apply/${slug}/review`}
+        class="space-y-7"
+        autocomplete="on"
+      >
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="grid gap-2">
+            <label for="firstName" class="font-semibold text-sm">First Name <span class="text-[#e41f26]">*</span></label>
+            <input id="firstName" name="firstName" placeholder="First Name" required class="border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition" />
+          </div>
+          <div class="grid gap-2">
+            <label for="lastName" class="font-semibold text-sm">Last Name <span class="text-[#e41f26]">*</span></label>
+            <input id="lastName" name="lastName" placeholder="Last Name" required class="border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition" />
+          </div>
+          <div class="grid gap-2 md:col-span-2">
+            <label for="email" class="font-semibold text-sm">Email <span class="text-[#e41f26]">*</span></label>
+            <input id="email" name="email" type="email" placeholder="Email" required class="border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition" />
+          </div>
 
-        <div class="grid gap-1">
-          <label for="phone">Phone *</label>
-        <input id="phone" name="phone" placeholder="Phone" required class="border px-4 py-2 rounded" />
-        </div>
+          <!-- Country Code + Phone on the same row, properly spaced -->
+          <div class="grid gap-2 md:gap-2 grid-cols-2 col-span-1 md:col-span-2">
+            <div>
+              <label for="countryCode" class="font-semibold text-sm">Country Code <span class="text-[#e41f26]">*</span></label>
+              <select id="countryCode" name="countryCode" required class="block w-full min-w-0 border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-3 py-2 rounded-lg bg-gray-50 transition">
+                <option value="" disabled selected>-- Select your country code --</option>
+                {countryCodes.map((country: Country) => (
+                  <option value={country.dial_code}>
+                    {country.name} {country.flag} ({country.code}) {country.dial_code}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label for="phone" class="font-semibold text-sm">Phone <span class="text-[#e41f26]">*</span></label>
+              <input id="phone" name="phone" placeholder="Phone" required class="block w-full min-w-0 border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition" />
+            </div>
+          </div>
 
-        <div>
-          <label class="block font-medium mb-1" for="gender-male">Gender *</label>
-          <div class="flex gap-4">
-            <label><input id="gender-male" type="radio" name="gender" value="Male" required /> Male</label>
-            <label><input id="gender-female" type="radio" name="gender" value="Female" required /> Female</label>
+          <div>
+            <label class="font-semibold text-sm mb-1 block">Gender <span class="text-[#e41f26]">*</span></label>
+            <div class="flex gap-6 pt-1">
+              <label class="inline-flex items-center gap-2">
+                <input id="gender-male" type="radio" name="gender" value="Male" required class="accent-[#0054a4]" /> Male
+              </label>
+              <label class="inline-flex items-center gap-2">
+                <input id="gender-female" type="radio" name="gender" value="Female" required class="accent-[#e41f26]" /> Female
+              </label>
+            </div>
+          </div>
+
+          <div class="grid gap-2">
+            <label for="nationality" class="font-semibold text-sm">Nationality <span class="text-[#e41f26]">*</span></label>
+            <input id="nationality" name="nationality" placeholder="Nationality" required class="border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition" />
+          </div>
+          <div class="grid gap-2">
+            <label for="dob" class="font-semibold text-sm">Date of Birth <span class="text-[#e41f26]">*</span></label>
+            <input id="dob" name="dob" type="date" required class="border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition" />
+          </div>
+
+          <div class="grid gap-2">
+            <label for="visa" class="font-semibold text-sm">Visa Status <span class="text-[#e41f26]">*</span></label>
+            <select id="visa" name="visa" required class="border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition">
+              <option value="">-- Visa Status --</option>
+              <option value="Visit">Visit</option>
+              <option value="Work">Work</option>
+              <option value="Student">Student</option>
+              <option value="Golden">Golden</option>
+              <option value="Resident">Resident</option>
+              <option value="None">None</option>
+            </select>
+          </div>
+
+          <div class="grid gap-2">
+            <label for="experience" class="font-semibold text-sm">Years of Experience <span class="text-[#e41f26]">*</span></label>
+            <input id="experience" name="experience" type="number" min="0" placeholder="Years of Experience" required class="border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition" />
+          </div>
+          <div class="grid gap-2 md:col-span-2">
+            <label for="linkedin" class="font-semibold text-sm">LinkedIn <span class="text-gray-400">(optional)</span></label>
+            <input id="linkedin" name="linkedin" placeholder="LinkedIn (optional)" class="border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition" />
+          </div>
+
+          <div class="md:col-span-2">
+            <label for="about" class="font-semibold text-sm">Tell us about yourself <span class="text-gray-400">(optional)</span></label>
+            <textarea id="about" name="about" rows="4" maxlength="500" placeholder="Max 500 characters..." class="border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition w-full"></textarea>
+            <div class="text-xs text-gray-500 text-right mt-1">
+              <span id="charCount">0</span>/500
+            </div>
+          </div>
+
+          <div class="md:col-span-2">
+            <label for="resumeInput" class="font-semibold text-sm mb-1 block">Resume (PDF, under 1 MB) <span class="text-[#e41f26]">*</span></label>
+            <input
+              id="resumeInput"
+              name="resume"
+              type="file"
+              accept="application/pdf"
+              required
+              class="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-[#dfdfdf] file:text-black hover:file:bg-red-600"
+            />
+            <span class="block text-xs text-gray-400 mt-1">Only PDF files under 1 MB allowed.</span>
           </div>
         </div>
 
-        <div class="grid gap-1">
-          <label for="nationality">Nationality *</label>
-        <input id="nationality" name="nationality" placeholder="Nationality" required class="border px-4 py-2 rounded" />
+        <div class="pt-8 flex flex-col sm:flex-row sm:justify-between gap-3">
+          <a href={`/careers/${job.slug}`} class="bg-[#ed1c24] hover:bg-red-600 text-white px-6 py-2 rounded-lg text-sm font-semibold shadow transition">
+            Back to Job
+          </a>
+          <button type="submit" class="bg-[#0054a4] hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-semibold shadow transition">
+            Review Application
+          </button>
         </div>
-        <div class="grid gap-1">
-          <label for="dob">Date of Birth *</label>
-        <input id="dob" name="dob" type="date" required class="border px-4 py-2 rounded" />
-        </div>
-
-        <div class="grid gap-1">
-          <label for="visa">Visa Status *</label>
-        <select id="visa" name="visa" required class="border px-4 py-2 rounded">
-          <option value="">-- Visa Status --</option>
-          <option value="Visit">Visit</option>
-          <option value="Work">Work</option>
-          <option value="Student">Student</option>
-          <option value="Golden">Golden</option>
-          <option value="Resident">Resident</option>
-          <option value="None">None</option>
-        </select>
-        </div>
-
-        <div class="grid gap-1">
-          <label for="experience">Years of Experience *</label>
-        <input id="experience" name="experience" type="number" min="0" placeholder="Years of Experience" required class="border px-4 py-2 rounded" />
-        </div>
-        <div class="grid gap-1 md:col-span-2">
-          <label for="linkedin">LinkedIn (optional)</label>
-        <input id="linkedin" name="linkedin" placeholder="LinkedIn (optional)" class="border px-4 py-2 rounded" />
-        </div>
-
-        <div class="md:col-span-2">
-          <label for="about" class="block font-medium mb-1">Tell us about yourself (optional)</label>
-          <textarea id="about" name="about" rows="4" maxlength="500" placeholder="Max 500 characters..." class="border px-4 py-2 rounded w-full"></textarea>
-          <div class="text-sm text-gray-500 text-right mt-1">
-            <span id="charCount">0</span>/500
-          </div>
-        </div>
-
-        <div class="md:col-span-2">
-          <label for="resumeInput" class="block font-medium mb-2">Resume (under 1 MB only) *</label>
-          <input
-            id="resumeInput"
-            name="resume"
-            type="file"
-            accept="application/pdf"
-            required
-            class="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-[#dfdfdf] file:text-black hover:file:bg-red-600"
-          />
-        </div>
-      </div>
-
-      <div class="pt-6 flex justify-between">
-        <a href={`/careers/${job.slug}`} class="bg-[#ed1c24] hover:bg-red-600 text-white px-6 py-2 rounded text-sm font-medium">Back to Job</a>
-        <button type="submit" class="bg-[#0054a4] hover:bg-blue-700 text-white px-6 py-2 rounded text-sm font-medium">Review Application</button>
-      </div>
-    </form>
+      </form>
+    </div>
   </section>
 
   <script is:inline>
