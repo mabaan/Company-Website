@@ -148,14 +148,21 @@ const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
           </div>
         </div>
 
-        <div class="pt-8 flex flex-col sm:flex-row sm:justify-between gap-3">
-          <a href={`/careers/${job.slug}`} class="bg-[#ed1c24] hover:bg-red-600 text-white px-6 py-2 rounded-lg text-sm font-semibold shadow transition">
-            Back to Job
-          </a>
-          <button type="submit" class="bg-[#0054a4] hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-semibold shadow transition">
-            Review Application
-          </button>
-        </div>
+        <div class="pt-8 flex flex-col gap-3 sm:flex-row sm:justify-between sm:gap-6">
+  <a
+    href={`/careers/${job.slug}`}
+    class="w-full sm:w-auto bg-[#ed1c24] hover:bg-red-600 text-white px-6 py-3 rounded-lg text-base font-semibold shadow transition text-center"
+  >
+    Back to Job
+  </a>
+  <button
+    type="submit"
+    class="w-full sm:w-auto bg-[#0054a4] hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-base font-semibold shadow transition text-center"
+  >
+    Review Application
+  </button>
+</div>
+
       </form>
     </div>
   </section>

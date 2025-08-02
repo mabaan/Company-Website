@@ -1,44 +1,82 @@
 import React from "react";
 
-// import all images under public/Ticker (or Alt)
-const modules = import.meta.glob("/public/Alt/*", { eager: true, as: "url" });
-const logos = Object.entries(modules).map(([path, url]) => {
-  const filename = path.split("/").pop()!;
-  const alt = filename.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
-  return { src: url as string, alt };
-});
+// List of logo base names (without .png extension)
+const logoNames = [
+  "ADNOC-removebg-preview",
+  "aramco-removebg-preview",
+  "BAPCO-removebg-preview",
+  "bernard",
+  "bonneyforge",
+  "bonomi",
+  "cranecpe",
+  "dafram",
+  "gc",
+  "HYV",
+  "koc-removebg-preview",
+  "melesi",
+  "PDO-removebg-preview",
+  "petronas-removebg-preview",
+  "QP-removebg-preview",
+  "quam",
+  "SNOC-removebg-preview",
+];
+
+// Map names to Cloudinary URLs and alt text
+const logos = logoNames.map(name => ({
+  src: `https://res.cloudinary.com/dxrwnc5g4/image/upload/gcintle/resume/${name}.png`,
+  alt: name.replace(/[-_]/g, " ").replace(/removebg preview/gi, "").trim(),
+}));
+
+// Duplicate for seamless infinite scroll
 const duplicated = [...logos, ...logos];
 
 export default function LogoTicker({ className = "" }: { className?: string }) {
   return (
-    <div className={`pt-16 pb-8 bg-white overflow-hidden ${className}`}>
-      <div className="flex items-center gap-12 sm:gap-16 md:gap-20 lg:gap-24 animate-scroll whitespace-nowrap hover:pause-on-hover">
+    <div className={`py-8 bg-white overflow-x-hidden ${className}`}>
+      <div
+        className="group relative flex items-center w-max animate-ticker gap-10 sm:gap-16 md:gap-20 lg:gap-24"
+        tabIndex={0}
+        aria-label="Trusted by our partners"
+        onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.animationPlayState = "paused"; }}
+        onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.animationPlayState = "running"; }}
+        onTouchStart={e => { (e.currentTarget as HTMLDivElement).style.animationPlayState = "paused"; }}
+        onTouchEnd={e => { (e.currentTarget as HTMLDivElement).style.animationPlayState = "running"; }}
+        style={{ width: "max-content", minWidth: "100vw" }}
+      >
         {duplicated.map((logo, idx) => (
           <img
             key={idx}
             src={logo.src}
             alt={logo.alt}
             loading="lazy"
+            draggable={false}
             className="
-              w-16 h-16
-              sm:w-20 sm:h-20
-              md:w-24 md:h-24
-              lg:w-28 lg:h-28
-              xl:w-32 xl:h-32
+              h-16 w-auto
+              sm:h-20
+              md:h-28
+              lg:h-32
+              xl:h-40
               object-contain
+              inline-block
+              transition-transform duration-200 hover:scale-105
+              select-none
             "
+            style={{ maxWidth: "260px" }}
           />
         ))}
       </div>
       <style>{`
-        @keyframes scroll {
+        @keyframes ticker {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
         }
-        .animate-scroll {
-          animation: scroll 40s linear infinite;
+        .animate-ticker {
+          animation: ticker 60s linear infinite;
+          will-change: transform;
         }
-        .pause-on-hover:hover {
+        .group:hover,
+        .group:focus,
+        .group:active {
           animation-play-state: paused !important;
         }
       `}</style>
