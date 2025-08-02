@@ -17,7 +17,7 @@ export default function Hero() {
       </div>
 
       {/* PIPE DOODLE (mobile/tablet only) */}
-      <div
+      {/* <div
         className="absolute z-0 flex md:hidden" // Display flex by default, hide on medium screens and up
         style={{
           right: 0,
@@ -39,7 +39,7 @@ export default function Hero() {
             opacity: 0.9,
           }}
         />
-      </div>
+      </div> */}
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center w-full relative z-20">
         {/* Left: Text Content */}
