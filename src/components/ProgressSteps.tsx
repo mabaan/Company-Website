@@ -1,10 +1,11 @@
+// src/components/ProgressSteps.tsx
 type Props = {
   currentStep: number; // 1, 2, or 3
 };
 
 const ProgressSteps: React.FC<Props> = ({ currentStep }) => {
   return (
-    <div className="w-full max-w-3xl mx-auto pt-12 flex items-center justify-between relative">
+    <div className="w-full max-w-3xl mx-auto pt-0 flex items-center justify-between relative">
       {/* Step 1 */}
       <div className="flex flex-col items-center">
         <div
