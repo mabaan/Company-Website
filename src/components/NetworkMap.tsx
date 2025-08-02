@@ -48,7 +48,7 @@ interface LegendItemProps {
 const LegendItem: React.FC<LegendItemProps> = ({ color, label }) => (
   <div className="flex items-center gap-2">
     <span
-      className={`inline-block w-3 h-3 rounded-full`}
+      className="inline-block w-3 h-3 rounded-full"
       style={{ backgroundColor: color }}
     ></span>
     <span className="font-medium">{label}</span>
@@ -69,7 +69,8 @@ const NetworkMap: React.FC<Props> = ({ locations }) => {
   }, []);
 
   return (
-    <div className="relative w-full h-[300px] md:h-[600px]">
+    // <-- margin and padding added here!
+    <div className="relative w-full h-[300px] md:h-[600px] my-4 md:my-8 px-2 sm:px-6">
       {loading && (
         <div className="absolute inset-0 flex items-center justify-center bg-white/70 z-10">
           <Spinner />
