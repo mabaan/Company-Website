@@ -5,7 +5,6 @@ const ValveViewer = dynamic(() => import("./ValveViewer"), { ssr: false });
 export default function CTASection() {
   return (
     <>
-      {console.log("[CTASection] Rendered")}
       <section
         id="cta"
         className="w-full px-4 md:px-12 py-24 md:py-40 bg-[#E5E7EB] text-darkText"

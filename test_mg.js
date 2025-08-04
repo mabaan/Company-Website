@@ -5,9 +5,8 @@ import formData from "form-data";
 import Mailgun  from "mailgun.js";
 
 // At this point process.env.MG_API_KEY must exist
-console.log("MG_API_KEY is:", JSON.stringify(process.env.MG_API_KEY));  
+console.log("MG_API_KEY is:", JSON.stringify(process.env.MG_API_KEY));
 // Should print: "MG_API_KEY is: \"key-XXXXXXXXXXXXXX\""
-
 const mailgun = new Mailgun(formData);
 const mgClient = mailgun.client({
   username: "api",
