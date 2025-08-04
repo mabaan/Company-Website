@@ -12,7 +12,10 @@ const posts = await client.fetch(`
     slug,
     publishedAt,
     "imageUrl": mainImage.asset->url,
-    "author": author->name,
+    "authors": authors[]->{
+      name,
+      "image": image.asset->url
+    },
     categories[]->{ title, slug },
     body
   }
@@ -26,16 +29,16 @@ const description = posts.length > 0 ? getPostDescription(posts[0].body) : "";
 ---
 
 <Layout title="Blog | GC International" description={description}>
-    <!-- Spacer between main navbar and BlogNavbar -->
-<div class="h-8 md:h-12" aria-hidden="true"></div>
+  <!-- Spacer between main navbar and BlogNavbar -->
+  <div class="h-8 md:h-12" aria-hidden="true"></div>
 
   <BlogNavbar client:load categories={categories} />
 
   <section class="w-full max-w-6xl mx-auto px-4 py-12">
     {posts.length > 0 ? (
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {posts.map((post: any) => (
-          <BlogCard post={post} />
+        {posts.map((post: any, i: number) => (
+          <BlogCard post={post} index={i} />
         ))}
       </div>
     ) : (

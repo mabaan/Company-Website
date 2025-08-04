@@ -32,20 +32,19 @@ export default function Navbar() {
           {/* Logo (left, text shifted right on desktop) */}
           <a
             href="/"
-            className="flex items-center gap-0 no-underline hover:no-underline"
+            className="flex items-center gap-4 no-underline hover:no-underline"
           >
             <img
               src="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1753901040/gcintle/resume/GC_Transparent_Logo.png"
               alt="GC Logo"
               className="h-10 w-auto"
             />
-            {/* Desktop text only, shifted further right */}
-            <span className="text-xl font-bold tracking-wide hidden md:inline ml-12">
+            {/* Desktop text only */}
+            <span className="text-xl font-bold tracking-wide hidden md:inline">
               <span className="text-blue-900">GC&nbsp;</span>
               <span className="text-[#e41f26]">International</span>
             </span>
           </a>
-
           {/* GC International Centered on Mobile (now clickable) */}
           <a
             href="/"

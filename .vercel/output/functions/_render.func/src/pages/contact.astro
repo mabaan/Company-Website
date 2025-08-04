@@ -1,0 +1,277 @@
+---
+// src/pages/contact.astro
+export const prerender = false;
+
+import Layout from "../layouts/BaseLayout.astro";
+import { createContact } from "../lib/airtable";
+import { contactAcknowledgement, contactNotification } from "../lib/emailTemplates";
+import { sendMail } from "../lib/mailgunClient";
+
+if (Astro.request.method === "POST") {
+  try {
+    console.log("--- Handling contact form submission ---");
+    const formData = await Astro.request.formData();
+    const get = (field: string) => formData.get(field)?.toString() || "";
+    const data = {
+      Name: get("name"),
+      Company: get("company"),
+      Email: get("email"),
+      Phone: get("phone"),
+      Message: get("message"),
+    };
+
+    await createContact(data);
+
+    const contactData = {
+      name: get("name"),
+      company: get("company"),
+      email: get("email"),
+      phone: get("phone"),
+      message: get("message"),
+      submittedAt: new Date().toISOString(),
+    };
+
+    const contactAck = contactAcknowledgement({ name: contactData.name });
+    const contactNotif = contactNotification(contactData);
+
+    // Send acknowledgement back to the user
+    try {
+      console.log("📧 Sending acknowledgement to", contactData.email);
+      await sendMail({
+        to: contactData.email,
+        subject: contactAck.subject,
+        html: contactAck.html,
+      });
+      console.log("✅ Acknowledgement email sent");
+    } catch (err) {
+      console.error("Failed to send contact acknowledgement:", err);
+    }
+
+    // Notify the internal contact address
+    try {
+      console.log("📧 Notifying internal contact", process.env.MAIL_CONTACT);
+      await sendMail({
+        to: process.env.MAIL_CONTACT!,
+        subject: contactNotif.subject,
+        html: contactNotif.html,
+      });
+      console.log("✅ Internal notification sent");
+    } catch (err) {
+      console.error("Failed to send contact notification:", err);
+    }
+
+    return new Response(null, { status: 200 });
+  } catch (err) {
+    console.error("Failed to submit contact form:", err);
+    return new Response("Submission failed", { status: 500 });
+  }
+}
+---
+
+<Layout
+  title="Contact | GC International"
+  description="Get in touch with GC International via our contact form."
+  ogTitle="Contact | GC International"
+  ogDescription="Reach out to GC International"
+  ogUrl={Astro.url.href}
+>
+  <!-- push content below the fixed navbar -->
+<section class="min-h-screen bg-gradient-to-br from-[#f3f6f9] to-[#eaf1fa] pt-32 pb-8 px-2 text-gray-800">
+  <div class="max-w-6xl mx-auto rounded-3xl shadow-2xl ring-1 ring-[#dde5ee]/60 flex flex-col md:grid md:grid-cols-2 gap-0 overflow-hidden bg-white/80 backdrop-blur-md">
+
+    <!-- LEFT: Company info -->
+    <div class="relative flex flex-col h-full p-6 sm:p-10 bg-gradient-to-b from-[#ffffff99] to-[#f2f7fb]">
+      <div class="hidden md:block absolute right-0 top-0 h-full w-px bg-gradient-to-b from-transparent via-[#e3e8ee] to-transparent z-10"></div>
+
+      <div class="flex flex-col items-center text-center space-y-10 md:space-y-16 z-20">
+        <h1 class="text-3xl md:text-5xl font-extrabold text-[#0054a4] tracking-tight drop-shadow-sm mt-4">
+          Contact Us
+        </h1>
+        <img
+          src="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1753901041/gcintle/resume/GC_Logo.png"
+          alt="GC International Logo"
+          class="w-40 md:w-72 drop-shadow-lg rounded-xl"
+        />
+        <p class="text-gray-600 text-base md:text-lg max-w-xs md:max-w-sm font-medium">
+          We would love to hear from you and welcome your questions, business inquiries, or partnership proposals.<br>
+          Please fill out the form below and a member of our team will respond as soon as possible.
+        </p>
+      </div>
+
+      <div class="flex-1"></div>
+
+      <div class="mt-8 md:mt-10 flex justify-center z-20">
+        <div class="text-gray-700 text-center text-sm leading-relaxed space-y-1 w-full max-w-xs">
+          <div class="text-[#0054a4] font-bold mb-1">Head Office – Dubai</div>
+          <div>GC International FZE</div>
+          <div>Dubai Airport Freezone</div>
+          <div>Office 520, Building 5EA,</div>
+          <div>P.O. Box 293777</div>
+          <div>Dubai, United Arab Emirates</div>
+          <div class="font-medium mt-1">Tel: <a href="tel:+97142566760" class="hover:underline text-[#0054a4]">+971 4 256 6760</a></div>
+          <div class="mt-2">
+            <a
+              href="https://maps.google.com/?q=Dubai+Airport+Freezone+Building+5EA+Dubai"
+              target="_blank"
+              rel="noopener"
+              class="text-[#e41f26] font-semibold underline underline-offset-4 hover:text-[#003968] transition"
+            >View on Google Maps</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Contact Form column, bg-[#f2f7fb] on mobile, blue on md+ screens -->
+    <div class="flex flex-col justify-center items-center p-0 py-8 md:py-10 bg-[#f2f7fb] md:bg-[#003b71] relative min-h-[500px] w-full">
+      <form
+        id="contactForm"
+        method="POST"
+        class="grid gap-7 md:gap-6 bg-white/95 border border-[#e6eaf3] rounded-2xl shadow-lg px-4 py-7 md:px-10 md:py-10 w-full max-w-md"
+        novalidate
+      >
+        <!-- Name -->
+        <div class="grid gap-2">
+          <label for="name" class="font-semibold text-[#003b71]">Name</label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            placeholder="Your full name"
+            required
+            class="input-field"
+          />
+        </div>
+        <!-- Company -->
+        <div class="grid gap-2">
+          <label for="company" class="font-semibold text-[#003b71]">Company</label>
+          <input
+            id="company"
+            name="company"
+            type="text"
+            placeholder="Company name"
+            required
+            class="input-field"
+          />
+        </div>
+        <!-- Email -->
+        <div class="grid gap-2">
+          <label for="email" class="font-semibold text-[#003b71]">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="you@example.com"
+            required
+            class="input-field"
+          />
+        </div>
+        <!-- Phone -->
+        <div class="grid gap-2">
+          <label for="phone" class="font-semibold text-[#003b71]">Phone</label>
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            placeholder="+971 50 123 4567"
+            required
+            class="input-field"
+          />
+        </div>
+        <!-- Message + Counter -->
+        <div class="grid gap-2 relative">
+          <label for="message" class="font-semibold text-[#003b71]">Message</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="5"
+            placeholder="Type your message here..."
+            required
+            maxlength="500"
+            class="input-field resize-none"
+          ></textarea>
+          <div id="charCount" class="absolute bottom-2 right-3 text-xs text-gray-500">
+            0 / 500
+          </div>
+        </div>
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="bg-[#e41f26] hover:bg-[#ba1721] active:scale-95 text-white px-6 py-3 rounded-xl font-bold tracking-wide transition-all duration-200 shadow-md hover:shadow-lg"
+        >
+          Send Message
+        </button>
+      </form>
+      <!-- Toast notification -->
+      <div
+        id="toast"
+        class="hidden fixed bottom-5 right-5 bg-green-600 text-white py-2 px-4 rounded shadow-lg text-base z-50"
+      ></div>
+    </div>
+  </div>
+
+  <style>
+    .input-field {
+      @apply w-full px-4 py-2 border border-gray-300 rounded-lg font-medium text-gray-900
+        focus:outline-none focus:ring-2 focus:ring-[#e41f26] focus:border-[#e41f26] transition
+        placeholder-gray-400 bg-white/70;
+      box-shadow: 0 1px 2px 0 #b6c4d833;
+    }
+    .input-field:focus {
+      box-shadow: 0 2px 8px 0 #e41f2610, 0 1.5px 2px 0 #b6c4d855;
+      background: #f8fcff;
+    }
+    @media (max-width: 768px) {
+      .input-field {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</section>
+
+
+
+
+
+
+  <script type="module">
+    const form = document.querySelector("#contactForm");
+    const toast = document.querySelector("#toast");
+    const msgField = document.querySelector("#message");
+    const charCount = document.querySelector("#charCount");
+
+    msgField.addEventListener("input", () => {
+      const len = msgField.value.length;
+      charCount.textContent = `${len} / 500`;
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      let valid = true;
+
+      form.querySelectorAll("[required]").forEach((field) => {
+        if (!field.value.trim()) {
+          field.classList.add("border-red-500", "ring-red-500", "ring-1");
+          valid = false;
+        } else {
+          field.classList.remove("border-red-500", "ring-red-500", "ring-1");
+        }
+      });
+
+      if (valid) {
+        const data = new FormData(form);
+        const res = await fetch(form.action || window.location.pathname, {
+          method: "POST",
+          body: data,
+        });
+
+        if (res.ok) {
+          toast.textContent = "Message sent successfully!";
+          toast.classList.remove("hidden");
+          setTimeout(() => toast.classList.add("hidden"), 3000);
+          form.reset();
+          charCount.textContent = "0 / 500";
+        }
+      }
+    });
+  </script>
+</Layout>
