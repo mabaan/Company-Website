@@ -36,7 +36,11 @@ const BlogCard: React.FC<Props> = ({ post, className = "", index = 0 }) => {
       day: "numeric",
     });
 
+  // Always treat authors as array
+  const authors: Author[] = Array.isArray(post.authors) ? post.authors : [];
+
   const formatAuthors = (authors: Author[]): string => {
+    if (!authors.length) return "The Intern";
     const names = authors.map((a) => a.name);
     if (names.length === 1) return names[0];
     if (names.length === 2) return `${names[0]} and ${names[1]}`;
@@ -48,7 +52,7 @@ const BlogCard: React.FC<Props> = ({ post, className = "", index = 0 }) => {
 
   return (
     <a
-      href={`/blog/${post.slug.current}`}
+      href={post.slug?.current ? `/blog/${post.slug.current}` : "#"}
       className={`group rounded-2xl shadow-md hover:shadow-2xl hover:border-[#003b71] hover:border-2 transition-all duration-300 border border-gray-200 bg-white/90 p-6 flex flex-col focus:outline-none focus:ring-2 focus:ring-[#003b71] ${className}`}
       tabIndex={0}
     >
@@ -93,10 +97,11 @@ const BlogCard: React.FC<Props> = ({ post, className = "", index = 0 }) => {
         </div>
       )}
 
-      {post.authors && post.authors.length > 0 && (
-        <div className="flex items-center gap-3 mt-auto pt-2 border-t border-gray-200 pt-3">
-          <div className="flex -space-x-3">
-            {post.authors.slice(0, 3).map((author, i) =>
+      {/* Authors display */}
+      <div className="flex items-center gap-3 mt-auto pt-2 border-t border-gray-200 pt-3">
+        <div className="flex -space-x-3">
+          {authors.length > 0 ? (
+            authors.slice(0, 3).map((author, i) =>
               author.image ? (
                 <img
                   key={i}
@@ -112,18 +117,22 @@ const BlogCard: React.FC<Props> = ({ post, className = "", index = 0 }) => {
                   {author.name.charAt(0).toUpperCase()}
                 </div>
               )
-            )}
-            {post.authors.length > 3 && (
-              <div className="w-7 h-7 rounded-full bg-gray-700 text-white text-xs font-medium flex items-center justify-center border-2 border-white">
-                +{post.authors.length - 3}
-              </div>
-            )}
-          </div>
-          <div className="text-xs text-gray-600 truncate">
-            by {formatAuthors(post.authors)}
-          </div>
+            )
+          ) : (
+            <div className="w-7 h-7 rounded-full bg-gray-300 text-white text-xs font-bold flex items-center justify-center border-2 border-white">
+              I
+            </div>
+          )}
+          {authors.length > 3 && (
+            <div className="w-7 h-7 rounded-full bg-gray-700 text-white text-xs font-medium flex items-center justify-center border-2 border-white">
+              +{authors.length - 3}
+            </div>
+          )}
         </div>
-      )}
+        <div className="text-xs text-gray-600 truncate">
+          by {formatAuthors(authors)}
+        </div>
+      </div>
     </a>
   );
 };

@@ -29,7 +29,7 @@ const posts = await client.fetch(
 // Fetch all categories for nav
 const categories = await client.fetch(`*[_type == "category"]{ title, slug }`);
 
-const pageTitle = categories.find((c: { slug: { current: string }; title: string }) => c.slug.current === slug)?.title ?? "Blog";
+const pageTitle = categories.find((c: { slug: { current: string }, title: string }) => c.slug.current === slug)?.title ?? "Blog";
 const description = posts.length > 0 ? getPostDescription(posts[0].body) : "";
 ---
 
