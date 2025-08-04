@@ -76,7 +76,7 @@ export default function PartnersSection() {
               target="_blank"
               rel="noopener noreferrer"
               className="group flex flex-col items-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 rounded-md"
-              aria-label={`${partner.name} – ${partner.title}`}
+              aria-label={`${partner.name} - ${partner.title}`}
             >
               <img
                 src={getCdnImage(partner.image)}
@@ -99,7 +99,7 @@ export default function PartnersSection() {
             target="_blank"
             rel="noopener noreferrer"
             className="group flex flex-col items-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 rounded-md"
-            aria-label={`${lastPartner.name} – ${lastPartner.title}`}
+            aria-label={`${lastPartner.name} - ${lastPartner.title}`}
           >
             <img
               src={getCdnImage(lastPartner.image)}

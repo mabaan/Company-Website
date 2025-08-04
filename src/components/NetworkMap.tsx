@@ -86,7 +86,7 @@ const NetworkMap: React.FC<Props> = ({ locations }) => {
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='© <a href="https://openstreetmap.org">OpenStreetMap</a> | GC International'
+            attribution='&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> | GC International'
             subdomains={["a", "b", "c"]}
           />
 

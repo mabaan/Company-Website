@@ -29,7 +29,7 @@ export default function CTASection() {
                 Ready to Partner with GC International?
               </h2>
               <p className="text-base md:text-lg mb-10 leading-relaxed text-[#1E293B] opacity-90">
-                Let’s help you find the perfect industrial solution. Contact us to
+                Let's help you find the perfect industrial solution. Contact us to
                 explore our range of valves, fittings, and custom engineering
                 services.
               </p>

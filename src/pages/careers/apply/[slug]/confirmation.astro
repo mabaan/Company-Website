@@ -22,7 +22,7 @@ let formData: FormData;
 try {
   formData = await Astro.request.formData();
 } catch {
-  console.warn("⚠️ FormData fetch failed");
+  console.warn("FormData fetch failed");
   formData = new FormData();
 }
 
@@ -32,9 +32,9 @@ const dob = get("dob");
 const gender = get("gender");
 const experience = parseFloat(get("experience"));
 
-if (!dob || isNaN(Date.parse(dob))) throw new Error("❌ Invalid DOB");
-if (!["Male", "Female"].includes(gender)) throw new Error("❌ Invalid gender");
-if (isNaN(experience)) throw new Error("❌ Invalid experience");
+if (!dob || isNaN(Date.parse(dob))) throw new Error("Invalid DOB");
+if (!["Male", "Female"].includes(gender)) throw new Error("Invalid gender");
+if (isNaN(experience)) throw new Error("Invalid experience");
 
 let resumeFile = formData.get("resume") as File | null;
 let resumeUrl = get("resumeUrl");
@@ -64,7 +64,7 @@ const [newRecord] = await base(APPLICATIONS_TABLE).create([
       Experience: experience,
       LinkedIn: get("linkedin"),
       About: get("about"),
-      "Job Applied For": [job.id], // ✅ Correct Airtable record ID
+      "Job Applied For": [job.id], // Correct Airtable record ID
       // "Submitted at": new Date().toISOString(), // Optional: Computed field
     },
   },
@@ -74,7 +74,7 @@ const applicationId = newRecord.fields["Application ID"];
 const applicationRecordId = newRecord.id;
 
 if (!applicationId) {
-  console.error("❌ Missing Application ID from Airtable");
+  console.error("Missing Application ID from Airtable");
   throw new Error("Application ID missing");
 }
 
@@ -83,7 +83,7 @@ if (!applicationId) {
 if (!resumeUrl && resumeFile && resumeFile.size > 0) {
   const jobId = job.jobId;
   if (!jobId) {
-    console.error("❌ Job ID is missing from job record");
+    console.error("Job ID is missing from job record");
     throw new Error("Job ID required for Cloudinary upload");
   }
 
