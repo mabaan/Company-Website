@@ -11,6 +11,25 @@ if (Astro.request.method === "POST") {
   try {
     const formData = await Astro.request.formData();
     const get = (field: string) => formData.get(field)?.toString() || "";
+    const captchaToken = get("g-recaptcha-response");
+
+    let captchaValid = false;
+    try {
+      const secret = process.env.RECAPTCHA_SECRET_KEY || "";
+      const res = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ secret, response: captchaToken }),
+      });
+      const result = await res.json();
+      captchaValid = result.success;
+    } catch (err) {
+      console.error("Failed to verify reCAPTCHA:", err);
+    }
+
+    if (!captchaValid) {
+      return new Response("Bot verification failed", { status: 400 });
+    }
     const data = {
       Name: get("name"),
       Company: get("company"),
@@ -149,6 +168,7 @@ if (Astro.request.method === "POST") {
             ></textarea>
             <div id="charCount" class="absolute bottom-2 right-3 text-xs text-gray-500">0 / 500</div>
           </div>
+          <div class="g-recaptcha" data-sitekey={import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}></div>
           <!-- Submit -->
           <button
             type="submit"
@@ -180,7 +200,7 @@ if (Astro.request.method === "POST") {
       </style>
     </div>
   </section>
-
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script type="module">
     const form = document.querySelector("#contactForm");
     const toast = document.querySelector("#toast");
