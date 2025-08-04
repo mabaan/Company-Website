@@ -35,9 +35,9 @@ function escapeHtml(input: string = ""): string {
     .replace(/'/g, "&#39;");
 }
 
-// ───────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 // Applicant confirmation after submitting a job application
-// ───────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 export function applicantConfirmation({
   firstName,
   role,
@@ -101,9 +101,9 @@ export function applicantConfirmation({
   };
 }
 
-// ───────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 // HR notification of a new job application
-// ───────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 export function hrNotification(data: ApplicantData) {
   return {
     subject: `[#${data.applicationId}] New Application for ${data.role}: ${escapeHtml(data.firstName)} ${escapeHtml(data.lastName)}`,
@@ -176,9 +176,9 @@ export function hrNotification(data: ApplicantData) {
   };
 }
 
-// ───────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 // Contact form acknowledgement to user
-// ───────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 export function contactAcknowledgement({ name }: { name: string }) {
   return {
     subject: `Thank you for contacting GC International`,
@@ -233,9 +233,9 @@ export function contactAcknowledgement({ name }: { name: string }) {
   };
 }
 
-// ───────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 // Notification to internal team of new contact form submission
-// ───────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 export function contactNotification(data: ContactData) {
   return {
     subject: `New Contact Form Inquiry from ${escapeHtml(data.name)}`,

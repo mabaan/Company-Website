@@ -9,7 +9,6 @@ import { sendMail } from "../lib/mailgunClient";
 
 if (Astro.request.method === "POST") {
   try {
-    console.log("--- Handling contact form submission ---");
     const formData = await Astro.request.formData();
     const get = (field: string) => formData.get(field)?.toString() || "";
     const data = {
@@ -36,26 +35,22 @@ if (Astro.request.method === "POST") {
 
     // Send acknowledgement back to the user
     try {
-      console.log("📧 Sending acknowledgement to", contactData.email);
       await sendMail({
         to: contactData.email,
         subject: contactAck.subject,
         html: contactAck.html,
       });
-      console.log("✅ Acknowledgement email sent");
     } catch (err) {
       console.error("Failed to send contact acknowledgement:", err);
     }
 
     // Notify the internal contact address
     try {
-      console.log("📧 Notifying internal contact", process.env.MAIL_CONTACT);
       await sendMail({
         to: process.env.MAIL_CONTACT!,
         subject: contactNotif.subject,
         html: contactNotif.html,
       });
-      console.log("✅ Internal notification sent");
     } catch (err) {
       console.error("Failed to send contact notification:", err);
     }
@@ -102,7 +97,7 @@ if (Astro.request.method === "POST") {
 
       <div class="mt-8 md:mt-10 flex justify-center z-20">
         <div class="text-gray-700 text-center text-sm leading-relaxed space-y-1 w-full max-w-xs">
-          <div class="text-[#0054a4] font-bold mb-1">Head Office – Dubai</div>
+          <div class="text-[#0054a4] font-bold mb-1">Head Office - Dubai</div>
           <div>GC International FZE</div>
           <div>Dubai Airport Freezone</div>
           <div>Office 520, Building 5EA,</div>

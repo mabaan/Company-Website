@@ -1,13 +1,10 @@
 // test_mg.js
-import 'dotenv/config';    // ← load .env first, automatically
+import 'dotenv/config';    // load .env first automatically
 
 import formData from "form-data";
 import Mailgun  from "mailgun.js";
 
 // At this point process.env.MG_API_KEY must exist
-console.log("MG_API_KEY is:", JSON.stringify(process.env.MG_API_KEY));  
-// Should print: "MG_API_KEY is: \"key-XXXXXXXXXXXXXX\""
-
 const mailgun = new Mailgun(formData);
 const mgClient = mailgun.client({
   username: "api",
@@ -22,7 +19,7 @@ async function sendTest() {
       subject: "Test Email",
       text:    "This is a test.",
     });
-    console.log(res);
+    return res;
   } catch (err) {
     console.error("Mailgun error:", err);
   }

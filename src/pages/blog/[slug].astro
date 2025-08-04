@@ -53,7 +53,7 @@ const description = getPostDescription(post.body);
   <h1 class="text-4xl font-bold mb-1 text-[#003b71] leading-tight">{post.title}</h1>
   <div class="flex items-center gap-3 text-sm text-gray-600 mb-6">
     <span>by <span class="font-semibold text-[#e41f26]">{post.author}</span></span>
-    <span>•</span>
+    <span>&bull;</span>
     <span>{post.publishedAt && new Date(post.publishedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
   </div>
   <hr class="border-t border-[#e3e8ee] mb-8" />

@@ -70,7 +70,7 @@ export default function Footer() {
             reliability.
           </p>
           <p className="text-slate-500 mt-4 text-sm">
-            © {new Date().getFullYear()} GC International. All rights reserved.
+            &copy; {new Date().getFullYear()} GC International. All rights reserved.
           </p>
         </div>
       </div>
