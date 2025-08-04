@@ -66,6 +66,10 @@ npm install
 # yarn install
 ```
 
+### Environment Variables
+
+Copy `.env.example` to `.env` and provide your configuration values. `MAIL_MANAGEMENT` sets the management email address that is BCC'd on HR notifications.
+
 ## To Run
 <div align="center">
   <!-- Image 1 -->
