@@ -60,15 +60,10 @@ if (Astro.request.method === "POST") {
   ogDescription="Reach out to GC International"
   ogUrl={Astro.url.href}
 >
-  <!-- push content below the fixed navbar -->
-  <section class="min-h-screen bg-gradient-to-br from-[#f3f6f9] to-[#eaf1fa] pt-32 pb-8 px-2 text-gray-800
-                 flex items-center justify-center">
+  <section class="min-h-screen bg-gradient-to-br from-[#f3f6f9] to-[#eaf1fa] pt-32 pb-8 px-2 text-gray-800 flex items-center justify-center">
     <div class="w-full max-w-6xl rounded-3xl shadow-2xl ring-1 ring-[#dde5ee]/60 flex flex-col md:grid md:grid-cols-2 overflow-hidden bg-white/80 backdrop-blur-md">
-
-      <!-- LEFT: Company info -->
+      <!-- LEFT: Company info (unchanged) -->
       <div class="relative flex flex-col h-full p-6 sm:p-10 bg-gradient-to-b from-[#ffffff99] to-[#f2f7fb]">
-        <div class="hidden md:block absolute right-0 top-0 h-full w-px bg-gradient-to-b from-transparent via-[#e3e8ee] to-transparent z-10"></div>
-
         <div class="flex flex-col items-center text-center space-y-10 md:space-y-16 z-20">
           <h1 class="text-3xl md:text-5xl font-extrabold text-[#0054a4] tracking-tight drop-shadow-sm mt-4">
             Contact Us
@@ -83,9 +78,7 @@ if (Astro.request.method === "POST") {
             Please fill out the form below and a member of our team will respond as soon as possible.
           </p>
         </div>
-
         <div class="flex-1"></div>
-
         <div class="mt-8 md:mt-10 flex justify-center z-20">
           <div class="text-gray-700 text-center text-sm leading-relaxed space-y-1 w-full max-w-xs">
             <div class="text-[#0054a4] font-bold mb-1">Head Office - Dubai</div>
@@ -106,7 +99,6 @@ if (Astro.request.method === "POST") {
           </div>
         </div>
       </div>
-
       <!-- RIGHT: Contact Form -->
       <div class="flex flex-col justify-center items-center p-0 py-8 md:py-10 bg-[#f2f7fb] md:bg-[#003b71] relative min-h-[500px]">
         <form
@@ -114,6 +106,7 @@ if (Astro.request.method === "POST") {
           method="POST"
           class="grid gap-7 md:gap-6 bg-white/95 border border-[#e6eaf3] rounded-2xl shadow-lg px-4 py-7 md:px-10 md:py-10 w-full max-w-md"
           novalidate
+          autocomplete="off"
         >
           <!-- Name -->
           <div class="grid gap-2">
@@ -160,7 +153,27 @@ if (Astro.request.method === "POST") {
         <!-- Toast -->
         <div id="toast" class="hidden fixed bottom-5 right-5 bg-green-600 text-white py-2 px-4 rounded shadow-lg text-base z-50"></div>
       </div>
-
+      <!-- Recaptcha Modal -->
+      <div id="captchaModal" class="fixed inset-0 flex items-center justify-center bg-black/60 z-50 hidden">
+        <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-2xl w-[92%] max-w-md text-center relative animate-fadeIn">
+          <button onclick="closeCaptcha()" class="absolute top-3 right-4 text-gray-400 hover:text-[#e41f26] text-2xl transition" aria-label="Close modal">&times;</button>
+          <h2 class="text-xl font-semibold mb-3 text-[#003b71]">Verify you're human</h2>
+          <div id="recaptcha-container" class="flex justify-center"></div>
+          <button onclick="closeCaptcha()" class="mt-6 text-sm text-gray-500 hover:text-gray-700 underline">
+            Cancel
+          </button>
+        </div>
+      </div>
+      <!-- Loader Overlay -->
+      <div id="contactLoader" class="fixed inset-0 flex items-center justify-center bg-black/40 z-[60] hidden">
+        <div class="bg-white rounded-2xl px-8 py-7 shadow-2xl flex flex-col items-center gap-4 animate-fadeIn">
+          <svg class="animate-spin h-8 w-8 text-[#e41f26]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-30" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+          </svg>
+          <span class="text-[#003b71] font-semibold text-lg mt-2">Sending...</span>
+        </div>
+      </div>
       <style>
         .input-field {
           @apply w-full px-4 py-2 border border-gray-300 rounded-lg font-medium text-gray-900
@@ -177,49 +190,127 @@ if (Astro.request.method === "POST") {
             font-size: 1rem;
           }
         }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(30px);}
+          to { opacity: 1; transform: translateY(0);}
+        }
+        .animate-fadeIn { animation: fadeIn 0.25s both; }
       </style>
     </div>
   </section>
 
-  <script type="module">
-    const form = document.querySelector("#contactForm");
-    const toast = document.querySelector("#toast");
-    const msgField = document.querySelector("#message");
-    const charCount = document.querySelector("#charCount");
+  <!-- reCAPTCHA script -->
+  <script src="https://www.google.com/recaptcha/api.js?onload=renderCaptcha&render=explicit" async defer></script>
 
-    msgField.addEventListener("input", () => {
-      const len = msgField.value.length;
-      charCount.textContent = `${len} / 500`;
-    });
+  <script>
+    let captchaRendered = false, lastFocused: HTMLElement | null = null;
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      let valid = true;
-
-      form.querySelectorAll("[required]").forEach((field) => {
-        if (!field.value.trim()) {
-          field.classList.add("border-red-500", "ring-red-500", "ring-1");
-          valid = false;
-        } else {
-          field.classList.remove("border-red-500", "ring-red-500", "ring-1");
-        }
-      });
-
-      if (valid) {
-        const data = new FormData(form);
-        const res = await fetch(form.action || window.location.pathname, {
-          method: "POST",
-          body: data,
+    window.renderCaptcha = function () {
+      if (!captchaRendered) {
+        grecaptcha.render("recaptcha-container", {
+          sitekey: import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY,
+          callback: window.onCaptchaSuccess,
         });
+        captchaRendered = true;
+      }
+    };
 
-        if (res.ok) {
-          toast.textContent = "Message sent successfully!";
-          toast.classList.remove("hidden");
-          setTimeout(() => toast.classList.add("hidden"), 3000);
-          form.reset();
-          charCount.textContent = "0 / 500";
+    window.openCaptcha = function () {
+      const modal = document.getElementById("captchaModal");
+      if (modal) {
+        lastFocused = document.activeElement as HTMLElement | null;
+        modal.classList.remove("hidden");
+        const closeBtn = modal.querySelector("button[aria-label='Close modal']");
+        if (closeBtn && closeBtn instanceof HTMLElement) {
+          closeBtn.focus();
+        } else {
+          modal.focus();
         }
       }
+      setTimeout(window.renderCaptcha, 150);
+      document.body.style.overflow = "hidden";
+    };
+
+    window.closeCaptcha = function () {
+      const modal = document.getElementById("captchaModal");
+      if (modal) modal.classList.add("hidden");
+      if (lastFocused && typeof lastFocused.focus === "function") lastFocused.focus();
+      document.body.style.overflow = "";
+    };
+
+    window.onCaptchaSuccess = function () {
+      window.closeCaptcha();
+
+      const loader = document.getElementById("contactLoader");
+      if (loader) loader.classList.remove("hidden");
+
+      const form = document.getElementById("contactForm") as HTMLFormElement | null;
+      const toast = document.getElementById("toast");
+      const charCount = document.getElementById("charCount");
+      if (form) {
+        const formData = new FormData(form);
+        fetch(form.action || window.location.pathname, {
+          method: "POST",
+          body: formData,
+        }).then(function(res) {
+          if (toast) {
+            if (res.ok) {
+              toast.textContent = "Message sent successfully!";
+              toast.classList.remove("hidden");
+              setTimeout(function() { toast.classList.add("hidden"); }, 3000);
+              form.reset();
+              if (charCount) charCount.textContent = "0 / 500";
+            } else {
+              toast.textContent = "Failed to send message.";
+              toast.classList.remove("hidden");
+              setTimeout(function() { toast.classList.add("hidden"); }, 3000);
+            }
+          }
+          if (loader) loader.classList.add("hidden");
+        }).catch(function() {
+          if (toast) {
+            toast.textContent = "Failed to send message.";
+            toast.classList.remove("hidden");
+            setTimeout(function() { toast.classList.add("hidden"); }, 3000);
+          }
+          if (loader) loader.classList.add("hidden");
+        });
+      } else {
+        if (loader) loader.classList.add("hidden");
+      }
+    };
+
+    // Char counter
+    const msgField = document.getElementById("message");
+    const charCount = document.getElementById("charCount");
+    if (msgField && charCount) {
+      msgField.addEventListener("input", function () {
+        charCount.textContent = (msgField as HTMLTextAreaElement).value.length + " / 500";
+      });
+    }
+
+    // Intercept submit: show recaptcha modal if valid
+    const form = document.getElementById("contactForm");
+    if (form) {
+      form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        let valid = true;
+        form.querySelectorAll("[required]").forEach(function(field) {
+          if (!(field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement)) return;
+          if (!field.value.trim()) {
+            field.classList.add("border-red-500", "ring-red-500", "ring-1");
+            valid = false;
+          } else {
+            field.classList.remove("border-red-500", "ring-red-500", "ring-1");
+          }
+        });
+        if (valid) window.openCaptcha();
+      });
+    }
+
+    // Allow Escape key to close modal (but does NOT trigger form submit)
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "Escape") window.closeCaptcha();
     });
   </script>
 </Layout>
