@@ -2,7 +2,7 @@
 import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
-import vercel from "@astrojs/vercel";          // ← import the adapter
+import vercel from "@astrojs/vercel"; // import the adapter
 
 export default defineConfig({
   // Tell Astro to use the Vercel Serverless adapter

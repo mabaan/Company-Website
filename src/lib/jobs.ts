@@ -38,7 +38,7 @@ export async function getJobs(): Promise<Job[]> {
 
   return (data.records || []).map(
     (record: any): Job => ({
-      id: record.id, // ✅ record ID from Airtable
+      id: record.id, // record ID from Airtable
       jobId: record.fields["Job ID"],
       title: record.fields["Title"],
       slug: record.fields["Slug"],

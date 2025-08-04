@@ -22,7 +22,7 @@ export const CONTACT_TABLE = import.meta.env.AIRTABLE_CONTACT_TABLE as string;
 export { base };
 
 // ----------------------
-// ✅ Location Record Type
+// Location Record Type
 // ----------------------
 
 export interface LocationRecord {
@@ -71,7 +71,7 @@ export async function fetchLocations(): Promise<LocationRecord[]> {
 }
 
 // ----------------------
-// ✅ Application Record Type
+// Application Record Type
 // ----------------------
 export interface ApplicationFields extends FieldSet {
   "Application ID"?: number; // Read-only, auto number

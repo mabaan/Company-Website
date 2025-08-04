@@ -1,15 +1,15 @@
 version: 1
 frontend:
-  framework: custom         # ← override Next.js detection entirely
+  framework: custom         # override Next.js detection entirely
   phases:
     preBuild:
       commands:
         - npm ci
     build:
       commands:
-        - npm run build     # runs Astro’s build
+        - npm run build     # runs Astro's build
   artifacts:
-    baseDirectory: dist      # Astro’s default output folder
+    baseDirectory: dist      # Astro's default output folder
     files:
       - '**/*'
   cache:
