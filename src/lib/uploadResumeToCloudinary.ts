@@ -31,7 +31,6 @@ export async function uploadResumeToCloudinary(
           console.error("Cloudinary upload_stream error:", error);
           return reject(error ?? new Error("Missing Cloudinary URL"));
         }
-        console.log("Cloudinary upload succeeded");
         resolve(result.secure_url);
       }
     );

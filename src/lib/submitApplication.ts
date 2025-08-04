@@ -4,7 +4,6 @@ import { uploadResumeToCloudinary } from "./uploadResumeToCloudinary";
 export async function submitToAirtable(data: Record<string, any>) {
   const { resume, jobRecordId } = data;
 
-  console.log("Submitting application to Airtable...");
 
   // Step 1: Create application record (no Resume, no Resume URL)
   const [applicationRecord] = await base(APPLICATIONS_TABLE).create([
@@ -28,7 +27,6 @@ export async function submitToAirtable(data: Record<string, any>) {
     },
   ]);
 
-  console.log("Airtable record created");
 
   const applicationId = applicationRecord.fields["Application ID"] as
     | string
@@ -44,7 +42,6 @@ export async function submitToAirtable(data: Record<string, any>) {
   const job = await base(JOBS_TABLE).find(jobRecordId);
   const jobId = job.fields["Job ID"] as string | number;
 
-  console.log("🔍 Fetched Job record");
 
   if (!jobId) {
     console.error("Job ID missing in record:", job);
@@ -53,22 +50,17 @@ export async function submitToAirtable(data: Record<string, any>) {
 
   // Step 3: Upload resume to Cloudinary using IDs (no PATCH to Airtable)
   if (resume && resume instanceof File) {
-    console.log("📄 Uploading resume to Cloudinary...");
 
-    const resumeUrl = await uploadResumeToCloudinary(
+    await uploadResumeToCloudinary(
       resume,
       jobId,
       applicationId
     );
 
-    console.log("Resume uploaded to Cloudinary");
-    console.log(
-      "Resume URL is computed automatically in Airtable via formula."
-    );
+    // Resume URL is computed automatically in Airtable via formula.
   } else {
     console.warn("No resume provided or file is not a valid File object.");
   }
 
-  console.log("🎉 Application submission complete");
   return applicationAirtableId;
 }

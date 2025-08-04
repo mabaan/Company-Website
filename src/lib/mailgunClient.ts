@@ -33,14 +33,9 @@ export interface MailOptions {
 export async function sendMail(opts: MailOptions) {
   if (!process.env.MG_DOMAIN) throw new Error('MG_DOMAIN is missing');
   const from = opts.from ?? process.env.MAIL_FROM!;
-  // helpful debug output so we can trace the email sending steps
-  console.log('📧 Sending email via Mailgun');
-
   const result = await mgClient.messages.create(process.env.MG_DOMAIN, {
     ...opts,
     from,
   });
-
-  console.log('✅ Mailgun API responded');
   return result;
 }
