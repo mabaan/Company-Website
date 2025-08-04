@@ -5,7 +5,6 @@ const ValveViewer = dynamic(() => import("./ValveViewer"), { ssr: false });
 export default function CTASection() {
   return (
     <>
-      {console.log("[CTASection] Rendered")}
       <section
         id="cta"
         className="w-full px-4 md:px-12 py-24 md:py-40 bg-[#E5E7EB] text-darkText"
@@ -30,7 +29,7 @@ export default function CTASection() {
                 Ready to Partner with GC International?
               </h2>
               <p className="text-base md:text-lg mb-10 leading-relaxed text-[#1E293B] opacity-90">
-                Let’s help you find the perfect industrial solution. Contact us to
+                Let's help you find the perfect industrial solution. Contact us to
                 explore our range of valves, fittings, and custom engineering
                 services.
               </p>

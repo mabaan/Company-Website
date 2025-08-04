@@ -48,5 +48,8 @@
     "@types/leaflet": "^1.9.20",
     "@types/streamifier": "^0.1.2",
     "@types/three": "^0.178.1"
+  },
+  "overrides": {
+    "path-to-regexp": "^6.3.0"
   }
 }
