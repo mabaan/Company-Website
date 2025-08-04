@@ -30,7 +30,7 @@ export default function Hero() {
         aria-hidden="true"
       >
         <img
-          src="/11.png"
+          src="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1754311666/gcintle/resume/home-pipe-doodle.png"
           alt=""
           style={{
             width: "100%",

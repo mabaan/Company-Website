@@ -16,7 +16,10 @@ const posts = await client.fetch(
     slug,
     publishedAt,
     "imageUrl": mainImage.asset->url,
-    "author": author->name,
+    "authors": authors[]->{
+      name,
+      "image": image.asset->url
+    },
     categories[]->{ title, slug },
     body
   }`,
@@ -36,10 +39,9 @@ const description = posts.length > 0 ? getPostDescription(posts[0].body) : "";
   <section class="w-full max-w-6xl mx-auto px-4 py-12">
     {posts.length > 0 ? (
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-       {posts.map((post: any, i: number) => (
-  <BlogCard post={post} index={i} />
-))}
-
+        {posts.map((post: any, i: number) => (
+          <BlogCard post={post} index={i} />
+        ))}
       </div>
     ) : (
       <p class="text-center text-gray-500">No posts found for this category.</p>

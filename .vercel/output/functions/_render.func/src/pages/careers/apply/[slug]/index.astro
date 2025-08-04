@@ -1,0 +1,193 @@
+---
+export const prerender = false;
+
+import Layout from "../../../../layouts/BaseLayout.astro";
+import { getJobs, type Job } from "../../../../lib/jobs";
+import { getCountryList } from "../../../../lib/getCountryData";
+import type { Country } from "../../../../lib/getCountryData";
+import ProgressSteps from "src/components/ProgressSteps.tsx";
+
+// Static paths
+export async function getStaticPaths() {
+  const jobs = await getJobs();
+  return jobs.map((job) => ({
+    params: { slug: job.slug },
+    props: { job },
+  }));
+}
+
+// Grab job from props
+const { slug } = Astro.params;
+const jobs = await getJobs();
+const job = jobs.find((j) => j.slug === slug);
+if (!job) throw new Error("Job not found");
+
+const countryCodes: Country[] = (await getCountryList()).sort((a, b) =>
+  a.name.localeCompare(b.name)
+);
+
+---
+
+<Layout
+  title={`Apply | ${job.title} | GC International`}
+  description={`Apply for ${job.title} at GC International.`}
+  ogTitle={`Apply | ${job.title}`}
+  ogDescription={`Apply for ${job.title} at GC International.`}
+  ogUrl={Astro.url.href}
+>
+  <section class="pt-32 pb-12 px-2 sm:px-4 max-w-3xl mx-auto">
+    <ProgressSteps currentStep={1} client:load />
+
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 mt-10 p-6 sm:p-10">
+      <h1 class="text-2xl sm:text-3xl font-extrabold mb-7 text-[#003b71] tracking-tight">
+        Apply for {job.title}
+      </h1>
+
+      <form
+        method="POST"
+        enctype="multipart/form-data"
+        action={`/careers/apply/${slug}/review`}
+        class="space-y-7"
+        autocomplete="on"
+      >
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="grid gap-2">
+            <label for="firstName" class="font-semibold text-sm">First Name <span class="text-[#e41f26]">*</span></label>
+            <input id="firstName" name="firstName" placeholder="First Name" required class="border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition" />
+          </div>
+          <div class="grid gap-2">
+            <label for="lastName" class="font-semibold text-sm">Last Name <span class="text-[#e41f26]">*</span></label>
+            <input id="lastName" name="lastName" placeholder="Last Name" required class="border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition" />
+          </div>
+          <div class="grid gap-2 md:col-span-2">
+            <label for="email" class="font-semibold text-sm">Email <span class="text-[#e41f26]">*</span></label>
+            <input id="email" name="email" type="email" placeholder="Email" required class="border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition" />
+          </div>
+
+          <!-- Country Code + Phone on the same row, properly spaced -->
+          <div class="grid gap-2 md:gap-2 grid-cols-2 col-span-1 md:col-span-2">
+            <div>
+              <label for="countryCode" class="font-semibold text-sm">Country Code <span class="text-[#e41f26]">*</span></label>
+              <select id="countryCode" name="countryCode" required class="block w-full min-w-0 border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-3 py-2 rounded-lg bg-gray-50 transition">
+                <option value="" disabled selected>-- Select your country code --</option>
+                {countryCodes.map((country: Country) => (
+                  <option value={country.dial_code}>
+                    {country.name} {country.flag} ({country.code}) {country.dial_code}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label for="phone" class="font-semibold text-sm">Phone <span class="text-[#e41f26]">*</span></label>
+              <input id="phone" name="phone" placeholder="Phone" required class="block w-full min-w-0 border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition" />
+            </div>
+          </div>
+
+          <div>
+            <label class="font-semibold text-sm mb-1 block">Gender <span class="text-[#e41f26]">*</span></label>
+            <div class="flex gap-6 pt-1">
+              <label class="inline-flex items-center gap-2">
+                <input id="gender-male" type="radio" name="gender" value="Male" required class="accent-[#0054a4]" /> Male
+              </label>
+              <label class="inline-flex items-center gap-2">
+                <input id="gender-female" type="radio" name="gender" value="Female" required class="accent-[#e41f26]" /> Female
+              </label>
+            </div>
+          </div>
+
+          <div class="grid gap-2">
+            <label for="nationality" class="font-semibold text-sm">Nationality <span class="text-[#e41f26]">*</span></label>
+            <input id="nationality" name="nationality" placeholder="Nationality" required class="border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition" />
+          </div>
+          <div class="grid gap-2">
+            <label for="dob" class="font-semibold text-sm">Date of Birth <span class="text-[#e41f26]">*</span></label>
+            <input id="dob" name="dob" type="date" required class="border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition" />
+          </div>
+
+          <div class="grid gap-2">
+            <label for="visa" class="font-semibold text-sm">Visa Status <span class="text-[#e41f26]">*</span></label>
+            <select id="visa" name="visa" required class="border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition">
+              <option value="">-- Visa Status --</option>
+              <option value="Visit">Visit</option>
+              <option value="Work">Work</option>
+              <option value="Student">Student</option>
+              <option value="Golden">Golden</option>
+              <option value="Resident">Resident</option>
+              <option value="None">None</option>
+            </select>
+          </div>
+
+          <div class="grid gap-2">
+            <label for="experience" class="font-semibold text-sm">Years of Experience <span class="text-[#e41f26]">*</span></label>
+            <input id="experience" name="experience" type="number" min="0" placeholder="Years of Experience" required class="border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition" />
+          </div>
+          <div class="grid gap-2 md:col-span-2">
+            <label for="linkedin" class="font-semibold text-sm">Linkedin <span class="text-gray-400">(optional)</span></label>
+            <input id="linkedin" name="linkedin" placeholder="LinkedIn (optional)" class="border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition" />
+          </div>
+
+          <div class="md:col-span-2">
+            <label for="about" class="font-semibold text-sm">Tell us about yourself <span class="text-gray-400">(optional)</span></label>
+            <textarea id="about" name="about" rows="4" maxlength="500" placeholder="Max 500 characters..." class="border-gray-300 focus:border-[#0054a4] focus:ring-1 focus:ring-[#0054a4] px-4 py-2 rounded-lg bg-gray-50 transition w-full"></textarea>
+            <div class="text-xs text-gray-500 text-right mt-1">
+              <span id="charCount">0</span>/500
+            </div>
+          </div>
+
+          <div class="md:col-span-2">
+            <label for="resumeInput" class="font-semibold text-sm mb-1 block">Resume (PDF, under 1 MB) <span class="text-[#e41f26]">*</span></label>
+            <input
+              id="resumeInput"
+              name="resume"
+              type="file"
+              accept="application/pdf"
+              required
+              class="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-[#dfdfdf] file:text-black hover:file:bg-red-600"
+            />
+            <span class="block text-xs text-gray-400 mt-1">Only PDF files under 1 MB allowed.</span>
+          </div>
+        </div>
+
+        <div class="pt-8 flex flex-col gap-3 sm:flex-row sm:justify-between sm:gap-6">
+  <a
+    href={`/careers/${job.slug}`}
+    class="w-full sm:w-auto bg-[#ed1c24] hover:bg-red-600 text-white px-6 py-3 rounded-lg text-base font-semibold shadow transition text-center"
+  >
+    Back to Job
+  </a>
+  <button
+    type="submit"
+    class="w-full sm:w-auto bg-[#0054a4] hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-base font-semibold shadow transition text-center"
+  >
+    Review Application
+  </button>
+</div>
+
+      </form>
+    </div>
+  </section>
+
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", function () {
+      const aboutTextarea = document.getElementById("about");
+      const charCountDisplay = document.getElementById("charCount");
+
+      if (aboutTextarea && charCountDisplay) {
+        charCountDisplay.textContent = aboutTextarea.value.length.toString();
+        aboutTextarea.addEventListener("input", function () {
+          charCountDisplay.textContent = aboutTextarea.value.length.toString();
+        });
+      }
+
+      document.querySelector("form")?.addEventListener("submit", (e) => {
+        const fileInput = document.getElementById("resumeInput");
+        if (!(fileInput instanceof HTMLInputElement)) return;
+        const file = fileInput.files?.[0];
+        if (file && file.size > 1048576) {
+          e.preventDefault();
+          alert("Resume must be under 1 MB.");
+        }
+      });
+    });
+  </script>
+</Layout>

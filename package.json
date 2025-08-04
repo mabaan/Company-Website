@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "audit": "npm audit --omit=dev",
     "preview": "astro preview",
     "start": "astro preview",
     "astro": "astro"
@@ -41,7 +42,7 @@
     "three": "^0.178.0"
   },
   "devDependencies": {
-    "@astrojs/vercel": "^8.2.3",
+    "@astrojs/vercel": "^8.2.5",
     "@types/animejs": "^3.1.13",
     "@types/leaflet": "^1.9.20",
     "@types/streamifier": "^0.1.2",

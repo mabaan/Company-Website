@@ -69,7 +69,6 @@ const NetworkMap: React.FC<Props> = ({ locations }) => {
   }, []);
 
   return (
-    // <-- margin and padding added here!
     <div className="relative w-full h-[300px] md:h-[600px] my-4 md:my-8 px-2 sm:px-6">
       {loading && (
         <div className="absolute inset-0 flex items-center justify-center bg-white/70 z-10">
@@ -77,7 +76,7 @@ const NetworkMap: React.FC<Props> = ({ locations }) => {
         </div>
       )}
 
-      {hydrated ? (
+      {hydrated && (
         <MapContainer
           center={center}
           zoom={2}
@@ -126,12 +125,6 @@ const NetworkMap: React.FC<Props> = ({ locations }) => {
               </Marker>
             ))}
         </MapContainer>
-      ) : (
-        <img
-          src="/static-map-placeholder.jpg"
-          alt="Map preview"
-          className="w-full h-full rounded-lg object-cover"
-        />
       )}
 
       <div className="mt-6 flex flex-wrap justify-center gap-4 text-md text-center">
