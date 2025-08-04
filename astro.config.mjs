@@ -1,19 +1,13 @@
-// astro.config.mjs
 import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
-import vercel from "@astrojs/vercel"; // import the adapter
+import vercel from "@astrojs/vercel/static"; // <-- use /static
 
 export default defineConfig({
-  // Tell Astro to use the Vercel Serverless adapter
-  adapter: vercel(),
-
-  // Your other integrations
+  adapter: vercel(), // this will auto-pick /static if you use `@astrojs/vercel/static`
   integrations: [
     react(),
     tailwind(),
   ],
-
-  // (optional) if you need server output rather than a fully static site:
-  // output: "server",
+  // REMOVE or comment out output: "server"
 });
