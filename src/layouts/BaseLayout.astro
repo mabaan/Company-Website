@@ -2,13 +2,13 @@
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import '../styles/global.css';
-import  SpeedInsights  from "@vercel/speed-insights/astro"
+import SpeedInsights from '@vercel/speed-insights/astro';
 
 // SEO props with formatting fallback
 const {
-  title = "GC International",
+  title = "GC International FZCO | Valve & Actuator Solutions",
   description = "",
-  ogTitle = `${title} | GC International`,
+  ogTitle = title,
   ogDescription = description,
   ogImage = "https://res.cloudinary.com/dxrwnc5g4/image/upload/v1753901040/gcintle/resume/logo.png",
   ogUrl = Astro.url?.href || "",
@@ -16,138 +16,181 @@ const {
 ---
 
 <html lang="en">
-  <head>
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WL2XB7DZCZ"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){ dataLayer.push(arguments); }
-      gtag('js', new Date());
-      gtag('config', 'G-WL2XB7DZCZ');
-    </script>
-  
-    <!-- Meta -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-    <!-- SEO / Open Graph -->
-    <title>{ogTitle}</title>
-    {description && <meta name="description" content={description} />}
-    <meta property="og:title" content={ogTitle} />
-    {ogDescription && <meta property="og:description" content={ogDescription} />}
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:url" content={ogUrl} />
-    <meta name="theme-color" content="#ffffff" />
+<head>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WL2XB7DZCZ"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-WL2XB7DZCZ');
+  </script>
 
-    <!-- Vercel Analytics -->
-    <SpeedInsights />
-     
-  
-    <!-- Favicons: always list highest-quality first -->
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="512x512"
-        href="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1754141002/gcintle/resume/web-app-manifest-512x512.png"
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="192x192"
-        href="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1754140998/gcintle/resume/web-app-manifest-192x192.png"
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="96x96"
-        href="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1754140921/gcintle/resume/favicon-96x96.png"
-      />
+  <!-- Basic Meta -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  {description && <meta name="description" content={description} />}
 
-      <!-- Fallback for older browsers -->
-      <link
-        rel="shortcut icon"
-        href="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1754140895/gcintle/resume/favicon.ico"
-      />
+  <!-- Open Graph -->
+  <meta property="og:title" content={ogTitle} />
+  {ogDescription && <meta property="og:description" content={ogDescription} />}
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:url" content={ogUrl} />
+  <meta name="theme-color" content="#ffffff" />
 
-      <!-- Apple Touch Icon -->
-      <link
-        rel="apple-touch-icon"
-        sizes="180x180"
-        href="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1754140894/gcintle/resume/apple-touch-icon.png"
-      />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={ogTitle} />
+  {ogDescription && <meta name="twitter:description" content={ogDescription} />}
+  <meta name="twitter:image" content={ogImage} />
 
-      <!-- Web App Manifest -->
-      <link
-        rel="manifest"
-        href="https://res.cloudinary.com/dxrwnc5g4/raw/upload/v1754140996/gcintle/resume/site.webmanifest"
-      />
-
-
-  
-    <!-- Font Optimization -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  
-    <!-- Preload & non-blocking load -->
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap"
-      rel="stylesheet"
-      media="print"
-      onload="this.media='all'"
-    />
-  </head>
-  
-  
-
-  <body class="bg-white text-gray-800 font-sans scroll-smooth">
-    <Navbar client:load />
-
-    <div class="flex flex-col min-h-screen">
-      <main class="flex-grow">
-        <slot />
-      </main>
-      <Footer />
-    </div>
-
-    <!-- Animations -->
-    <style>
-      .fade-in, .slide-in {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: all 0.8s ease-out;
+  <!-- JSON-LD LocalBusiness -->
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      name: "GC International FZCO",
+      image: ogImage,
+      "@id": ogUrl,
+      url: ogUrl,
+      telephone: "+97142566760",
+      faxNumber: "+97142566761",
+      email: "contact@gcintle.com",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Office 5EA, Building 520, PO Box 293777, Dubai Airport Freezone",
+        addressLocality: "Dubai Airport Freezone",
+        addressRegion: "Dubai",
+        postalCode: "293777",
+        addressCountry: "AE"
+      },
+      openingHoursSpecification: [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday"],
+          opens: "10:00",
+          closes: "17:30"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: "Friday",
+          opens: "10:00",
+          closes: "13:00"
+        }
+      ],
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: 25.259437,
+        longitude: 55.374313
       }
-      .slide-in {
-        transform: translateX(40px);
-      }
-      .visible {
-        opacity: 1;
-        transform: translateX(0) translateY(0);
-      }
-    </style>
+    })}
+  </script>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("visible");
-                observer.unobserve(entry.target);
-              }
-            });
-          },
-          { threshold: 0.3 }
-        );
+  <!-- Vercel Analytics -->
+  <SpeedInsights />
 
-        document.querySelectorAll(".fade-in, .slide-in").forEach((el) => {
-          observer.observe(el);
-        });
+  <!-- Favicons: always list highest-quality first -->
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="512x512"
+    href="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1754141002/gcintle/resume/web-app-manifest-512x512.png"
+  />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="192x192"
+    href="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1754140998/gcintle/resume/web-app-manifest-192x192.png"
+  />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="96x96"
+    href="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1754140921/gcintle/resume/favicon-96x96.png"
+  />
+
+  <!-- Fallback for older browsers -->
+  <link
+    rel="shortcut icon"
+    href="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1754140895/gcintle/resume/favicon.ico"
+  />
+
+  <!-- Apple Touch Icon -->
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1754140894/gcintle/resume/apple-touch-icon.png"
+  />
+
+  <!-- Web App Manifest -->
+  <link
+    rel="manifest"
+    href="https://res.cloudinary.com/dxrwnc5g4/raw/upload/v1754140996/gcintle/resume/site.webmanifest"
+  />
+
+  <!-- Font Optimization -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Preload & non-blocking load -->
+  <link
+    rel="preload"
+    as="style"
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap"
+    rel="stylesheet"
+    media="print"
+    onload="this.media='all'"
+  />
+</head>
+
+<body class="bg-white text-gray-800 font-sans scroll-smooth">
+  <Navbar client:load />
+
+  <div class="flex flex-col min-h-screen">
+    <main class="flex-grow">
+      <slot />
+    </main>
+    <Footer />
+  </div>
+
+  <!-- Animations -->
+  <style>
+    .fade-in, .slide-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s ease-out;
+    }
+    .slide-in {
+      transform: translateX(40px);
+    }
+    .visible {
+      opacity: 1;
+      transform: translateX(0) translateY(0);
+    }
+  </style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.3 }
+      );
+
+      document.querySelectorAll(".fade-in, .slide-in").forEach((el) => {
+        observer.observe(el);
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
 </html>

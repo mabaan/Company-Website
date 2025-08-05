@@ -1,32 +1,27 @@
 ---
-// src/pages/index.astro
-import Layout from "../layouts/BaseLayout.astro";
-import Hero from "../components/Hero";
-import WhyChooseUs from "../components/WhyChooseUs";
-import CTASection from "../components/CTASection";
-import ScrollGauge from "../components/ScrollGauge";
-import Stats from "../components/Stats";
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero';
+import WhyChooseUs from '../components/WhyChooseUs';
+import Stats from '../components/Stats';
+import CTASection from '../components/CTASection';
 
+// Page-specific SEO
+const pageTitle = "GC International FZCO | Valve & Actuator Solutions";
+const pageDescription =
+  "Premium valve and actuator solutions supplier based in Dubai Airport Free Zone. Authorized distributors of the world’s leading brands.";
 ---
 
-<Layout
-  title="GC International"
-  description="GC International provides world-class valve and actuator solutions."
-  ogTitle="GC International"
-  ogDescription="GC International provides world-class valve and actuator solutions."
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  ogTitle={pageTitle}
+  ogDescription={pageDescription}
   ogUrl={Astro.url.href}
 >
   <main id="page-content" class="main-content">
     <Hero client:load />
-    <!-- <GearScroll client:only="react" direction="cw" /> -->
-
     <WhyChooseUs />
-    <!-- <GearScroll client:only="react" direction="ccw" /> -->
-
     <Stats client:load />
-
-    <CTASection client:only="react"/>
-    <!-- <ScrollGauge client:load /> -->
+    <CTASection client:load />
   </main>
-
-</Layout>
+</BaseLayout>

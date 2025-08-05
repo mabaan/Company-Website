@@ -1,0 +1,5 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://gcintle.com/sitemap.xml
+Host: gcintle.com
