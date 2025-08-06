@@ -6,7 +6,7 @@ import SpeedInsights from '@vercel/speed-insights/astro';
 
 // SEO props with formatting fallback
 const {
-  title = "GC International FZCO | Valve & Actuator Solutions",
+  title = "GC International | Valve & Actuator Solutions",
   description = "",
   ogTitle = title,
   ogDescription = description,
@@ -45,12 +45,13 @@ const {
   {ogDescription && <meta name="twitter:description" content={ogDescription} />}
   <meta name="twitter:image" content={ogImage} />
 
-    <!-- JSON-LD LocalBusiness -->
+  <!-- JSON-LD LocalBusiness -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "GC International FZCO",
+    "alternateName": "GC International",
     "image": "https://res.cloudinary.com/dxrwnc5g4/image/upload/v1753901040/gcintle/resume/logo.png",
     "@id": "https://gcintle.com/",
     "url": "https://gcintle.com/",
@@ -86,7 +87,6 @@ const {
     }
   }
   </script>
-
 
   <!-- Vercel Analytics -->
   <SpeedInsights />
