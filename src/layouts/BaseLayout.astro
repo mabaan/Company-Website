@@ -45,47 +45,48 @@ const {
   {ogDescription && <meta name="twitter:description" content={ogDescription} />}
   <meta name="twitter:image" content={ogImage} />
 
-  <!-- JSON-LD LocalBusiness -->
+    <!-- JSON-LD LocalBusiness -->
   <script type="application/ld+json">
-    {JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      name: "GC International FZCO",
-      image: ogImage,
-      "@id": ogUrl,
-      url: ogUrl,
-      telephone: "+97142566760",
-      faxNumber: "+97142566761",
-      email: "contact@gcintle.com",
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: "Office 5EA, Building 520, PO Box 293777, Dubai Airport Freezone",
-        addressLocality: "Dubai Airport Freezone",
-        addressRegion: "Dubai",
-        postalCode: "293777",
-        addressCountry: "AE"
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "GC International FZCO",
+    "image": "https://res.cloudinary.com/dxrwnc5g4/image/upload/v1753901040/gcintle/resume/logo.png",
+    "@id": "https://gcintle.com/",
+    "url": "https://gcintle.com/",
+    "telephone": "+97142566760",
+    "faxNumber": "+97142566761",
+    "email": "contact@gcintle.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Office 5EA, Building 520, PO Box 293777, Dubai Airport Freezone",
+      "addressLocality": "Dubai Airport Freezone",
+      "addressRegion": "Dubai",
+      "postalCode": "293777",
+      "addressCountry": "AE"
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday"],
+        "opens": "10:00",
+        "closes": "17:30"
       },
-      openingHoursSpecification: [
-        {
-          "@type": "OpeningHoursSpecification",
-          dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday"],
-          opens: "10:00",
-          closes: "17:30"
-        },
-        {
-          "@type": "OpeningHoursSpecification",
-          dayOfWeek: "Friday",
-          opens: "10:00",
-          closes: "13:00"
-        }
-      ],
-      geo: {
-        "@type": "GeoCoordinates",
-        latitude: 25.259437,
-        longitude: 55.374313
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Friday",
+        "opens": "10:00",
+        "closes": "13:00"
       }
-    })}
+    ],
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 25.259437,
+      "longitude": 55.374313
+    }
+  }
   </script>
+
 
   <!-- Vercel Analytics -->
   <SpeedInsights />
