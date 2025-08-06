@@ -1,15 +1,17 @@
+<!-- README.md -->
 <!-- LOGO & TITLE -->
 <div align="center">
   <a href="https://github.com/mabaan/Company-Website">
     <img src="https://github.com/user-attachments/assets/5e8f247f-55bf-448b-a281-60ca7e394a6f" alt="Logo" width="350">
-
   </a>
   <h3 align="center">Company Website</h3>
 
   <p align="center">
-    A public-facing static website for GC International FZCO built with Astro, React,and Airtable, hosted via AWS Amplify.
+    A public-facing, SEO-optimized static website for GC International, built with Astro, React, and Airtable.  
     <br />
-    <br>
+    <strong>Initial hosting:</strong> AWS Amplify → <strong>Now deployed on Vercel</strong> for improved performance.  
+    <br />
+    <br />
     <a href="https://github.com/mabaan/Company-Website"><strong>Explore the code</strong></a><br><br>
     <a href="https://github.com/mabaan/Company-Website/tree/main/Documentation"><strong>View Detailed Documentation »</strong></a>
     <br />
@@ -28,9 +30,11 @@
   <summary>Table of Contents</summary>
   <ol>
     <li><a href="#about-the-project">About The Project</a></li>
+    <li><a href="#seo-features">SEO Features</a></li>
     <li><a href="#built-with">Built With</a></li>
     <li><a href="#getting-started">Getting Started</a></li>
     <li><a href="#to-run">To Run</a></li>
+    <li><a href="#deployment">Deployment</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -39,14 +43,21 @@
 </details>
 
 ## About The Project
-This repository contains the **public-facing static website** for GC International FZCO, built to showcase company services and career opportunities. It is developed using Astro for static site generation, React for interactive components, and Airtable and Sanity as a headless CMS. The site is deployed via AWS Amplify for continuous integration and hosting.
+This repository contains the **public-facing static website** for GC International (FZCO). It showcases company services, locations, and career opportunities via Astro (SSG), React components, and Airtable content. We started on **AWS Amplify** for CI/CD and hosting, and later migrated to **Vercel** for lower latency, better caching, and seamless edge deployment.
+
+## SEO Features
+- Meta tags & Open Graph for social sharing  
+- JSON-LD LocalBusiness structured data  
+- `robots.txt` + `sitemap.xml` for crawler discovery  
+- Fast Core Web Vitals (LCP, FID, CLS) via Vercel Speed Insights  
+- Mobile-first, accessible HTML & optimized images
 
 ## Built With
-- **Astro** &mdash; Static site framework
-- **React** &mdash; Interactive UI components
-- **Three.js** &mdash; Animation for GLB object
-- **Airtable** &mdash; Headless CMS for content management
-- **AWS Amplify** &mdash; Hosting and deployment
+- **Astro** — Static site framework  
+- **React** — Interactive UI components  
+- **Three.js** — Animation for GLB object  
+- **Airtable** — Headless CMS for content management  
+- **Vercel** — Hosting and edge deployment  
 
 ## Getting Started
 Follow these steps to get a local copy up and running.
@@ -68,7 +79,7 @@ npm install
 
 ### Environment Variables
 
-Copy `.env.example` to `.env` and provide your configuration values. This includes keys, mail IDs tokens etc. 
+Copy `.env.example` to `.env` and provide your configuration values (API keys, mail tokens, etc.).
 
 ## To Run
 <div align="center">
@@ -99,6 +110,10 @@ npm run build
 
 The output static files will be generated in the `dist/` directory, ready for deployment.
 
+## Deployment
+- Initial: AWS Amplify (CI/CD + hosting)
+- Current: Vercel (Edge CDN, speed optimizations)
+
 ## Contributing
 1. Fork the project
 2. Create your feature branch (`git checkout -b feature/YourFeature`)
@@ -127,6 +142,7 @@ Project Link: [https://github.com/mabaan/Company-Website](https://github.com/mab
 - [React Official Docs](https://reactjs.org/docs/getting-started.html)
 - [Airtable API](https://airtable.com/api)
 - [AWS Amplify Docs](https://docs.amplify.aws/)
+- [Vercel Docs] (https://vercel.com/docs)
 
 <!-- SHIELDS & LINKS -->
 [contributors-shield]: https://img.shields.io/github/contributors/mabaan/Company-Website.svg?style=for-the-badge
