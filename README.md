@@ -68,7 +68,7 @@ npm install
 
 ### Environment Variables
 
-Copy `.env.example` to `.env` and provide your configuration values. `MAIL_MANAGEMENT` sets the management email address that is BCC'd on HR notifications.
+Copy `.env.example` to `.env` and provide your configuration values. This includes keys, mail IDs tokens etc. 
 
 ## To Run
 <div align="center">
