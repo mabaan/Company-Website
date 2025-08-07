@@ -7,7 +7,7 @@
   <h3 align="center">Company Website</h3>
 
   <p align="center">
-    A public-facing, SEO-optimized static website for GC International, built with Astro, React, and Airtable.  
+    A public-facing, SEO-optimized website for GC International, built with Astro, React, Airtable and Sanity.  
     <br />
     <strong>Initial hosting:</strong> AWS Amplify → <strong>Now deployed on Vercel</strong> for improved performance.  
     <br />
