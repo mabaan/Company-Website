@@ -9,7 +9,7 @@
   <p align="center">
     A public-facing, SEO-optimized website for GC International, built with Astro, React, Airtable and Sanity.  
     <br />
-    <strong>Initial hosting:</strong> AWS Amplify → <strong>Now deployed on Vercel</strong> for improved performance.  
+    <strong>Initial hosting:</strong> AWS Amplify, <strong>Now deployed on Vercel</strong> for improved performance.  
     <br />
     <br />
     <a href="https://github.com/mabaan/Company-Website"><strong>Explore the code</strong></a><br><br>
