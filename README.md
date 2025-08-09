@@ -7,9 +7,9 @@
   <h3 align="center">Company Website</h3>
 
   <p align="center">
-    A public-facing, SEO-optimized static website for GC International, built with Astro, React, and Airtable.  
+    A public-facing, SEO-optimized website for GC International, built with Astro, React, Airtable and Sanity.  
     <br />
-    <strong>Initial hosting:</strong> AWS Amplify → <strong>Now deployed on Vercel</strong> for improved performance.  
+    <strong>Initial hosting:</strong> AWS Amplify, <strong>Now deployed on Vercel</strong> for improved performance.  
     <br />
     <br />
     <a href="https://github.com/mabaan/Company-Website"><strong>Explore the code</strong></a><br><br>
@@ -43,7 +43,7 @@
 </details>
 
 ## About The Project
-This repository contains the **public-facing static website** for GC International (FZCO). It showcases company services, locations, and career opportunities via Astro (SSG), React components, and Airtable content. We started on **AWS Amplify** for CI/CD and hosting, and later migrated to **Vercel** for lower latency, better caching, and seamless edge deployment.
+This repository holds the **public facing website** for **GC International FZCO**. It is built with **Astro** for lightning-fast static pages, **React** for interactive components, and **Airtable** as a simple CMS. The site provides a clear overview of **services** and **locations**, and features a comprehensive **Careers Portal** that enables applicants to apply and hiring managers to view and organize applications directly in their email inbox via **APIs**, eliminating the need to learn a separate dashboard or access a database. All forms, API calls, and data fetches run on **serverless functions**, so no dedicated backend servers are required. We initially used **AWS Amplify** for CI/CD and hosting, and later migrated to **Vercel** to benefit from global edge caching, faster load times, and smooth deployments with each code update. We also manage **cloud storage** for long-term asset retention and leverage a **CDN** for website resources, ensuring reliability and improved performance. A separate pipeline was built using **Sanity CMS** so employees can easily update and publish content to the **blog page** without touching code.
 
 ## SEO Features
 - Meta tags & Open Graph for social sharing  
@@ -142,7 +142,7 @@ Project Link: [https://github.com/mabaan/Company-Website](https://github.com/mab
 - [React Official Docs](https://reactjs.org/docs/getting-started.html)
 - [Airtable API](https://airtable.com/api)
 - [AWS Amplify Docs](https://docs.amplify.aws/)
-- [Vercel Docs] (https://vercel.com/docs)
+- [Vercel Docs](https://vercel.com/docs)
 
 <!-- SHIELDS & LINKS -->
 [contributors-shield]: https://img.shields.io/github/contributors/mabaan/Company-Website.svg?style=for-the-badge
