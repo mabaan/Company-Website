@@ -13,6 +13,8 @@ const {
   ogImage = "https://res.cloudinary.com/dxrwnc5g4/image/upload/v1753901040/gcintle/resume/logo.png",
   ogUrl = Astro.url?.href || "https://gcintle.com/",
 } = Astro.props;
+
+const canonical = `https://gcintle.com${Astro.url?.pathname || "/"}`;
 ---
 
 <html lang="en">
@@ -32,7 +34,7 @@ const {
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     <meta name="theme-color" content="#ffffff" />
-    <link rel="canonical" href="https://gcintle.com/" />
+    <link rel="canonical" href={canonical} />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -84,52 +86,43 @@ const {
         ],
         "geo": {
           "@type": "GeoCoordinates",
-          "latitude": 25.259437,
-          "longitude": 55.374313
+          "latitude": 25.259396,
+          "longitude": 55.374288
         }
       }
     </script>
 
-    <!-- Favicons: high quality on CDN -->
+    <!-- Favicons served locally to avoid redirects -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
     <link
       rel="icon"
       type="image/png"
       sizes="512x512"
-      href="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1754141002/gcintle/resume/web-app-manifest-512x512.png"
+      href="/web-app-manifest-512x512.png"
     />
     <link
       rel="icon"
       type="image/png"
       sizes="192x192"
-      href="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1754140998/gcintle/resume/web-app-manifest-192x192.png"
+      href="/web-app-manifest-192x192.png"
     />
     <link
       rel="icon"
       type="image/png"
       sizes="96x96"
-      href="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1754140921/gcintle/resume/favicon-96x96.png"
+      href="/favicon-96x96.png"
     />
-    <!-- Optional multi-size ICO fallback. Replace with your crisp .ico if available -->
-    <link
-      rel="shortcut icon"
-      href="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1754140895/gcintle/resume/favicon.ico"
-    />
-
-    <!-- Apple Touch Icon -->
     <link
       rel="apple-touch-icon"
       sizes="180x180"
-      href="https://res.cloudinary.com/dxrwnc5g4/image/upload/v1754140894/gcintle/resume/apple-touch-icon.png"
+      href="/apple-touch-icon.png"
     />
-
-    <!-- Web App Manifest. Prefer serving from your origin for correct PWA scope -->
     <link rel="manifest" href="/site.webmanifest" />
 
     <!-- Font Optimization -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Preload & non-blocking load -->
     <link
       rel="preload"
       as="style"
@@ -190,7 +183,6 @@ const {
       });
     </script>
 
-    <!-- Vercel Speed Insights -->
     <SpeedInsights />
   </body>
 </html>

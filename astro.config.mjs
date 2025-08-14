@@ -1,13 +1,7 @@
 import { defineConfig } from "astro/config";
-import react from "@astrojs/react";
-import tailwind from "@astrojs/tailwind";
-import vercel from "@astrojs/vercel"; // <-- use /static
+import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  adapter: vercel(), // this will auto-pick /static if you use `@astrojs/vercel/static`
-  integrations: [
-    react(),
-    tailwind(),
-  ],
-  // REMOVE or comment out output: "server"
+  site: "https://gcintle.com",
+  integrations: [sitemap()],
 });
