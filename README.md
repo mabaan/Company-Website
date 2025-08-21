@@ -144,7 +144,7 @@ Project Link: [https://github.com/mabaan/Company-Website](https://github.com/mab
 - [AWS Amplify Docs](https://docs.amplify.aws/)
 - [Vercel Docs](https://vercel.com/docs)
 
-<!-- SHIELDS & LINKS -->
+<!-- SHIELDS w/ LINKS -->
 [contributors-shield]: https://img.shields.io/github/contributors/mabaan/Company-Website.svg?style=for-the-badge
 [contributors-url]: https://github.com/mabaan/Company-Website/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/mabaan/Company-Website.svg?style=for-the-badge
