@@ -4,10 +4,10 @@ import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel"; // <-- use /static
 
 export default defineConfig({
-  adapter: vercel(), // this will auto-pick /static if you use `output: "static"`
+  site: "https://gcintle.com",
+  adapter: vercel(),
   integrations: [
     react(),
     tailwind(),
   ],
-  // REMOVE or comment out output: "server"
 });
