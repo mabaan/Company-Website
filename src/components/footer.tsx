@@ -19,7 +19,7 @@ export default function Footer() {
           </div>
           {/* View on Google Maps: underline always, red, bold only on hover */}
           <a
-            href="https://www.google.com/maps/place/Dubai+Airport+Freezone/@25.2487425,55.3669749,17z"
+            href="https://maps.app.goo.gl/LkACcuJoydHVnRat7"
             target="_blank"
             rel="noopener noreferrer"
             className="font-medium text-[#e41f26] text-base leading-tight underline transition-all duration-150 hover:font-bold focus:font-bold"
