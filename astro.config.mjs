@@ -6,7 +6,7 @@ import tailwind from "@astrojs/tailwind";
 
 export default defineConfig({
   site: "https://gcintle.com",
-  output: "server",
+  output: "hybrid",
   adapter: vercel(),
   integrations: [react(), tailwind(), sitemap()],
 });
