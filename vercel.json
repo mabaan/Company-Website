@@ -1,14 +1,15 @@
 {
   "redirects": [
     {
-      "source": "http://gcintle.com/(.*)",
+      "source": "/(.*)",
       "destination": "https://gcintle.com/$1",
-      "permanent": true
-    },
-    {
-      "source": "https://www.gcintle.com/(.*)",
-      "destination": "https://gcintle.com/$1",
-      "permanent": true
+      "permanent": true,
+      "has": [
+        {
+          "type": "host",
+          "value": "www.gcintle.com"
+        }
+      ]
     }
   ],
   "headers": [
